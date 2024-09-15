@@ -1,0 +1,1 @@
+{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"]},"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"course-compass-5f6aa","configurations":{"web":"1:1006969790261:web:a715d89673d6404f9cb67c"}}}}}}
