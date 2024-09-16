@@ -95,18 +95,18 @@ class CurricularOfferingsScreen extends StatelessWidget {
 
                                       List<DocumentSnapshot> admission_news =
                                           [];
-                                      int index = 0;
-                                      while (true) {
-                                        try {
-                                          print("test");
-                                          admission_news.add(snapshot.data!.docs
-                                              .toList()[index]);
-                                        } catch (e) {
-                                          break;
-                                        }
-                                        index++;
-                                      }
+                                      // int index = 0;
 
+                                      for (int i = 0;
+                                          i <
+                                              snapshot.data!.docs
+                                                  .toList()
+                                                  .length;
+                                          i++) {
+                                        print("new");
+                                        admission_news.add(
+                                            snapshot.data!.docs.toList()[i]);
+                                      }
                                       return GridView.builder(
                                         itemCount: admission_news.length,
                                         itemBuilder: (context, index) {
