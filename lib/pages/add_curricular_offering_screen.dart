@@ -1,10 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
+import 'dart:html';
+
+import 'package:image_picker_web/image_picker_web.dart';
 
 class AddCurricularOfferingScreen extends StatelessWidget {
   const AddCurricularOfferingScreen({super.key});
@@ -14,7 +20,9 @@ class AddCurricularOfferingScreen extends StatelessWidget {
     final _key = GlobalKey<FormState>();
     final TextEditingController _title = TextEditingController();
     final TextEditingController _description = TextEditingController();
-    final TextEditingController _link = TextEditingController();
+    // final TextEditingController _link = TextEditingController();
+    String _campus = 'lingayen';
+    File? image = null;
 
     const edgeInsets = const EdgeInsets.only(top: 8.0, left: 8, right: 8);
     return Scaffold(
@@ -43,7 +51,7 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Text(
-                                    "Add Admission News",
+                                    "Add Curricular Offer",
                                     style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w700,
                                         color: PSU_YELLOW,
@@ -62,12 +70,16 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                               controller: _title,
                               validator: (value) => value == null ||
                                       value.isEmpty
-                                  ? "Title must not be empty!"
+                                  ? "Course Title must not be empty!"
                                   : value.length < 5
-                                      ? "Title must be at least 5 characters long!"
+                                      ? "Course Title must be at least 5 characters long!"
                                       : null,
                               decoration: InputDecoration(
-                                labelText: 'Title',
+                                hintStyle: TextStyle(
+                                    color: Colors.black.withOpacity(0.5)),
+                                hintText:
+                                    "ex: BSIT - Bachelor of Science in Information Technology",
+                                labelText: 'Course Code + Title',
                                 // hintText: "email@example.com",
                                 border: OutlineInputBorder(),
 
@@ -92,12 +104,12 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                               controller: _description,
                               validator: (value) => value == null ||
                                       value.isEmpty
-                                  ? "Description must not be empty!"
+                                  ? "Course Description must not be empty!"
                                   : value.length < 5
-                                      ? "Description must be at least 5 characters long!"
+                                      ? "Course Description must be at least 5 characters long!"
                                       : null,
                               decoration: InputDecoration(
-                                labelText: 'Description',
+                                labelText: 'Course Description',
                                 // hintText: "email@example.com",
                                 border: OutlineInputBorder(),
 
@@ -114,33 +126,101 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: edgeInsets,
-                            child: TextFormField(
-                              controller: _link,
-                              validator: (value) => value == null ||
-                                      value.isEmpty
-                                  ? "Link must not be empty!"
-                                  : value.length < 5
-                                      ? "Link must be at least 5 characters long!"
-                                      : null,
-                              decoration: InputDecoration(
-                                labelText: 'Link',
-                                // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                          // Padding(
+                          //   padding: edgeInsets,
+                          //   child: TextFormField(
+                          //     controller: _link,
+                          //     validator: (value) => value == null ||
+                          //             value.isEmpty
+                          //         ? "Link must not be empty!"
+                          //         : value.length < 5
+                          //             ? "Link must be at least 5 characters long!"
+                          //             : null,
+                          //     decoration: InputDecoration(
+                          //       labelText: 'Link',
+                          //       // hintText: "email@example.com",
+                          //       border: OutlineInputBorder(),
 
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.link,
-                                        color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
-                                      width: 5,
-                                    )
-                                  ],
-                                ),
+                          //       suffixIcon: Row(
+                          //         mainAxisSize: MainAxisSize.min,
+                          //         children: [
+                          //           Icon(Icons.link,
+                          //               color: Colors.black.withOpacity(0.2)),
+                          //           SizedBox(
+                          //             width: 5,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: edgeInsets,
+                                child: DropdownMenu(
+                                    width: 300,
+                                    enableFilter: false,
+                                    enableSearch: false,
+                                    initialSelection: 'lingayen',
+                                    onSelected: (value) {
+                                      _campus = value!;
+                                    },
+                                    inputDecorationTheme:
+                                        InputDecorationTheme(),
+                                    dropdownMenuEntries: const [
+                                      DropdownMenuEntry(
+                                          value: "lingayen",
+                                          label: "Lingayen Campus - Main"),
+                                      DropdownMenuEntry(
+                                          value: "alaminos",
+                                          label: "Alaminos City Campus"),
+                                      DropdownMenuEntry(
+                                          value: "asingan",
+                                          label: "Asingan Campus"),
+                                      DropdownMenuEntry(
+                                          value: "bayambang",
+                                          label: "Bayambang Campus"),
+                                      DropdownMenuEntry(
+                                          value: "binmaley ",
+                                          label: "Binmaley Campus"),
+                                      DropdownMenuEntry(
+                                          value: "infanta",
+                                          label: "Infanta Campus "),
+                                      DropdownMenuEntry(
+                                          value: "san-carlos",
+                                          label: "San Carlos City Campus"),
+                                      DropdownMenuEntry(
+                                          value: "santa-maria",
+                                          label: "Santa Maria Campus"),
+                                      DropdownMenuEntry(
+                                          value: "urdaneta ",
+                                          label: "Urdaneta City Campus"),
+                                    ]),
                               ),
-                            ),
+                              ClickWidget(
+                                onTap: () {},
+                                child: ElevatedButton(
+                                    onPressed: () async {
+                                      FileUploadInputElement uploadInput =
+                                          FileUploadInputElement()
+                                            ..accept = 'image/*';
+                                      uploadInput.click();
+
+                                      uploadInput.onChange.listen((event) {
+                                        image = uploadInput.files!.first;
+                                        final reader = FileReader();
+                                        reader.readAsDataUrl(image!);
+                                        reader.onLoadEnd.listen(
+                                          (event) {
+                                            print("done");
+                                          },
+                                        );
+                                      });
+                                    },
+                                    child: Text("Upload Preview Image")),
+                              )
+                            ],
                           ),
                           Padding(
                             padding: edgeInsets,
@@ -151,13 +231,15 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                                     if (_key.currentState!.validate()) {
                                       print(_title.text +
                                           _description.text +
-                                          _link.text);
+                                          _campus);
                                       _key.currentState!.validate();
                                       Store()
-                                          .uploadAdmission(
-                                              title: _title.text,
-                                              description: _description.text,
-                                              link: _link.text)
+                                          .uploadCourse(
+                                              course_title: _title.text,
+                                              course_description:
+                                                  _description.text,
+                                              campus: _campus,
+                                              img: image!)
                                           .then(
                                         (value) {
                                           showDialog(
@@ -174,7 +256,7 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                                                     child: Text("Okay"))
                                               ],
                                               content: Text(
-                                                "Admission news added successfully!",
+                                                "Curricular Offer added successfully!",
                                               ),
                                             ),
                                           );

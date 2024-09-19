@@ -3,7 +3,7 @@ import 'package:course_compass/auth.dart';
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/add_admission_news_screen.dart';
+import 'package:course_compass/pages/add_curricular_offering_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddAdmissionNewsScreen(),
+                  builder: (context) => AddCurricularOfferingScreen(),
                 ));
               })
           : Container(),

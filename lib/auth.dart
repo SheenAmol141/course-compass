@@ -1,6 +1,13 @@
+import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -46,5 +53,32 @@ class Store {
       "time_added": DateTime.now()
     };
     _firebaseFirestore.collection("admission_news").add(admissionNews);
+  }
+
+  Future<void> uploadCourse(
+      {required String course_title,
+      required String course_description,
+      required String campus,
+      required File img}) async {
+    final Map<String, dynamic> course = {
+      "title": course_title,
+      "description": course_description,
+      "campus": campus,
+      "time_added": DateTime.now()
+    };
+    await Storage().uploadCampusImage(title: course_title, img: img);
+    _firebaseFirestore.collection("curricular_offerings").add(course);
+  }
+}
+
+class Storage {
+  final _firebaseStorageRef = FirebaseStorage.instance.ref();
+
+  Future<void> uploadCampusImage(
+      {required String title, required File img}) async {
+    print("bef");
+
+    await _firebaseStorageRef.child("campuses/$title.png").putBlob(img);
+    print("af");
   }
 }
