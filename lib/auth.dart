@@ -66,7 +66,13 @@ class Store {
       "campus": campus,
       "time_added": DateTime.now()
     };
-    await Storage().uploadCampusImage(title: course_title, img: img);
+
+    try {
+      await Storage().uploadCampusImage(title: course_title, img: img);
+    } on Exception catch (e) {
+      print(e);
+      // TODO
+    }
     _firebaseFirestore.collection("curricular_offerings").add(course);
   }
 }

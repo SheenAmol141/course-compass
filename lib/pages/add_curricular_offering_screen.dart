@@ -12,8 +12,19 @@ import 'dart:html';
 
 import 'package:image_picker_web/image_picker_web.dart';
 
-class AddCurricularOfferingScreen extends StatelessWidget {
+class AddCurricularOfferingScreen extends StatefulWidget {
   const AddCurricularOfferingScreen({super.key});
+
+  @override
+  State<AddCurricularOfferingScreen> createState() =>
+      _AddCurricularOfferingScreenState();
+}
+
+class _AddCurricularOfferingScreenState
+    extends State<AddCurricularOfferingScreen> {
+  String? dataUrl = null;
+  File? image = null;
+  String _campus = 'lingayen';
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +32,6 @@ class AddCurricularOfferingScreen extends StatelessWidget {
     final TextEditingController _title = TextEditingController();
     final TextEditingController _description = TextEditingController();
     // final TextEditingController _link = TextEditingController();
-    String _campus = 'lingayen';
-    File? image = null;
 
     const edgeInsets = const EdgeInsets.only(top: 8.0, left: 8, right: 8);
     return Scaffold(
@@ -63,6 +72,91 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                           ),
                           SizedBox(
                             height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: edgeInsets,
+                                child: DropdownMenu(
+                                    width: 300,
+                                    enableFilter: false,
+                                    enableSearch: false,
+                                    initialSelection: 'lingayen',
+                                    onSelected: (value) {
+                                      _campus = value!;
+                                    },
+                                    inputDecorationTheme:
+                                        InputDecorationTheme(),
+                                    dropdownMenuEntries: const [
+                                      DropdownMenuEntry(
+                                          value: "lingayen",
+                                          label: "Lingayen Campus - Main"),
+                                      DropdownMenuEntry(
+                                          value: "alaminos",
+                                          label: "Alaminos City Campus"),
+                                      DropdownMenuEntry(
+                                          value: "asingan",
+                                          label: "Asingan Campus"),
+                                      DropdownMenuEntry(
+                                          value: "bayambang",
+                                          label: "Bayambang Campus"),
+                                      DropdownMenuEntry(
+                                          value: "binmaley ",
+                                          label: "Binmaley Campus"),
+                                      DropdownMenuEntry(
+                                          value: "infanta",
+                                          label: "Infanta Campus "),
+                                      DropdownMenuEntry(
+                                          value: "san-carlos",
+                                          label: "San Carlos City Campus"),
+                                      DropdownMenuEntry(
+                                          value: "santa-maria",
+                                          label: "Santa Maria Campus"),
+                                      DropdownMenuEntry(
+                                          value: "urdaneta ",
+                                          label: "Urdaneta City Campus"),
+                                    ]),
+                              ),
+                              ClickWidget(
+                                onTap: () {},
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 7.0),
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        FileUploadInputElement uploadInput =
+                                            FileUploadInputElement()
+                                              ..accept = 'image/*';
+                                        uploadInput.click();
+
+                                        uploadInput.onChange.listen((event) {
+                                          image = uploadInput.files!.first;
+                                          final reader = FileReader();
+                                          reader.readAsDataUrl(image!);
+                                          reader.onLoadEnd.listen(
+                                            (event) {
+                                              print("done");
+                                              setState(() {
+                                                dataUrl =
+                                                    reader.result as String?;
+                                              });
+                                            },
+                                          );
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 1.5),
+                                        child: Text(
+                                          "Upload Preview Image",
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              color: PSU_YELLOW,
+                                              fontSize: 16),
+                                        ),
+                                      )),
+                                ),
+                              )
+                            ],
                           ),
                           Padding(
                             padding: edgeInsets,
@@ -154,74 +248,15 @@ class AddCurricularOfferingScreen extends StatelessWidget {
                           //     ),
                           //   ),
                           // ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: edgeInsets,
-                                child: DropdownMenu(
-                                    width: 300,
-                                    enableFilter: false,
-                                    enableSearch: false,
-                                    initialSelection: 'lingayen',
-                                    onSelected: (value) {
-                                      _campus = value!;
-                                    },
-                                    inputDecorationTheme:
-                                        InputDecorationTheme(),
-                                    dropdownMenuEntries: const [
-                                      DropdownMenuEntry(
-                                          value: "lingayen",
-                                          label: "Lingayen Campus - Main"),
-                                      DropdownMenuEntry(
-                                          value: "alaminos",
-                                          label: "Alaminos City Campus"),
-                                      DropdownMenuEntry(
-                                          value: "asingan",
-                                          label: "Asingan Campus"),
-                                      DropdownMenuEntry(
-                                          value: "bayambang",
-                                          label: "Bayambang Campus"),
-                                      DropdownMenuEntry(
-                                          value: "binmaley ",
-                                          label: "Binmaley Campus"),
-                                      DropdownMenuEntry(
-                                          value: "infanta",
-                                          label: "Infanta Campus "),
-                                      DropdownMenuEntry(
-                                          value: "san-carlos",
-                                          label: "San Carlos City Campus"),
-                                      DropdownMenuEntry(
-                                          value: "santa-maria",
-                                          label: "Santa Maria Campus"),
-                                      DropdownMenuEntry(
-                                          value: "urdaneta ",
-                                          label: "Urdaneta City Campus"),
-                                    ]),
-                              ),
-                              ClickWidget(
-                                onTap: () {},
-                                child: ElevatedButton(
-                                    onPressed: () async {
-                                      FileUploadInputElement uploadInput =
-                                          FileUploadInputElement()
-                                            ..accept = 'image/*';
-                                      uploadInput.click();
 
-                                      uploadInput.onChange.listen((event) {
-                                        image = uploadInput.files!.first;
-                                        final reader = FileReader();
-                                        reader.readAsDataUrl(image!);
-                                        reader.onLoadEnd.listen(
-                                          (event) {
-                                            print("done");
-                                          },
-                                        );
-                                      });
-                                    },
-                                    child: Text("Upload Preview Image")),
-                              )
-                            ],
-                          ),
+                          dataUrl != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      child: Image.network(dataUrl!)),
+                                )
+                              : Container(),
                           Padding(
                             padding: edgeInsets,
                             child: ClickWidget(

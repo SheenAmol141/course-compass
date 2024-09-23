@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class CardTemplate extends StatelessWidget {
@@ -78,6 +79,64 @@ class _ClickWidgetState extends State<ClickWidget> {
             opacity: opacityLev,
             child: widget.child),
       ),
+    );
+  }
+}
+
+class FirebaseStorageImage extends StatefulWidget {
+  String filename;
+  FirebaseStorageImage({super.key, required this.filename});
+
+  @override
+  State<FirebaseStorageImage> createState() => _FirebaseStorageImageState();
+}
+
+class _FirebaseStorageImageState extends State<FirebaseStorageImage> {
+  late String imageUrl;
+  final storage = FirebaseStorage.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    imageUrl = '';
+
+    getImageUrl();
+  }
+
+  Future<void> getImageUrl() async {
+    final ref = storage.ref().child('campuses/${widget.filename}.png');
+    final url = await ref.getDownloadURL();
+    setState(() {
+      imageUrl = url;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(imageUrl);
+  }
+}
+
+class FirebaseImageWidget extends StatelessWidget {
+  final String imageUrl;
+
+  const FirebaseImageWidget({required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: FirebaseStorage.instance.ref().child(imageUrl).getDownloadURL(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error loading image: ${snapshot.error}');
+        } else {
+          final imageUrl = snapshot.data as String;
+          return Image.network(imageUrl);
+        }
+      },
     );
   }
 }
