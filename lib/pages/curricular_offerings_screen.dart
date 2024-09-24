@@ -217,51 +217,62 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                   horizontal:
                                                                       15.0),
                                                           child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              SizedBox(
-                                                                width: 270,
-                                                                child: Text(
-                                                                  getCampus(admission_news[
-                                                                          index]
-                                                                      [
-                                                                      "campus"]),
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontSize:
-                                                                        16,
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        bottom:
+                                                                            8.0),
+                                                                child: SizedBox(
+                                                                  width: 270,
+                                                                  child: Text(
+                                                                    getCampus(admission_news[
+                                                                            index]
+                                                                        [
+                                                                        "campus"]),
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      color:
+                                                                          PSU_BLUE,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                                    maxLines: 5,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
                                                                   ),
-                                                                  maxLines: 5,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
                                                                 ),
                                                               ),
-                                                              SizedBox(
-                                                                width: 270,
-                                                                child: Text(
-                                                                  admission_news[
-                                                                          index]
-                                                                      [
-                                                                      "description"],
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                  maxLines: 5,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                              Text(
+                                                                admission_news[
+                                                                        index][
+                                                                    "description"],
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontSize: 16,
                                                                 ),
+                                                                maxLines: 4,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                               ),
                                                               Padding(
                                                                 padding:
                                                                     const EdgeInsets
                                                                         .only(
                                                                         top:
-                                                                            13.0),
+                                                                            13.0,
+                                                                        bottom:
+                                                                            13),
                                                                 child: SizedBox(
                                                                   width: 270,
                                                                   child: Row(

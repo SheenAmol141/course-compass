@@ -11,33 +11,32 @@ class SingleCurricularOfferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Card(
-            color: LIGHT_GRAY,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Card(
-                color: Colors.white,
-                child: SizedBox(
-                  width: 800,
+    return BaseWidget(
+        title: admission_new["title"],
+        widget: [
+          Row(
+            children: [
+              Expanded(child: Container()),
+              Expanded(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 40.0, vertical: 20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        admission_new["title"],
-                        style: GoogleFonts.inter(
-                          fontSize: 30,
-                        ),
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: FirebaseImageWidget(
+                            imageUrl: 'campuses/${admission_new["title"]}.png'),
                       ),
-                      FirebaseImageWidget(
-                          imageUrl: 'campuses/${admission_new["title"]}.png'),
-                      Text(
-                        admission_new["title"],
-                        style: GoogleFonts.inter(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                        child: Text(
+                          admission_new["description"],
+                          style: GoogleFonts.inter(fontSize: 16),
+                        ),
                       ),
                       ClickWidget(
                           onTap: () {},
@@ -45,15 +44,31 @@ class SingleCurricularOfferScreen extends StatelessWidget {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: Text("Back")))
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.arrow_left_rounded,
+                                    color: PSU_YELLOW,
+                                  ),
+                                  Text(
+                                    "Back",
+                                    style: GoogleFonts.inter(
+                                        color: PSU_YELLOW,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  )
+                                ],
+                              ))),
                     ],
                   ),
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+            ],
+          )
+        ],
+        currentpage: "");
   }
 }
