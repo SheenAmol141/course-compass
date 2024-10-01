@@ -2,6 +2,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/pages/admin_login_screen.dart';
 import 'package:course_compass/pages/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
+import 'package:course_compass/pages/course_recommender_screen.dart';
 import 'package:course_compass/pages/curricular_offerings_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
@@ -50,6 +51,7 @@ void main() async {
         '/analytics': (context) => AnalyticsScreen(),
         '/admission-news': (context) => AdmissionNewsScreen(),
         '/curricular-offerings': (context) => CurricularOfferingsScreen(),
+        '/course-recommender': (context) => CourseRecommenderScreen(),
       }));
 }
 
@@ -64,12 +66,9 @@ AppBar appBar = AppBar(
 class BaseWidget extends StatelessWidget {
   final List<Widget> widget;
   final String currentpage;
-  final String title;
+  final String? title;
   const BaseWidget(
-      {super.key,
-      required this.title,
-      required this.widget,
-      required this.currentpage});
+      {super.key, this.title, required this.widget, required this.currentpage});
 
   @override
   Widget build(BuildContext context) {
@@ -81,28 +80,30 @@ class BaseWidget extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: LIGHT_GRAY,
-                  child: Row(
-                    children: [
-                      Expanded(child: Container()),
+                title != null
+                    ? Container(
+                        color: LIGHT_GRAY,
+                        child: Row(
+                          children: [
+                            Expanded(child: Container()),
 
-                      //CONTENT HERE expanded below ----------------------- gray
-                      Expanded(
-                          flex: 3,
-                          child: Container(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 40.0, bottom: 20),
-                              child: Text(
-                                title,
-                                style: GoogleFonts.inter(fontSize: 40),
-                              ),
-                            ),
-                          ))
-                    ],
-                  ),
-                ),
+                            //CONTENT HERE expanded below ----------------------- gray
+                            Expanded(
+                                flex: 3,
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 40.0, bottom: 20),
+                                    child: Text(
+                                      title!,
+                                      style: GoogleFonts.inter(fontSize: 40),
+                                    ),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )
+                    : Container(),
                 ...widget
               ],
             ),

@@ -116,7 +116,7 @@ class BlueMenuTile extends StatelessWidget {
               ),
               Text(
                 text,
-                overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.clip,
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
                   color: Colors.white,

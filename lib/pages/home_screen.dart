@@ -367,31 +367,40 @@ class HomeScreen extends StatelessWidget {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Card(
-                                color: PSU_BLUE,
-                                child: Container(
-                                  width: 500,
-                                  height: 200,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child: Icon(
-                                          Icons.search_rounded,
-                                          color: PSU_YELLOW,
-                                          size: 110,
+                              ClickWidget(
+                                onTap: () {
+                                  Navigator.of(context)
+                                    ..pushNamedAndRemoveUntil(
+                                        "/course-recommender",
+                                        (Route<dynamic> route) => false);
+                                },
+                                child: Card(
+                                  color: PSU_BLUE,
+                                  child: Container(
+                                    width: 500,
+                                    height: 200,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: Icon(
+                                            Icons.search_rounded,
+                                            color: PSU_YELLOW,
+                                            size: 110,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        "Find a course suitable for you",
-                                        style: GoogleFonts.inter(
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.w900,
-                                            color: PSU_YELLOW),
-                                      )
-                                    ],
+                                        Text(
+                                          "Find a course suitable for you",
+                                          style: GoogleFonts.inter(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.w900,
+                                              color: PSU_YELLOW),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
