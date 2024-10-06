@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/pages/admin_login_screen.dart';
 import 'package:course_compass/pages/admission_news_screen.dart';
@@ -8,14 +10,18 @@ import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:course_compass/hex_colors.dart';
+import 'package:flutter/rendering.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() async {
   // debugPaintSizeEnabled = true;
+
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -53,6 +59,7 @@ void main() async {
         '/curricular-offerings': (context) => CurricularOfferingsScreen(),
         '/course-recommender': (context) => CourseRecommenderScreen(),
       }));
+  //
 }
 
 AppBar appBar = AppBar(

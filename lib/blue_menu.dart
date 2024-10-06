@@ -33,13 +33,13 @@ class BlueMenu extends StatelessWidget {
                 BlueMenuTile(
                     "Course Recommender",
                     "course-recommender",
-                    Icons.school_rounded,
+                    Icons.search_rounded,
                     currentPage == "course-recommender" ? true : false,
                     false),
                 BlueMenuTile(
                     "Curricular Offerings",
                     "curricular-offerings",
-                    Icons.search_rounded,
+                    Icons.school_rounded,
                     currentPage == "curricular-offerings" ? true : false,
                     false),
                 BlueMenuTile(

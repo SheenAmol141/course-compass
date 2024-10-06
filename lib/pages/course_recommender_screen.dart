@@ -1,5 +1,6 @@
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
+import 'package:course_compass/pages/course_recommendation_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,6 +36,7 @@ class CourseRecommenderScreen extends StatefulWidget {
 class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
   final _key = GlobalKey<FormState>();
   final TextEditingController _interests = TextEditingController();
+  final TextEditingController _strand = TextEditingController();
   late bool validatorMBTI;
   late String currentPersonality;
   @override
@@ -198,6 +200,35 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: TextFormField(
+                              controller: _strand,
+                              validator: (value) => value == null ||
+                                      value.isEmpty
+                                  ? "Senior High School Strand must not be empty!"
+                                  : value.length < 3
+                                      ? "Senior High School Strand must be at least 3 characters long!"
+                                      : null,
+                              decoration: InputDecoration(
+                                labelText:
+                                    'What is your Senior High School Strand?',
+                                // hintText: "email@example.com",
+                                border: OutlineInputBorder(),
+
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.link,
+                                        color: Colors.black.withOpacity(0.2)),
+                                    SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       )),
                   SizedBox(
@@ -208,16 +239,28 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                       onTap: () {},
                       child: ElevatedButton(
                           onPressed: () {
+                            print(currentPersonality);
                             // vaidate
                             if (currentPersonality.isEmpty) {
-                              if (_key.currentState!.validate()) {}
                               setState(() {
                                 validatorMBTI = true;
                               });
+                              if (_key.currentState!.validate()) {}
                             } else {
-                              setState(() {
-                                validatorMBTI = false;
-                              });
+                              {
+                                setState(() {
+                                  validatorMBTI = false;
+                                });
+                              }
+                              if (_key.currentState!.validate()) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      CourseRecommendationScreen(
+                                          currentPersonality,
+                                          _interests.text,
+                                          _strand.text),
+                                ));
+                              }
                             }
                           },
                           child: Text(
