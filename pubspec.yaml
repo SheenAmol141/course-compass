@@ -43,6 +43,7 @@ dependencies:
   image_picker_web: ^4.0.0
   firebase_storage: ^11.7.7
   google_generative_ai: ^0.4.6
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:

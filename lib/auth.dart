@@ -13,7 +13,7 @@ class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   User? get currentUser {
-    print(_firebaseAuth.currentUser);
+    // print(_firebaseAuth.currentUser);
     return _firebaseAuth.currentUser;
   }
 
@@ -23,19 +23,19 @@ class Auth {
       {required String email, required String password}) async {
     await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    print(_firebaseAuth.currentUser);
+    // print(_firebaseAuth.currentUser);
   }
 
   Future<void> createUserWithEmailPassword(
       {required String email, required String password}) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    print(_firebaseAuth.currentUser);
+    // print(_firebaseAuth.currentUser);
   }
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
-    print(_firebaseAuth.currentUser);
+    // print(_firebaseAuth.currentUser);
   }
 }
 
@@ -64,7 +64,8 @@ class Store {
       "title": course_title,
       "description": course_description,
       "campus": campus,
-      "time_added": DateTime.now()
+      "time_added": DateTime.now(),
+      "interested": 0
     };
 
     try {
@@ -74,6 +75,48 @@ class Store {
       // TODO
     }
     _firebaseFirestore.collection("curricular_offerings").add(course);
+  }
+
+  Future<void> addInterested({
+    required String course_title,
+    required current,
+  }) async {
+    final Map<String, dynamic> course = {"interested": current + 1};
+
+    _firebaseFirestore
+        .collection("curricular_offerings")
+        .doc(course_title)
+        .update(course);
+  }
+
+  void deleteAdmission(String id, BuildContext context) {
+    _firebaseFirestore.collection("admission_news").doc(id).delete().then(
+      (value) {
+        print(id);
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  void deleteCourse(String id, BuildContext context) {
+    _firebaseFirestore.collection("curricular_offerings").doc(id).delete().then(
+      (value) {
+        print(id);
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  get courses {
+    return _firebaseFirestore.collection("curricular_offerings").get().then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          print('${docSnapshot.id} => ${docSnapshot["title"]}');
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
   }
 }
 

@@ -1,4 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:course_compass/auth.dart';
+import 'package:course_compass/hex_colors.dart';
+import 'package:course_compass/pages/home_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class CardTemplate extends StatelessWidget {
@@ -138,5 +145,170 @@ class FirebaseImageWidget extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+//CHART FL CHART
+// import 'package:fl_chart_app/presentation/resources/app_resources.dart';
+// import 'package:fl_chart_app/util/extensions/color_extensions.dart';
+
+// import 'package:fl_chart_app/presentation/resources/app_resources.dart';
+// import 'package:fl_chart_app/util/extensions/color_extensions.dart';
+// import 'package:fl_chart/fl_chart.dart';
+// import 'package:flutter/material.dart';
+
+class AnalyticsChart extends StatefulWidget {
+  AnalyticsChart({super.key});
+
+  final Color dark = PSU_BLUE;
+  final Color normal = PSU_BLUE;
+  final Color light = PSU_BLUE;
+
+  @override
+  State<StatefulWidget> createState() => AnalyticsChartState();
+}
+
+class AnalyticsChartState extends State<AnalyticsChart> {
+  //declarations
+  bool loading = true;
+  List<String> coursestitle = [];
+
+  Widget bottomTitles(double value, TitleMeta meta) {
+    const style = TextStyle(fontSize: 10);
+    String text;
+    text = coursestitle[value.toInt()];
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(text, style: style),
+    );
+  }
+
+  Widget leftTitles(double value, TitleMeta meta) {
+    if (value == meta.max) {
+      return Container();
+    }
+    const style = TextStyle(
+      fontSize: 10,
+    );
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(
+        meta.formattedValue,
+        style: style,
+      ),
+    );
+  }
+
+  getCourse() {
+    FirebaseFirestore.instance
+        .collection("curricular_offerings")
+        .orderBy("time_added", descending: true)
+        .get()
+        .then(
+      (querySnapshot) {
+        print("Successfully completed");
+        for (var docSnapshot in querySnapshot.docs) {
+          coursestitle.insert(0, docSnapshot["title"]);
+          print('${coursestitle[0]}');
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    ).then(
+      (value) => setState(() {
+        loading = false;
+      }),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(loading);
+    getCourse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return loading
+        ? Container()
+        : AspectRatio(
+            aspectRatio: 1.66,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final barsSpace = 4.0 * constraints.maxWidth / 400;
+                  final barsWidth = 8.0 * constraints.maxWidth / 400;
+                  return BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.center,
+                      barTouchData: BarTouchData(
+                        enabled: false,
+                      ),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 28,
+                            getTitlesWidget: bottomTitles,
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: leftTitles,
+                          ),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                      ),
+                      gridData: FlGridData(
+                        show: false,
+                        checkToShowHorizontalLine: (value) => value % 10 == 0,
+                        // getDrawingHorizontalLine: (value) => FlLine(
+                        //   color: PSU_BLUE,
+                        //   strokeWidth: 1,
+                        // ),
+                        drawVerticalLine: false,
+                      ),
+                      borderData: FlBorderData(
+                        show: false,
+                      ),
+                      groupsSpace: barsSpace,
+                      barGroups: getData(barsWidth, barsSpace),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+  }
+
+  List<BarChartGroupData> getData(double barsWidth, double barsSpace) {
+    return [
+      BarChartGroupData(
+        x: 0,
+        barsSpace: barsSpace,
+        barRods: [
+          BarChartRodData(
+            toY: 20,
+            borderRadius: BorderRadius.zero,
+            width: barsWidth,
+          ),
+          BarChartRodData(
+            toY: 10,
+            borderRadius: BorderRadius.zero,
+            width: barsWidth,
+          )
+        ],
+      ),
+    ];
   }
 }

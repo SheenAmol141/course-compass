@@ -151,12 +151,24 @@ class AnalyticsScreen extends StatelessWidget {
                           ///
                           ///
                           ///
+                          ///
                         ],
                       ),
                     ))
               ],
             ),
           ),
+          Row(
+            children: [
+              Expanded(child: Container()),
+              Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Container(height: 400, child: AnalyticsChart())],
+                  ))
+            ],
+          )
         ],
         currentpage: "analytics");
   }

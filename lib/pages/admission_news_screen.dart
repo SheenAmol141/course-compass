@@ -252,12 +252,7 @@ class AdmissionNewsScreen extends StatelessWidget {
                                                                               actions: [
                                                                                 TextButton(
                                                                                     onPressed: () {
-                                                                                      firestore.collection("admission_news").doc(admission_news[index].id).delete().then(
-                                                                                        (value) {
-                                                                                          print(admission_news[index].id);
-                                                                                          Navigator.of(context).pop();
-                                                                                        },
-                                                                                      );
+                                                                                      Store().deleteAdmission(admission_news[index].id, context);
                                                                                     },
                                                                                     child: Text("Yes"))
                                                                               ],

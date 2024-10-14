@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
@@ -26,18 +27,6 @@ class SingleCurricularOfferScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Card(
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: FirebaseImageWidget(
-                            imageUrl: 'campuses/${admission_new["title"]}.png'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-                        child: Text(
-                          admission_new["description"],
-                          style: GoogleFonts.inter(fontSize: 16),
-                        ),
-                      ),
                       ClickWidget(
                           onTap: () {},
                           child: ElevatedButton(
@@ -62,6 +51,29 @@ class SingleCurricularOfferScreen extends StatelessWidget {
                                   )
                                 ],
                               ))),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: FirebaseImageWidget(
+                            imageUrl: 'campuses/${admission_new["title"]}.png'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                        child: Text(
+                          admission_new["description"],
+                          style: GoogleFonts.inter(fontSize: 16),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
+                        child: Text(
+                          "Interested ${admission_new["interested"]}",
+                          style: GoogleFonts.inter(fontSize: 16),
+                        ),
+                      ),
+                      InterestedButton(admission_new: admission_new)
                     ],
                   ),
                 ),
@@ -70,5 +82,65 @@ class SingleCurricularOfferScreen extends StatelessWidget {
           )
         ],
         currentpage: "");
+  }
+}
+
+class InterestedButton extends StatefulWidget {
+  const InterestedButton({
+    super.key,
+    required this.admission_new,
+  });
+
+  final DocumentSnapshot<Object?> admission_new;
+
+  @override
+  State<InterestedButton> createState() => _InterestedButtonState();
+}
+
+class _InterestedButtonState extends State<InterestedButton> {
+  bool loading = false;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ElevatedButton(
+            onPressed: () {
+              setState(() {
+                loading = true;
+              });
+              Store()
+                  .addInterested(
+                      course_title: widget.admission_new.id,
+                      current: widget.admission_new["interested"])
+                  .then(
+                (value) {
+                  setState(() {
+                    loading = false;
+                  });
+                  showDialog(
+                      // login success!
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            content: Text(
+                                "Thank you for letting us know you are interested in this course!"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("Okay"))
+                            ],
+                          ));
+                },
+              );
+            },
+            child: Text("I'm Interested!")),
+        loading
+            ? CircularProgressIndicator(
+                color: PSU_BLUE,
+              )
+            : Container()
+      ],
+    );
   }
 }

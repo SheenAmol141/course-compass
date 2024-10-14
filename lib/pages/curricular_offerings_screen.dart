@@ -147,8 +147,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                     } else {
                                       //TODO THISSSSSS ----------------------------------------------------------------------------------------
 
-                                      List<DocumentSnapshot> admission_news =
-                                          [];
+                                      List<DocumentSnapshot> courses = [];
                                       // int index = 0;
 
                                       for (int i = 0;
@@ -158,11 +157,11 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                   .length;
                                           i++) {
                                         print("new");
-                                        admission_news.add(
+                                        courses.add(
                                             snapshot.data!.docs.toList()[i]);
                                       }
                                       return ListView.builder(
-                                        itemCount: admission_news.length,
+                                        itemCount: courses.length,
                                         itemBuilder: (context, index) {
                                           return SizedBox(
                                             height: 270,
@@ -179,36 +178,85 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                       mainAxisSize:
                                                           MainAxisSize.max,
                                                       children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Card(
-                                                            color: PSU_BLUE,
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(6.0),
-                                                              child: Center(
-                                                                child: Text(
-                                                                  admission_news[
-                                                                          index]
-                                                                      ["title"],
-                                                                  style: GoogleFonts.inter(
-                                                                      color:
-                                                                          PSU_YELLOW,
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Card(
+                                                                  color:
+                                                                      PSU_BLUE,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            6.0),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        courses[index]
+                                                                            [
+                                                                            "title"],
+                                                                        style: GoogleFonts.inter(
+                                                                            color:
+                                                                                PSU_YELLOW,
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.w600),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
-                                                          ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            8,
+                                                                        top: 8,
+                                                                        bottom:
+                                                                            8),
+                                                                    child:
+                                                                        ClickWidget(
+                                                                      onTap:
+                                                                          () {},
+                                                                      child: ElevatedButton(
+                                                                          onPressed: () {
+                                                                            print("yes");
+                                                                            showDialog(
+                                                                                // login success!
+                                                                                context: context,
+                                                                                builder: (context) => AlertDialog(
+                                                                                      content: Text("Are you sure you want to delete this Admission News?"),
+                                                                                      actions: [
+                                                                                        TextButton(
+                                                                                            onPressed: () {
+                                                                                              Store().deleteCourse(courses[index].id, context);
+                                                                                            },
+                                                                                            child: Text("Yes"))
+                                                                                      ],
+                                                                                    ));
+                                                                          },
+                                                                          child: Icon(
+                                                                            Icons.delete,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          )),
+                                                                    ),
+                                                                  ),
+                                                          ],
                                                         ),
                                                         Padding(
                                                           padding:
@@ -230,7 +278,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                 child: SizedBox(
                                                                   width: 270,
                                                                   child: Text(
-                                                                    getCampus(admission_news[
+                                                                    getCampus(courses[
                                                                             index]
                                                                         [
                                                                         "campus"]),
@@ -252,8 +300,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               Text(
-                                                                admission_news[
-                                                                        index][
+                                                                courses[index][
                                                                     "description"],
                                                                 style:
                                                                     GoogleFonts
@@ -285,7 +332,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                               .push(MaterialPageRoute(
                                                                             builder:
                                                                                 (context) {
-                                                                              return SingleCurricularOfferScreen(admission_news[index]);
+                                                                              return SingleCurricularOfferScreen(courses[index]);
                                                                             },
                                                                           ));
                                                                         },
