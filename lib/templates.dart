@@ -171,12 +171,13 @@ class AnalyticsChart extends StatefulWidget {
 class AnalyticsChartState extends State<AnalyticsChart> {
   //declarations
   bool loading = true;
-  List<String> coursestitle = [];
+  List<String> courseTitle = [];
+  List<int> courseInterestedNum = [];
 
   Widget bottomTitles(double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 10);
     String text;
-    text = coursestitle[value.toInt()];
+    text = courseTitle[value.toInt()];
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(text, style: style),
@@ -208,8 +209,9 @@ class AnalyticsChartState extends State<AnalyticsChart> {
       (querySnapshot) {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          coursestitle.insert(0, docSnapshot["title"]);
-          print('${coursestitle[0]}');
+          courseTitle.insert(0, docSnapshot["title"]);
+          courseInterestedNum.insert(0, docSnapshot["interested"]);
+          print('${courseTitle[0]} = ${courseInterestedNum[0]}');
         }
       },
       onError: (e) => print("Error completing: $e"),
@@ -292,23 +294,29 @@ class AnalyticsChartState extends State<AnalyticsChart> {
   }
 
   List<BarChartGroupData> getData(double barsWidth, double barsSpace) {
-    return [
-      BarChartGroupData(
-        x: 0,
-        barsSpace: barsSpace,
-        barRods: [
-          BarChartRodData(
-            toY: 20,
-            borderRadius: BorderRadius.zero,
-            width: barsWidth,
-          ),
-          BarChartRodData(
-            toY: 10,
-            borderRadius: BorderRadius.zero,
-            width: barsWidth,
-          )
-        ],
-      ),
-    ];
+    int i = 0;
+    List<BarChartGroupData> interestedBars = [];
+
+    for (int x in courseInterestedNum) {
+      String _title = courseTitle[i];
+      double _width = courseTitle[i].length * 5;
+      interestedBars.insert(
+        0,
+        BarChartGroupData(
+          x: i,
+          barsSpace: barsSpace,
+          barRods: [
+            BarChartRodData(
+              toY: x.toDouble(),
+              borderRadius: BorderRadius.zero,
+              width: _width,
+            )
+          ],
+        ),
+      );
+      i++;
+    }
+    print(interestedBars.length);
+    return interestedBars;
   }
 }
