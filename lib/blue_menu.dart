@@ -137,3 +137,82 @@ class BlueMenuTile extends StatelessWidget {
     return output;
   }
 }
+
+class ResponsiveMenu extends StatelessWidget {
+  final String currentPage;
+  ResponsiveMenu(
+    this.currentPage, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    AppBar appBarResponsiveExit = AppBar(
+      surfaceTintColor: Colors.transparent,
+      toolbarHeight: 70,
+      centerTitle: true,
+      backgroundColor: LIGHT_GRAY,
+      title: Column(
+        children: [
+          SizedBox(
+              height: 50,
+              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+        ],
+      ),
+    );
+    return Scaffold(
+      appBar: appBarResponsiveExit,
+      body: Container(
+        decoration: BoxDecoration(
+          color: PSU_BLUE,
+        ),
+        child: Column(
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.close_rounded, color: PSU_YELLOW),
+              style: ButtonStyle(
+                  padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+                  elevation: WidgetStatePropertyAll(0),
+                  backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            BlueMenuTile("Home", "home", Icons.home_rounded,
+                currentPage == "home" ? true : false, false),
+            BlueMenuTile(
+                "Course Recommender",
+                "course-recommender",
+                Icons.search_rounded,
+                currentPage == "course-recommender" ? true : false,
+                false),
+            BlueMenuTile(
+                "Curricular Offerings",
+                "curricular-offerings",
+                Icons.school_rounded,
+                currentPage == "curricular-offerings" ? true : false,
+                false),
+            BlueMenuTile(
+                "Admission News",
+                "admission-news",
+                Icons.newspaper_rounded,
+                currentPage == "admission-news" ? true : false,
+                false),
+            Expanded(child: Text("")),
+            BlueMenuTile("Analytics", "analytics", Icons.bar_chart_rounded,
+                currentPage == "analytics" ? true : false, true),
+            BlueMenuTile(
+                "Admin Login",
+                "admin-login",
+                Icons.admin_panel_settings_rounded,
+                currentPage == "admin-login" ? true : false,
+                false),
+          ],
+        ),
+      ),
+    );
+  }
+}

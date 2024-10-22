@@ -3,72 +3,48 @@ import 'package:course_compass/auth.dart';
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/add_curricular_offering_screen.dart';
+import 'package:course_compass/pages/admission_news/add_admission_news_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
-import 'package:course_compass/pages/single_curricular_offer_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
 
-class CurricularOfferingsScreen extends StatelessWidget {
-  const CurricularOfferingsScreen({super.key});
-
-// DropdownMenuEntry(
-//                                           value: "lingayen",
-//                                           label: "Lingayen Campus - Main"),
-//                                       DropdownMenuEntry(
-//                                           value: "alaminos",
-//                                           label: "Alaminos City Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "asingan",
-//                                           label: "Asingan Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "bayambang",
-//                                           label: "Bayambang Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "binmaley ",
-//                                           label: "Binmaley Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "infanta",
-//                                           label: "Infanta Campus "),
-//                                       DropdownMenuEntry(
-//                                           value: "san-carlos",
-//                                           label: "San Carlos City Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "santa-maria",
-//                                           label: "Santa Maria Campus"),
-//                                       DropdownMenuEntry(
-//                                           value: "urdaneta ",
-//                                           label: "Urdaneta City Campus"),
-  String getCampus(String id) {
-    String camp = "Lingayen Campus - Main";
-    switch (id) {
-      case "lingayen":
-        camp = "Lingayen Campus - Main";
-      case "alaminos":
-        camp = "Alaminos City Campus";
-      case "asingan":
-        camp = "Asingan Campus";
-      case "bayambang":
-        camp = "Bayambang Campus";
-      case "binmaley":
-        camp = "Binmaley Campus";
-      case "infanta":
-        camp = "Infanta Campus";
-      case "san-carlos":
-        camp = "San Carlos City Campus";
-      case "santa-maria":
-        camp = "Santa Maria Campus";
-      case "urdaneta":
-        camp = "Urdaneta City Campus";
-      default:
-    }
-    return camp;
-  }
+class AdmissionNewsScreen extends StatelessWidget {
+  const AdmissionNewsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBarResponsive = AppBar(
+      surfaceTintColor: Colors.transparent,
+      toolbarHeight: 120,
+      centerTitle: true,
+      backgroundColor: LIGHT_GRAY,
+      title: Column(
+        children: [
+          SizedBox(
+              height: 50,
+              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Material(child: ResponsiveMenu("admission-news")),
+                  ));
+            },
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+            style: ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+                elevation: WidgetStatePropertyAll(0),
+                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+          )
+        ],
+      ),
+    );
+
+    // double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: Auth().currentUser != null
           ? FloatingActionButton(
@@ -79,12 +55,13 @@ class CurricularOfferingsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddCurricularOfferingScreen(),
+                  builder: (context) => AddAdmissionNewsScreen(),
                 ));
               })
           : Container(),
       backgroundColor: Colors.white,
-      appBar: appBar,
+      appBar:
+          MediaQuery.of(context).size.width < 1050 ? appBarResponsive : appBar,
       body: Stack(
         children: [
           Column(
@@ -92,19 +69,33 @@ class CurricularOfferingsScreen extends StatelessWidget {
               Container(
                 color: LIGHT_GRAY,
                 child: Row(
+                  mainAxisAlignment: MediaQuery.of(context).size.width < 1050
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.start,
                   children: [
-                    Expanded(child: Container()),
+                    MediaQuery.of(context).size.width < 1050
+                        ? Container()
+                        : Expanded(child: Container()),
 
                     //CONTENT HERE expanded below ----------------------- gray
                     Expanded(
                         flex: 3,
                         child: Container(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 40.0, bottom: 20),
-                            child: Text(
-                              "Curricular Offerings",
-                              style: GoogleFonts.inter(fontSize: 40),
+                            padding: MediaQuery.of(context).size.width < 1050
+                                ? EdgeInsets.only(bottom: 20)
+                                : EdgeInsets.only(left: 40.0, bottom: 20),
+                            child: Row(
+                              mainAxisAlignment:
+                                  MediaQuery.of(context).size.width < 1050
+                                      ? MainAxisAlignment.center
+                                      : MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Admission news",
+                                  style: GoogleFonts.inter(fontSize: 40),
+                                ),
+                              ],
                             ),
                           ),
                         ))
@@ -114,7 +105,9 @@ class CurricularOfferingsScreen extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(child: Container()),
+                    MediaQuery.of(context).size.width < 1050
+                        ? Container()
+                        : Expanded(child: Container()),
                     Expanded(
                         flex: 3,
                         child: Padding(
@@ -127,7 +120,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(8.0),
                                 child: StreamBuilder(
                                   stream: firestore
-                                      .collection("curricular_offerings")
+                                      .collection("admission_news")
                                       .orderBy("time_added", descending: true)
                                       .snapshots(),
                                   builder: (context, snapshot) {
@@ -145,10 +138,11 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                         ),
                                       );
                                     } else {
-                                      //TODO THISSSSSS ----------------------------------------------------------------------------------------
+                                      //TODO FIX THIS!!!!!!------------------------------------------------
 
-                                      List<DocumentSnapshot> courses = [];
-                                      // int index = 0;
+                                      List<DocumentSnapshot> admission_news =
+                                          [];
+                                      // int indexItem = 0;
 
                                       for (int i = 0;
                                           i <
@@ -157,35 +151,32 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                   .length;
                                           i++) {
                                         print("new");
-                                        courses.add(
+                                        admission_news.add(
                                             snapshot.data!.docs.toList()[i]);
                                       }
-                                      return ListView.builder(
-                                        itemCount: courses.length,
+
+                                      return GridView.builder(
+                                        itemCount: admission_news.length,
                                         itemBuilder: (context, index) {
-                                          return SizedBox(
-                                            height: 270,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: SizedBox(
+                                              height: 1,
                                               child: Card(
                                                 color: Colors.white,
                                                 child: SizedBox(
+                                                  // width: 240,v
                                                   child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
                                                       mainAxisSize:
                                                           MainAxisSize.max,
                                                       children: [
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
                                                                 child: Card(
                                                                   color:
                                                                       PSU_BLUE,
@@ -199,7 +190,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                         Center(
                                                                       child:
                                                                           Text(
-                                                                        courses[index]
+                                                                        admission_news[index]
                                                                             [
                                                                             "title"],
                                                                         style: GoogleFonts.inter(
@@ -216,20 +207,10 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                            Auth().currentUser ==
-                                                                    null
-                                                                ? Container()
-                                                                : Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            8,
-                                                                        top: 8,
-                                                                        bottom:
-                                                                            8),
-                                                                    child:
-                                                                        ClickWidget(
+                                                              Auth().currentUser ==
+                                                                      null
+                                                                  ? Container()
+                                                                  : ClickWidget(
                                                                       onTap:
                                                                           () {},
                                                                       child: ElevatedButton(
@@ -243,7 +224,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                                       actions: [
                                                                                         TextButton(
                                                                                             onPressed: () {
-                                                                                              Store().deleteCourse(courses[index].id, context);
+                                                                                              Store().deleteAdmission(admission_news[index].id, context);
                                                                                             },
                                                                                             child: Text("Yes"))
                                                                                       ],
@@ -254,9 +235,9 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                             color:
                                                                                 Colors.white,
                                                                           )),
-                                                                    ),
-                                                                  ),
-                                                          ],
+                                                                    )
+                                                            ],
+                                                          ),
                                                         ),
                                                         Padding(
                                                           padding:
@@ -265,61 +246,32 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                   horizontal:
                                                                       15.0),
                                                           child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
                                                             children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        bottom:
-                                                                            8.0),
-                                                                child: SizedBox(
-                                                                  width: 270,
-                                                                  child: Text(
-                                                                    getCampus(courses[
-                                                                            index]
-                                                                        [
-                                                                        "campus"]),
-                                                                    style: GoogleFonts
-                                                                        .inter(
-                                                                      color:
-                                                                          PSU_BLUE,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                                    maxLines: 5,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                              SizedBox(
+                                                                width: 270,
+                                                                child: Text(
+                                                                  admission_news[
+                                                                          index]
+                                                                      [
+                                                                      "description"],
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .inter(
+                                                                    fontSize:
+                                                                        16,
                                                                   ),
+                                                                  maxLines: 5,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                 ),
-                                                              ),
-                                                              Text(
-                                                                courses[index][
-                                                                    "description"],
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .inter(
-                                                                  fontSize: 16,
-                                                                ),
-                                                                maxLines: 4,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
                                                               ),
                                                               Padding(
                                                                 padding:
                                                                     const EdgeInsets
                                                                         .only(
                                                                         top:
-                                                                            13.0,
-                                                                        bottom:
-                                                                            13),
+                                                                            13.0),
                                                                 child: SizedBox(
                                                                   width: 270,
                                                                   child: Row(
@@ -328,13 +280,11 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                           .icon(
                                                                         onPressed:
                                                                             () {
-                                                                          Navigator.of(context)
-                                                                              .push(MaterialPageRoute(
-                                                                            builder:
-                                                                                (context) {
-                                                                              return SingleCurricularOfferScreen(courses[index]);
-                                                                            },
-                                                                          ));
+                                                                          js.context.callMethod(
+                                                                              'open',
+                                                                              [
+                                                                                admission_news[index]["link"]
+                                                                              ]);
                                                                         },
                                                                         label:
                                                                             Text(
@@ -353,7 +303,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                                                     ],
                                                                   ),
                                                                 ),
-                                                              )
+                                                              ),
                                                             ],
                                                           ),
                                                         ),
@@ -363,6 +313,20 @@ class CurricularOfferingsScreen extends StatelessWidget {
                                             ),
                                           );
                                         },
+                                        gridDelegate:
+                                            SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount:
+                                                    MediaQuery.of(context)
+                                                                .size
+                                                                .width <
+                                                            700
+                                                        ? 1
+                                                        : MediaQuery.of(context)
+                                                                    .size
+                                                                    .width <
+                                                                1300
+                                                            ? 2
+                                                            : 3),
                                       );
                                     }
                                   },
@@ -373,10 +337,12 @@ class CurricularOfferingsScreen extends StatelessWidget {
                         ))
                   ],
                 ),
-              )
+              ),
             ],
           ),
-          BlueMenu("curricular-offerings")
+          MediaQuery.of(context).size.width < 1050
+              ? Container()
+              : BlueMenu("admission-news")
         ],
       ),
     );

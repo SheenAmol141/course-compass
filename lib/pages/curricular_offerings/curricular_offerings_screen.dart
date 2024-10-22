@@ -1,0 +1,420 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:course_compass/auth.dart';
+import 'package:course_compass/blue_menu.dart';
+import 'package:course_compass/hex_colors.dart';
+import 'package:course_compass/main.dart';
+import 'package:course_compass/pages/curricular_offerings/add_curricular_offering_screen.dart';
+import 'package:course_compass/pages/home_screen.dart';
+import 'package:course_compass/pages/curricular_offerings/single_curricular_offer_screen.dart';
+import 'package:course_compass/templates.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:js' as js;
+
+class CurricularOfferingsScreen extends StatelessWidget {
+  const CurricularOfferingsScreen({super.key});
+
+// DropdownMenuEntry(
+//                                           value: "lingayen",
+//                                           label: "Lingayen Campus - Main"),
+//                                       DropdownMenuEntry(
+//                                           value: "alaminos",
+//                                           label: "Alaminos City Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "asingan",
+//                                           label: "Asingan Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "bayambang",
+//                                           label: "Bayambang Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "binmaley ",
+//                                           label: "Binmaley Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "infanta",
+//                                           label: "Infanta Campus "),
+//                                       DropdownMenuEntry(
+//                                           value: "san-carlos",
+//                                           label: "San Carlos City Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "santa-maria",
+//                                           label: "Santa Maria Campus"),
+//                                       DropdownMenuEntry(
+//                                           value: "urdaneta ",
+//                                           label: "Urdaneta City Campus"),
+  String getCampus(String id) {
+    String camp = "Lingayen Campus - Main";
+    switch (id) {
+      case "lingayen":
+        camp = "Lingayen Campus - Main";
+      case "alaminos":
+        camp = "Alaminos City Campus";
+      case "asingan":
+        camp = "Asingan Campus";
+      case "bayambang":
+        camp = "Bayambang Campus";
+      case "binmaley":
+        camp = "Binmaley Campus";
+      case "infanta":
+        camp = "Infanta Campus";
+      case "san-carlos":
+        camp = "San Carlos City Campus";
+      case "santa-maria":
+        camp = "Santa Maria Campus";
+      case "urdaneta":
+        camp = "Urdaneta City Campus";
+      default:
+    }
+    return camp;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    AppBar appBarResponsive = AppBar(
+      surfaceTintColor: Colors.transparent,
+      toolbarHeight: 120,
+      centerTitle: true,
+      backgroundColor: LIGHT_GRAY,
+      title: Column(
+        children: [
+          SizedBox(
+              height: 50,
+              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Material(child: ResponsiveMenu("admission-news")),
+                  ));
+            },
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+            style: ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+                elevation: WidgetStatePropertyAll(0),
+                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+          )
+        ],
+      ),
+    );
+
+    return Scaffold(
+      floatingActionButton: Auth().currentUser != null
+          ? FloatingActionButton(
+              backgroundColor: PSU_BLUE,
+              child: Icon(
+                Icons.add_rounded,
+                color: PSU_YELLOW,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => AddCurricularOfferingScreen(),
+                ));
+              })
+          : Container(),
+      backgroundColor: Colors.white,
+      appBar:
+          MediaQuery.of(context).size.width < 1050 ? appBarResponsive : appBar,
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
+                color: LIGHT_GRAY,
+                child: Row(
+                  children: [
+                    MediaQuery.of(context).size.width < 1050
+                        ? Container()
+                        : Expanded(child: Container()),
+
+                    //CONTENT HERE expanded below ----------------------- gray
+                    Expanded(
+                        flex: 3,
+                        child: Container(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 40.0, bottom: 20),
+                            child: Text(
+                              "Curricular Offerings",
+                              style: GoogleFonts.inter(fontSize: 40),
+                            ),
+                          ),
+                        ))
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    MediaQuery.of(context).size.width < 1050
+                        ? Container()
+                        : Expanded(child: Container()),
+                    Expanded(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Container(
+                            child: // THIS IS STREAMBUILDER
+                                Card(
+                              color: LIGHT_GRAY,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: StreamBuilder(
+                                  stream: firestore
+                                      .collection("curricular_offerings")
+                                      .orderBy("time_added", descending: true)
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: PSU_YELLOW,
+                                        ),
+                                      );
+                                    } else if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Center(
+                                        child: CircularProgressIndicator(
+                                          color: PSU_YELLOW,
+                                        ),
+                                      );
+                                    } else {
+                                      //TODO THISSSSSS ----------------------------------------------------------------------------------------
+
+                                      List<DocumentSnapshot> courses = [];
+                                      // int index = 0;
+
+                                      for (int i = 0;
+                                          i <
+                                              snapshot.data!.docs
+                                                  .toList()
+                                                  .length;
+                                          i++) {
+                                        print("new");
+                                        courses.add(
+                                            snapshot.data!.docs.toList()[i]);
+                                      }
+                                      return ListView.builder(
+                                        itemCount: courses.length,
+                                        itemBuilder: (context, index) {
+                                          return SizedBox(
+                                            height: 270,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Card(
+                                                color: Colors.white,
+                                                child: SizedBox(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Card(
+                                                                  color:
+                                                                      PSU_BLUE,
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            6.0),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        courses[index]
+                                                                            [
+                                                                            "title"],
+                                                                        style: GoogleFonts.inter(
+                                                                            color:
+                                                                                PSU_YELLOW,
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontWeight:
+                                                                                FontWeight.w600),
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            8,
+                                                                        top: 8,
+                                                                        bottom:
+                                                                            8),
+                                                                    child:
+                                                                        ClickWidget(
+                                                                      onTap:
+                                                                          () {},
+                                                                      child: ElevatedButton(
+                                                                          onPressed: () {
+                                                                            print("yes");
+                                                                            showDialog(
+                                                                                // login success!
+                                                                                context: context,
+                                                                                builder: (context) => AlertDialog(
+                                                                                      content: Text("Are you sure you want to delete this Admission News?"),
+                                                                                      actions: [
+                                                                                        TextButton(
+                                                                                            onPressed: () {
+                                                                                              Store().deleteCourse(courses[index].id, context);
+                                                                                            },
+                                                                                            child: Text("Yes"))
+                                                                                      ],
+                                                                                    ));
+                                                                          },
+                                                                          child: Icon(
+                                                                            Icons.delete,
+                                                                            color:
+                                                                                Colors.white,
+                                                                          )),
+                                                                    ),
+                                                                  ),
+                                                          ],
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      15.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        bottom:
+                                                                            8.0),
+                                                                child: SizedBox(
+                                                                  width: 270,
+                                                                  child: Text(
+                                                                    getCampus(courses[
+                                                                            index]
+                                                                        [
+                                                                        "campus"]),
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      color:
+                                                                          PSU_BLUE,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      fontSize:
+                                                                          16,
+                                                                    ),
+                                                                    maxLines: 5,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                courses[index][
+                                                                    "description"],
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontSize: 16,
+                                                                ),
+                                                                maxLines: 4,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        top:
+                                                                            13.0,
+                                                                        bottom:
+                                                                            13),
+                                                                child: SizedBox(
+                                                                  width: 270,
+                                                                  child: Row(
+                                                                    children: [
+                                                                      TextButton
+                                                                          .icon(
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .push(MaterialPageRoute(
+                                                                            builder:
+                                                                                (context) {
+                                                                              return SingleCurricularOfferScreen(courses[index]);
+                                                                            },
+                                                                          ));
+                                                                        },
+                                                                        label:
+                                                                            Text(
+                                                                          "Learn More",
+                                                                          style:
+                                                                              GoogleFonts.inter(color: PSU_YELLOW),
+                                                                        ),
+                                                                        icon:
+                                                                            Icon(
+                                                                          Icons
+                                                                              .play_arrow_rounded,
+                                                                          color:
+                                                                              PSU_YELLOW,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ))
+                  ],
+                ),
+              )
+            ],
+          ),
+          MediaQuery.of(context).size.width < 1050
+              ? Container()
+              : BlueMenu("curricular-offerings")
+        ],
+      ),
+    );
+  }
+}

@@ -25,12 +25,13 @@ class _AddCurricularOfferingScreenState
   String? dataUrl = null;
   File? image = null;
   String _campus = 'lingayen';
+  final _key = GlobalKey<FormState>();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _description = TextEditingController();
+  final TextEditingController _code = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final _key = GlobalKey<FormState>();
-    final TextEditingController _title = TextEditingController();
-    final TextEditingController _description = TextEditingController();
     // final TextEditingController _link = TextEditingController();
 
     const edgeInsets = const EdgeInsets.only(top: 8.0, left: 8, right: 8);

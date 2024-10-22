@@ -1,7 +1,7 @@
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/add_admission_news_screen.dart';
-import 'package:course_compass/pages/add_curricular_offering_screen.dart';
+import 'package:course_compass/pages/admission_news/add_admission_news_screen.dart';
+import 'package:course_compass/pages/curricular_offerings/add_curricular_offering_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

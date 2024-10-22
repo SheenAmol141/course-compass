@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/pages/admin_login_screen.dart';
-import 'package:course_compass/pages/admission_news_screen.dart';
+import 'package:course_compass/pages/admission_news/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
-import 'package:course_compass/pages/course_recommender_screen.dart';
-import 'package:course_compass/pages/curricular_offerings_screen.dart';
+import 'package:course_compass/pages/course_recommender/course_recommender_screen.dart';
+import 'package:course_compass/pages/curricular_offerings/curricular_offerings_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -79,9 +79,39 @@ class BaseWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBarResponsive = AppBar(
+      surfaceTintColor: Colors.transparent,
+      toolbarHeight: 120,
+      centerTitle: true,
+      backgroundColor: LIGHT_GRAY,
+      title: Column(
+        children: [
+          SizedBox(
+              height: 50,
+              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Material(child: ResponsiveMenu("$currentpage")),
+                  ));
+            },
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+            style: ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+                elevation: WidgetStatePropertyAll(0),
+                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+          )
+        ],
+      ),
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: appBar,
+      appBar:
+          MediaQuery.of(context).size.width < 1050 ? appBarResponsive : appBar,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -92,7 +122,9 @@ class BaseWidget extends StatelessWidget {
                         color: LIGHT_GRAY,
                         child: Row(
                           children: [
-                            Expanded(child: Container()),
+                            MediaQuery.of(context).size.width < 1050
+                                ? Container()
+                                : Expanded(child: Container()),
 
                             //CONTENT HERE expanded below ----------------------- gray
                             Expanded(
@@ -115,9 +147,33 @@ class BaseWidget extends StatelessWidget {
               ],
             ),
           ),
-          BlueMenu(currentpage)
+          MediaQuery.of(context).size.width < 1050
+              ? Container()
+              : BlueMenu(currentpage)
         ],
       ),
+    );
+  }
+}
+
+class MenuStack extends StatelessWidget {
+  Widget child;
+  MenuStack({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.topStart,
+      textDirection: TextDirection.ltr,
+      children: [
+        child,
+        ElevatedButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.menu_rounded,
+              color: Colors.white,
+            ))
+      ],
     );
   }
 }

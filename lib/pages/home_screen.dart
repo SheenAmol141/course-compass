@@ -23,7 +23,9 @@ class HomeScreen extends StatelessWidget {
           color: LIGHT_GRAY,
           child: Row(
             children: [
-              Expanded(child: Container()),
+              MediaQuery.of(context).size.width < 1050
+                  ? Container()
+                  : Expanded(child: Container()),
               //CONTENT HERE expanded below ----------------------- GREY
               Expanded(
                   flex: 3,
@@ -338,7 +340,9 @@ class HomeScreen extends StatelessWidget {
           color: Colors.white,
           child: Row(
             children: [
-              Expanded(child: Container()),
+              MediaQuery.of(context).size.width < 1050
+                  ? Container()
+                  : Expanded(child: Container()),
               //CONTENT HERE expanded below ----------------------- white
               Expanded(
                 flex: 3,
@@ -346,7 +350,9 @@ class HomeScreen extends StatelessWidget {
                   padding: EdgeInsets.all(40),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: MediaQuery.of(context).size.width < 1150
+                        ? CrossAxisAlignment.center
+                        : CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(bottom: 20.0),
@@ -355,86 +361,172 @@ class HomeScreen extends StatelessWidget {
                           style: GoogleFonts.inter(fontSize: 40),
                         ),
                       ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Image.asset("assets/think.png"),
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ClickWidget(
-                                onTap: () {
-                                  Navigator.of(context)
-                                    ..pushNamedAndRemoveUntil(
-                                        "/course-recommender",
-                                        (Route<dynamic> route) => false);
-                                },
-                                child: Card(
-                                  color: PSU_BLUE,
-                                  child: Container(
-                                    width: 500,
-                                    height: 200,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Icon(
-                                            Icons.search_rounded,
-                                            color: PSU_YELLOW,
-                                            size: 110,
-                                          ),
-                                        ),
-                                        Text(
-                                          "Find a course suitable for you",
-                                          style: GoogleFonts.inter(
-                                              fontSize: 26,
-                                              fontWeight: FontWeight.w900,
-                                              color: PSU_YELLOW),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                      MediaQuery.of(context).size.width < 1150
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Image.asset("assets/think.png"),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              ClickWidget(
-                                onTap: () {
-                                  Navigator.of(context)
-                                    ..pushNamedAndRemoveUntil(
-                                        "/curricular-offerings",
-                                        (Route<dynamic> route) => false);
-                                },
-                                child: Card(
-                                  color: PSU_BLUE,
-                                  child: Container(
-                                    width: 500,
-                                    height: 100,
-                                    child: Center(
-                                      child: Text(
-                                        "Or view all Curricular Offerings",
-                                        style: GoogleFonts.inter(
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.w900,
-                                            color: PSU_YELLOW),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: ClickWidget(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                        ..pushNamedAndRemoveUntil(
+                                            "/course-recommender",
+                                            (Route<dynamic> route) => false);
+                                    },
+                                    child: Card(
+                                      color: PSU_BLUE,
+                                      child: Container(
+                                        width: 500,
+                                        height: 200,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 8.0),
+                                              child: Icon(
+                                                Icons.search_rounded,
+                                                color: PSU_YELLOW,
+                                                size: 110,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Find a course suitable for you",
+                                              style: GoogleFonts.inter(
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: PSU_YELLOW),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          )
-                        ],
-                      )
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: ClickWidget(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                        ..pushNamedAndRemoveUntil(
+                                            "/curricular-offerings",
+                                            (Route<dynamic> route) => false);
+                                    },
+                                    child: Card(
+                                      color: PSU_BLUE,
+                                      child: Container(
+                                        width: 500,
+                                        height: 100,
+                                        child: Center(
+                                          child: Text(
+                                            "Or view all Curricular Offerings",
+                                            style: GoogleFonts.inter(
+                                                fontSize: 26,
+                                                fontWeight: FontWeight.w900,
+                                                color: PSU_YELLOW),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                ///////////////////
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Image.asset("assets/think.png"),
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ClickWidget(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                          ..pushNamedAndRemoveUntil(
+                                              "/course-recommender",
+                                              (Route<dynamic> route) => false);
+                                      },
+                                      child: Card(
+                                        color: PSU_BLUE,
+                                        child: Container(
+                                          width: 500,
+                                          height: 200,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Icon(
+                                                  Icons.search_rounded,
+                                                  color: PSU_YELLOW,
+                                                  size: 110,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Find a course suitable for you",
+                                                style: GoogleFonts.inter(
+                                                    fontSize: 26,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: PSU_YELLOW),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    ClickWidget(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                          ..pushNamedAndRemoveUntil(
+                                              "/curricular-offerings",
+                                              (Route<dynamic> route) => false);
+                                      },
+                                      child: Card(
+                                        color: PSU_BLUE,
+                                        child: Container(
+                                          width: 500,
+                                          height: 100,
+                                          child: Center(
+                                            child: Text(
+                                              "Or view all Curricular Offerings",
+                                              style: GoogleFonts.inter(
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.w900,
+                                                  color: PSU_YELLOW),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            )
                     ],
                   ),
                 ),

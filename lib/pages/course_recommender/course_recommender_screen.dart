@@ -1,6 +1,7 @@
+import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/course_recommendation_screen.dart';
+import 'package:course_compass/pages/course_recommender/course_recommendation_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,6 +50,35 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBarResponsive = AppBar(
+      surfaceTintColor: Colors.transparent,
+      toolbarHeight: 120,
+      centerTitle: true,
+      backgroundColor: LIGHT_GRAY,
+      title: Column(
+        children: [
+          SizedBox(
+              height: 50,
+              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Material(child: ResponsiveMenu("course-recommender")),
+                  ));
+            },
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+            style: ButtonStyle(
+                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+                elevation: WidgetStatePropertyAll(0),
+                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+          )
+        ],
+      ),
+    );
+
     return BaseWidget(widget: [
       Container(
         color: LIGHT_GRAY,
@@ -56,7 +86,9 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Expanded(child: Container()),
+              MediaQuery.of(context).size.width < 1050
+                  ? Container()
+                  : Expanded(child: Container()),
               Expanded(
                 flex: 3,
                 child: Padding(
@@ -75,7 +107,9 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
       ),
       Row(
         children: [
-          Expanded(child: Container()),
+          MediaQuery.of(context).size.width < 1050
+              ? Container()
+              : Expanded(child: Container()),
           Expanded(
             flex: 3,
             child: Padding(
