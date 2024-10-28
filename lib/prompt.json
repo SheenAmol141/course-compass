@@ -1,0 +1,39 @@
+{
+    "MBTI": "<MBTI here>",
+    "Strand": "<Strand here>",
+    "Interests": "<interests here>",
+    "Intro": "<brief intro>",
+    "Course Recommendations": [
+        "<Recommendation 1>",
+        "<Recommendation 2>",
+        "<Recommendation 3>"
+    ],
+    "Course Explanation": [
+        "<Explanation on why recommendation 1 is chosen>",
+        "<Explanation on why recommendation 2 is chosen>",
+        "<Explanation on why recommendation 3 is chosen>"
+    ]
+}
+
+
+{
+    "MBTI": "INTP",
+    "Strand": "STEM",
+    "Interests": "Guitar, Computer Games",
+    "Intro": "As an INTP with interests in guitar and computer games, and a STEM background, you might thrive in careers that blend your analytical thinking with your creative and technical interests. Here are three courses that align with your profile:",
+    "Course Recommendations": [
+        "BS Information Technology",
+        "Bachelor of Industrial Technology major in Electronics Tech.",
+        "BS Computer Science"
+    ],
+    "Course Explanation": [
+        "BS Information Technology provides a broad understanding of computer systems and software development, opening doors to various tech roles. Your problem-solving skills and love for technology would be valuable assets in this field. ",
+        "Bachelor of Industrial Technology major in Electronics Tech. combines your interest in technology with a hands-on approach. You can explore the technical aspects of electronics, potentially linking it to your passion for guitars and gaming.",
+        "BS Computer Science delves deeper into the theoretical and practical aspects of computing. This aligns well with your analytical mind and could lead to careers in software engineering or game development, fulfilling your interest in computer games."
+    ]
+}
+
+<hello>
+    <intro>alhjsdbaldkjbadkjhabd</intro>
+
+</hello>

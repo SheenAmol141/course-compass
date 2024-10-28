@@ -85,7 +85,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Material(child: ResponsiveMenu("admission-news")),
+                        Material(child: ResponsiveMenu("curricular-offerings")),
                   ));
             },
             child: Icon(Icons.menu_rounded, color: PSU_BLUE),

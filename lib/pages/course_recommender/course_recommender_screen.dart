@@ -2,6 +2,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen.dart';
+import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -289,7 +290,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                               if (_key.currentState!.validate()) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      CourseRecommendationScreen(
+                                      CourseRecommendationJSONScreen(
                                           currentPersonality,
                                           _interests.text,
                                           _strand.text),
