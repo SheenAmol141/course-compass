@@ -4,6 +4,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/pages/admin_login_screen.dart';
 import 'package:course_compass/pages/admission_news/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
+import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/pages/course_recommender/course_recommender_screen.dart';
 import 'package:course_compass/pages/curricular_offerings/curricular_offerings_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
@@ -49,15 +50,17 @@ void main() async {
           ),
         ),
       ),
-      initialRoute: "/",
+      initialRoute: "/temp",
       routes: {
         '/': (context) => const SplashScreen(),
         '/home': (context) => const HomeScreen(),
         '/admin-login': (context) => AdminLoginScreen(),
-        '/analytics': (context) => AnalyticsScreen(),
-        '/admission-news': (context) => AdmissionNewsScreen(),
-        '/curricular-offerings': (context) => CurricularOfferingsScreen(),
-        '/course-recommender': (context) => CourseRecommenderScreen(),
+        '/analytics': (context) => const AnalyticsScreen(),
+        '/admission-news': (context) => const AdmissionNewsScreen(),
+        '/curricular-offerings': (context) => const CurricularOfferingsScreen(),
+        '/course-recommender': (context) => const CourseRecommenderScreen(),
+        // '/course-recommender': (context) =>
+        // CourseRecommendationJSONScreen("a", "a", "a"),
       }));
   //
 }

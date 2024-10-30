@@ -271,8 +271,8 @@ class _AddCurricularOfferingScreenState
                                       _key.currentState!.validate();
                                       Store()
                                           .uploadCourse(
-                                              course_title: _title.text,
-                                              course_description:
+                                              coursetitle: _title.text,
+                                              courseDescription:
                                                   _description.text,
                                               campus: _campus,
                                               img: image!)

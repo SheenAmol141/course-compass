@@ -9,7 +9,6 @@ import 'package:course_compass/pages/curricular_offerings/single_curricular_offe
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:js' as js;
 
 class CurricularOfferingsScreen extends StatelessWidget {
   const CurricularOfferingsScreen({super.key});
@@ -88,11 +87,11 @@ class CurricularOfferingsScreen extends StatelessWidget {
                         Material(child: ResponsiveMenu("curricular-offerings")),
                   ));
             },
-            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
                 elevation: WidgetStatePropertyAll(0),
                 backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
           )
         ],
       ),
@@ -108,7 +107,7 @@ class CurricularOfferingsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddCurricularOfferingScreen(),
+                  builder: (context) => const AddCurricularOfferingScreen(),
                 ));
               })
           : Container(),
@@ -130,14 +129,12 @@ class CurricularOfferingsScreen extends StatelessWidget {
                     //CONTENT HERE expanded below ----------------------- gray
                     Expanded(
                         flex: 3,
-                        child: Container(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 40.0, bottom: 20),
-                            child: Text(
-                              "Curricular Offerings",
-                              style: GoogleFonts.inter(fontSize: 40),
-                            ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 40.0, bottom: 20),
+                          child: Text(
+                            "Curricular Offerings",
+                            style: GoogleFonts.inter(fontSize: 40),
                           ),
                         ))
                   ],
@@ -153,254 +150,242 @@ class CurricularOfferingsScreen extends StatelessWidget {
                         flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                            child: // THIS IS STREAMBUILDER
-                                Card(
-                              color: LIGHT_GRAY,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: StreamBuilder(
-                                  stream: firestore
-                                      .collection("curricular_offerings")
-                                      .orderBy("time_added", descending: true)
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          color: PSU_YELLOW,
-                                        ),
-                                      );
-                                    } else if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          color: PSU_YELLOW,
-                                        ),
-                                      );
-                                    } else {
-                                      //TODO THISSSSSS ----------------------------------------------------------------------------------------
+                          child: Card(
+                            color: LIGHT_GRAY,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: StreamBuilder(
+                                stream: firestore
+                                    .collection("curricular_offerings")
+                                    .orderBy("time_added", descending: true)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: PSU_YELLOW,
+                                      ),
+                                    );
+                                  } else if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: PSU_YELLOW,
+                                      ),
+                                    );
+                                  } else {
+                                    List<DocumentSnapshot> courses = [];
+                                    // int index = 0;
 
-                                      List<DocumentSnapshot> courses = [];
-                                      // int index = 0;
-
-                                      for (int i = 0;
-                                          i <
-                                              snapshot.data!.docs
-                                                  .toList()
-                                                  .length;
-                                          i++) {
-                                        print("new");
-                                        courses.add(
-                                            snapshot.data!.docs.toList()[i]);
-                                      }
-                                      return ListView.builder(
-                                        itemCount: courses.length,
-                                        itemBuilder: (context, index) {
-                                          return SizedBox(
-                                            height: 270,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Card(
-                                                color: Colors.white,
-                                                child: SizedBox(
-                                                  child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child: Card(
-                                                                  color:
-                                                                      PSU_BLUE,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            6.0),
-                                                                    child:
-                                                                        Center(
-                                                                      child:
-                                                                          Text(
-                                                                        courses[index]
-                                                                            [
-                                                                            "title"],
-                                                                        style: GoogleFonts.inter(
-                                                                            color:
-                                                                                PSU_YELLOW,
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontWeight:
-                                                                                FontWeight.w600),
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
+                                    for (int i = 0;
+                                        i < snapshot.data!.docs.toList().length;
+                                        i++) {
+                                      courses
+                                          .add(snapshot.data!.docs.toList()[i]);
+                                    }
+                                    return ListView.builder(
+                                      itemCount: courses.length,
+                                      itemBuilder: (context, index) {
+                                        return SizedBox(
+                                          height: 270,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Card(
+                                              color: Colors.white,
+                                              child: SizedBox(
+                                                child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Card(
+                                                                color: PSU_BLUE,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          6.0),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      courses[index]
+                                                                          [
+                                                                          "title"],
+                                                                      style: GoogleFonts.inter(
+                                                                          color:
+                                                                              PSU_YELLOW,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
                                                             ),
-                                                            Auth().currentUser ==
-                                                                    null
-                                                                ? Container()
-                                                                : Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .only(
-                                                                        right:
-                                                                            8,
-                                                                        top: 8,
-                                                                        bottom:
-                                                                            8),
-                                                                    child:
-                                                                        ClickWidget(
-                                                                      onTap:
-                                                                          () {},
-                                                                      child: ElevatedButton(
-                                                                          onPressed: () {
-                                                                            print("yes");
-                                                                            showDialog(
-                                                                                // login success!
-                                                                                context: context,
-                                                                                builder: (context) => AlertDialog(
-                                                                                      content: Text("Are you sure you want to delete this Admission News?"),
-                                                                                      actions: [
-                                                                                        TextButton(
-                                                                                            onPressed: () {
-                                                                                              Store().deleteCourse(courses[index].id, context);
-                                                                                            },
-                                                                                            child: Text("Yes"))
-                                                                                      ],
-                                                                                    ));
-                                                                          },
-                                                                          child: Icon(
-                                                                            Icons.delete,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          )),
-                                                                    ),
+                                                          ),
+                                                          Auth().currentUser ==
+                                                                  null
+                                                              ? Container()
+                                                              : Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          right:
+                                                                              8,
+                                                                          top:
+                                                                              8,
+                                                                          bottom:
+                                                                              8),
+                                                                  child:
+                                                                      ClickWidget(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: ElevatedButton(
+                                                                        onPressed: () {
+                                                                          showDialog(
+                                                                              // login success!
+                                                                              context: context,
+                                                                              builder: (context) => AlertDialog(
+                                                                                    content: const Text("Are you sure you want to delete this Admission News?"),
+                                                                                    actions: [
+                                                                                      TextButton(
+                                                                                          onPressed: () {
+                                                                                            Store().deleteCourse(courses[index].id, context);
+                                                                                          },
+                                                                                          child: const Text("Yes"))
+                                                                                    ],
+                                                                                  ));
+                                                                        },
+                                                                        child: const Icon(
+                                                                          Icons
+                                                                              .delete,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        )),
                                                                   ),
+                                                                ),
+                                                        ],
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    15.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: SizedBox(
+                                                                width: 270,
+                                                                child: Text(
+                                                                  getCampus(courses[
+                                                                          index]
+                                                                      [
+                                                                      "campus"]),
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .inter(
+                                                                    color:
+                                                                        PSU_BLUE,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize:
+                                                                        16,
+                                                                  ),
+                                                                  maxLines: 5,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              courses[index][
+                                                                  "description"],
+                                                              style: GoogleFonts
+                                                                  .inter(
+                                                                fontSize: 16,
+                                                              ),
+                                                              maxLines: 4,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      top: 13.0,
+                                                                      bottom:
+                                                                          13),
+                                                              child: SizedBox(
+                                                                width: 270,
+                                                                child: Row(
+                                                                  children: [
+                                                                    TextButton
+                                                                        .icon(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .push(MaterialPageRoute(
+                                                                          builder:
+                                                                              (context) {
+                                                                            return SingleCurricularOfferScreen(courses[index]);
+                                                                          },
+                                                                        ));
+                                                                      },
+                                                                      label:
+                                                                          Text(
+                                                                        "Learn More",
+                                                                        style: GoogleFonts.inter(
+                                                                            color:
+                                                                                PSU_YELLOW),
+                                                                      ),
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .play_arrow_rounded,
+                                                                        color:
+                                                                            PSU_YELLOW,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
                                                           ],
                                                         ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15.0),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        bottom:
-                                                                            8.0),
-                                                                child: SizedBox(
-                                                                  width: 270,
-                                                                  child: Text(
-                                                                    getCampus(courses[
-                                                                            index]
-                                                                        [
-                                                                        "campus"]),
-                                                                    style: GoogleFonts
-                                                                        .inter(
-                                                                      color:
-                                                                          PSU_BLUE,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          16,
-                                                                    ),
-                                                                    maxLines: 5,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                courses[index][
-                                                                    "description"],
-                                                                style:
-                                                                    GoogleFonts
-                                                                        .inter(
-                                                                  fontSize: 16,
-                                                                ),
-                                                                maxLines: 4,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        top:
-                                                                            13.0,
-                                                                        bottom:
-                                                                            13),
-                                                                child: SizedBox(
-                                                                  width: 270,
-                                                                  child: Row(
-                                                                    children: [
-                                                                      TextButton
-                                                                          .icon(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.of(context)
-                                                                              .push(MaterialPageRoute(
-                                                                            builder:
-                                                                                (context) {
-                                                                              return SingleCurricularOfferScreen(courses[index]);
-                                                                            },
-                                                                          ));
-                                                                        },
-                                                                        label:
-                                                                            Text(
-                                                                          "Learn More",
-                                                                          style:
-                                                                              GoogleFonts.inter(color: PSU_YELLOW),
-                                                                        ),
-                                                                        icon:
-                                                                            Icon(
-                                                                          Icons
-                                                                              .play_arrow_rounded,
-                                                                          color:
-                                                                              PSU_YELLOW,
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                ),
+                                                      ),
+                                                    ]),
                                               ),
                                             ),
-                                          );
-                                        },
-                                      );
-                                    }
-                                  },
-                                ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),

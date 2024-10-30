@@ -34,11 +34,11 @@ class AdmissionNewsScreen extends StatelessWidget {
                         Material(child: ResponsiveMenu("admission-news")),
                   ));
             },
-            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
                 elevation: WidgetStatePropertyAll(0),
                 backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
           )
         ],
       ),
@@ -55,7 +55,7 @@ class AdmissionNewsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => AddAdmissionNewsScreen(),
+                  builder: (context) => const AddAdmissionNewsScreen(),
                 ));
               })
           : Container(),
@@ -80,23 +80,21 @@ class AdmissionNewsScreen extends StatelessWidget {
                     //CONTENT HERE expanded below ----------------------- gray
                     Expanded(
                         flex: 3,
-                        child: Container(
-                          child: Padding(
-                            padding: MediaQuery.of(context).size.width < 1050
-                                ? EdgeInsets.only(bottom: 20)
-                                : EdgeInsets.only(left: 40.0, bottom: 20),
-                            child: Row(
-                              mainAxisAlignment:
-                                  MediaQuery.of(context).size.width < 1050
-                                      ? MainAxisAlignment.center
-                                      : MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Admission news",
-                                  style: GoogleFonts.inter(fontSize: 40),
-                                ),
-                              ],
-                            ),
+                        child: Padding(
+                          padding: MediaQuery.of(context).size.width < 1050
+                              ? const EdgeInsets.only(bottom: 20)
+                              : const EdgeInsets.only(left: 40.0, bottom: 20),
+                          child: Row(
+                            mainAxisAlignment:
+                                MediaQuery.of(context).size.width < 1050
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Admission news",
+                                style: GoogleFonts.inter(fontSize: 40),
+                              ),
+                            ],
                           ),
                         ))
                   ],
@@ -112,225 +110,216 @@ class AdmissionNewsScreen extends StatelessWidget {
                         flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Container(
-                            child: // THIS IS STREAMBUILDER
-                                Card(
-                              color: LIGHT_GRAY,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: StreamBuilder(
-                                  stream: firestore
-                                      .collection("admission_news")
-                                      .orderBy("time_added", descending: true)
-                                      .snapshots(),
-                                  builder: (context, snapshot) {
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          color: PSU_YELLOW,
-                                        ),
-                                      );
-                                    } else if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          color: PSU_YELLOW,
-                                        ),
-                                      );
-                                    } else {
-                                      //TODO FIX THIS!!!!!!------------------------------------------------
+                          child: Card(
+                            color: LIGHT_GRAY,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: StreamBuilder(
+                                stream: firestore
+                                    .collection("admission_news")
+                                    .orderBy("time_added", descending: true)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: PSU_YELLOW,
+                                      ),
+                                    );
+                                  } else if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        color: PSU_YELLOW,
+                                      ),
+                                    );
+                                  } else {
+                                    // TODO FIX THIS!!!!!!------------------------------------------------
 
-                                      List<DocumentSnapshot> admission_news =
-                                          [];
-                                      // int indexItem = 0;
+                                    List<DocumentSnapshot> admissionNews = [];
+                                    // int indexItem = 0;
 
-                                      for (int i = 0;
-                                          i <
-                                              snapshot.data!.docs
-                                                  .toList()
-                                                  .length;
-                                          i++) {
-                                        print("new");
-                                        admission_news.add(
-                                            snapshot.data!.docs.toList()[i]);
-                                      }
+                                    for (int i = 0;
+                                        i < snapshot.data!.docs.toList().length;
+                                        i++) {
+                                      // print("new");
+                                      admissionNews
+                                          .add(snapshot.data!.docs.toList()[i]);
+                                    }
 
-                                      return GridView.builder(
-                                        itemCount: admission_news.length,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SizedBox(
-                                              height: 1,
-                                              child: Card(
-                                                color: Colors.white,
-                                                child: SizedBox(
-                                                  // width: 240,v
-                                                  child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Row(
-                                                            children: [
-                                                              Expanded(
-                                                                child: Card(
-                                                                  color:
-                                                                      PSU_BLUE,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            6.0),
-                                                                    child:
-                                                                        Center(
-                                                                      child:
-                                                                          Text(
-                                                                        admission_news[index]
-                                                                            [
-                                                                            "title"],
-                                                                        style: GoogleFonts.inter(
-                                                                            color:
-                                                                                PSU_YELLOW,
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontWeight:
-                                                                                FontWeight.w600),
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                      ),
+                                    return GridView.builder(
+                                      itemCount: admissionNews.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            height: 1,
+                                            child: Card(
+                                              color: Colors.white,
+                                              child: SizedBox(
+                                                // width: 240,v
+                                                child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Card(
+                                                                color: PSU_BLUE,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          6.0),
+                                                                  child: Center(
+                                                                    child: Text(
+                                                                      admissionNews[
+                                                                              index]
+                                                                          [
+                                                                          "title"],
+                                                                      style: GoogleFonts.inter(
+                                                                          color:
+                                                                              PSU_YELLOW,
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
                                                                     ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              Auth().currentUser ==
-                                                                      null
-                                                                  ? Container()
-                                                                  : ClickWidget(
-                                                                      onTap:
-                                                                          () {},
-                                                                      child: ElevatedButton(
-                                                                          onPressed: () {
-                                                                            print("yes");
-                                                                            showDialog(
-                                                                                // login success!
-                                                                                context: context,
-                                                                                builder: (context) => AlertDialog(
-                                                                                      content: Text("Are you sure you want to delete this Admission News?"),
-                                                                                      actions: [
-                                                                                        TextButton(
-                                                                                            onPressed: () {
-                                                                                              Store().deleteAdmission(admission_news[index].id, context);
-                                                                                            },
-                                                                                            child: Text("Yes"))
-                                                                                      ],
-                                                                                    ));
-                                                                          },
-                                                                          child: Icon(
-                                                                            Icons.delete,
-                                                                            color:
-                                                                                Colors.white,
-                                                                          )),
-                                                                    )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      15.0),
-                                                          child: Column(
-                                                            children: [
-                                                              SizedBox(
-                                                                width: 270,
-                                                                child: Text(
-                                                                  admission_news[
-                                                                          index]
-                                                                      [
-                                                                      "description"],
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                  maxLines: 5,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        top:
-                                                                            13.0),
-                                                                child: SizedBox(
-                                                                  width: 270,
-                                                                  child: Row(
-                                                                    children: [
-                                                                      TextButton
-                                                                          .icon(
-                                                                        onPressed:
-                                                                            () {
-                                                                          js.context.callMethod(
-                                                                              'open',
-                                                                              [
-                                                                                admission_news[index]["link"]
-                                                                              ]);
+                                                            ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : ClickWidget(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: ElevatedButton(
+                                                                        onPressed: () {
+                                                                          // print("yes");
+                                                                          showDialog(
+                                                                              // login success!
+                                                                              context: context,
+                                                                              builder: (context) => AlertDialog(
+                                                                                    content: const Text("Are you sure you want to delete this Admission News?"),
+                                                                                    actions: [
+                                                                                      TextButton(
+                                                                                          onPressed: () {
+                                                                                            Store().deleteAdmission(admissionNews[index].id, context);
+                                                                                          },
+                                                                                          child: const Text("Yes"))
+                                                                                    ],
+                                                                                  ));
                                                                         },
-                                                                        label:
-                                                                            Text(
-                                                                          "Learn More",
-                                                                          style:
-                                                                              GoogleFonts.inter(color: PSU_YELLOW),
-                                                                        ),
-                                                                        icon:
-                                                                            Icon(
+                                                                        child: const Icon(
                                                                           Icons
-                                                                              .play_arrow_rounded,
+                                                                              .delete,
                                                                           color:
-                                                                              PSU_YELLOW,
-                                                                        ),
+                                                                              Colors.white,
+                                                                        )),
+                                                                  )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal:
+                                                                    15.0),
+                                                        child: Column(
+                                                          children: [
+                                                            SizedBox(
+                                                              width: 270,
+                                                              child: Text(
+                                                                admissionNews[
+                                                                        index][
+                                                                    "description"],
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  fontSize: 16,
+                                                                ),
+                                                                maxLines: 5,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      top:
+                                                                          13.0),
+                                                              child: SizedBox(
+                                                                width: 270,
+                                                                child: Row(
+                                                                  children: [
+                                                                    TextButton
+                                                                        .icon(
+                                                                      onPressed:
+                                                                          () {
+                                                                        js.context.callMethod(
+                                                                            'open',
+                                                                            [
+                                                                              admissionNews[index]["link"]
+                                                                            ]);
+                                                                      },
+                                                                      label:
+                                                                          Text(
+                                                                        "Learn More",
+                                                                        style: GoogleFonts.inter(
+                                                                            color:
+                                                                                PSU_YELLOW),
                                                                       ),
-                                                                    ],
-                                                                  ),
+                                                                      icon:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .play_arrow_rounded,
+                                                                        color:
+                                                                            PSU_YELLOW,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ]),
-                                                ),
+                                                      ),
+                                                    ]),
                                               ),
                                             ),
-                                          );
-                                        },
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount:
-                                                    MediaQuery.of(context)
-                                                                .size
-                                                                .width <
-                                                            700
-                                                        ? 1
-                                                        : MediaQuery.of(context)
-                                                                    .size
-                                                                    .width <
-                                                                1300
-                                                            ? 2
-                                                            : 3),
-                                      );
-                                    }
-                                  },
-                                ),
+                                          ),
+                                        );
+                                      },
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount:
+                                                  MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          700
+                                                      ? 1
+                                                      : MediaQuery.of(context)
+                                                                  .size
+                                                                  .width <
+                                                              1300
+                                                          ? 2
+                                                          : 3),
+                                    );
+                                  }
+                                },
                               ),
                             ),
                           ),

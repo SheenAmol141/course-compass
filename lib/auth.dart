@@ -1,13 +1,9 @@
 import 'dart:html';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
-import 'package:path_provider/path_provider.dart';
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -56,43 +52,42 @@ class Store {
   }
 
   Future<void> uploadCourse(
-      {required String course_title,
-      required String course_description,
+      {required String coursetitle,
+      required String courseDescription,
       required String campus,
       required File img}) async {
     final Map<String, dynamic> course = {
-      "title": course_title,
-      "description": course_description,
+      "title": coursetitle,
+      "description": courseDescription,
       "campus": campus,
       "time_added": DateTime.now(),
       "interested": 0
     };
 
     try {
-      await Storage().uploadCampusImage(title: course_title, img: img);
+      await Storage().uploadCampusImage(title: coursetitle, img: img);
     } on Exception catch (e) {
-      print(e);
       // TODO
+      // print(e);
     }
     _firebaseFirestore.collection("curricular_offerings").add(course);
   }
 
   Future<void> addInterested({
-    required String course_title,
+    required String courseTitle,
     required current,
   }) async {
     final Map<String, dynamic> course = {"interested": current + 1};
 
     _firebaseFirestore
         .collection("curricular_offerings")
-        .doc(course_title)
+        .doc(courseTitle)
         .update(course);
   }
 
   void deleteAdmission(String id, BuildContext context) {
     _firebaseFirestore.collection("admission_news").doc(id).delete().then(
       (value) {
-        print(id);
         Navigator.of(context).pop();
       },
     );
@@ -101,7 +96,7 @@ class Store {
   void deleteCourse(String id, BuildContext context) {
     _firebaseFirestore.collection("curricular_offerings").doc(id).delete().then(
       (value) {
-        print(id);
+        // print(id);
         Navigator.of(context).pop();
       },
     );
@@ -110,12 +105,11 @@ class Store {
   get courses {
     return _firebaseFirestore.collection("curricular_offerings").get().then(
       (querySnapshot) {
-        print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
           print('${docSnapshot.id} => ${docSnapshot["title"]}');
         }
       },
-      onError: (e) => print("Error completing: $e"),
+      // onError: (e) => print("Error completing: $e"),
     );
   }
 }
@@ -125,9 +119,9 @@ class Storage {
 
   Future<void> uploadCampusImage(
       {required String title, required File img}) async {
-    print("bef");
+    // print("bef");
 
     await _firebaseStorageRef.child("campuses/$title.png").putBlob(img);
-    print("af");
+    // print("af");
   }
 }

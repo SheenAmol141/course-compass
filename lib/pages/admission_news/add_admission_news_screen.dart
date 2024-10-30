@@ -11,18 +11,18 @@ class AddAdmissionNewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _key = GlobalKey<FormState>();
-    final TextEditingController _title = TextEditingController();
-    final TextEditingController _description = TextEditingController();
-    final TextEditingController _link = TextEditingController();
+    final key = GlobalKey<FormState>();
+    final TextEditingController title = TextEditingController();
+    final TextEditingController description = TextEditingController();
+    final TextEditingController link = TextEditingController();
 
-    const edgeInsets = const EdgeInsets.only(top: 8.0, left: 8, right: 8);
+    const edgeInsets = EdgeInsets.only(top: 8.0, left: 8, right: 8);
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Center(
           child: Form(
-              key: _key,
+              key: key,
               child: Card(
                 color: LIGHT_GRAY,
                 child: Padding(
@@ -36,7 +36,7 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Card(
-                            margin: EdgeInsets.all(0),
+                            margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
                             child: Row(
                               children: [
@@ -53,13 +53,13 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
-                              controller: _title,
+                              controller: title,
                               validator: (value) => value == null ||
                                       value.isEmpty
                                   ? "Title must not be empty!"
@@ -69,14 +69,14 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                 labelText: 'Title',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.title_rounded,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -89,7 +89,7 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                             child: TextFormField(
                               minLines: 3,
                               maxLines: 888,
-                              controller: _description,
+                              controller: description,
                               validator: (value) => value == null ||
                                       value.isEmpty
                                   ? "Description must not be empty!"
@@ -99,14 +99,14 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                 labelText: 'Description',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.description_rounded,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -117,7 +117,7 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
-                              controller: _link,
+                              controller: link,
                               validator: (value) => value == null ||
                                       value.isEmpty
                                   ? "Link must not be empty!"
@@ -127,14 +127,14 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               decoration: InputDecoration(
                                 labelText: 'Link',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.link,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -148,16 +148,16 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               onTap: () {},
                               child: ElevatedButton(
                                   onPressed: () {
-                                    if (_key.currentState!.validate()) {
-                                      print(_title.text +
-                                          _description.text +
-                                          _link.text);
-                                      _key.currentState!.validate();
+                                    if (key.currentState!.validate()) {
+                                      // print(title.text +
+                                      //     description.text +
+                                      //     link.text);
+                                      key.currentState!.validate();
                                       Store()
                                           .uploadAdmission(
-                                              title: _title.text,
-                                              description: _description.text,
-                                              link: _link.text)
+                                              title: title.text,
+                                              description: description.text,
+                                              link: link.text)
                                           .then(
                                         (value) {
                                           showDialog(
@@ -171,9 +171,9 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text("Okay"))
+                                                    child: const Text("Okay"))
                                               ],
-                                              content: Text(
+                                              content: const Text(
                                                 "Admission news added successfully!",
                                               ),
                                             ),
@@ -196,7 +196,7 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                                   )),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           )
                         ],

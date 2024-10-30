@@ -110,7 +110,7 @@ class _InterestedButtonState extends State<InterestedButton> {
               });
               Store()
                   .addInterested(
-                      course_title: widget.admission_new.id,
+                      courseTitle: widget.admission_new.id,
                       current: widget.admission_new["interested"])
                   .then(
                 (value) {

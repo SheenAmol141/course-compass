@@ -144,14 +144,13 @@ class _CourseRecommendationScreenState
                           ),
                           ClickWidget(
                             onTap: () {
-                              Navigator.of(context)
-                                ..pushNamedAndRemoveUntil(
-                                    "/curricular-offerings",
-                                    (Route<dynamic> route) => false);
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/curricular-offerings",
+                                  (Route<dynamic> route) => false);
                             },
                             child: Card(
                               color: PSU_BLUE,
-                              child: Container(
+                              child: SizedBox(
                                 width: 400,
                                 height: 500,
                                 child: Column(
