@@ -6,6 +6,7 @@ import 'package:course_compass/pages/admission_news/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/pages/course_recommender/course_recommender_screen.dart';
+import 'package:course_compass/pages/course_recommender/course_recommender_screen_steps.dart';
 import 'package:course_compass/pages/curricular_offerings/curricular_offerings_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
@@ -58,7 +59,8 @@ void main() async {
         '/analytics': (context) => const AnalyticsScreen(),
         '/admission-news': (context) => const AdmissionNewsScreen(),
         '/curricular-offerings': (context) => const CurricularOfferingsScreen(),
-        '/course-recommender': (context) => const CourseRecommenderScreen(),
+        '/course-recommender': (context) =>
+            const CourseRecommenderStepsScreen(),
         // '/course-recommender': (context) =>
         // CourseRecommendationJSONScreen("a", "a", "a"),
       }));

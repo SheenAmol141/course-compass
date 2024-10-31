@@ -2,7 +2,7 @@
     "MBTI": "<MBTI here>",
     "Strand": "<Strand here>",
     "Interests": "<interests here>",
-    "Intro": "<brief intro>",
+    "mbtiIntro": "<brief intro>",
     "Course Recommendations": [
         "<Recommendation 1>",
         "<Recommendation 2>",
