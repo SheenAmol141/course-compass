@@ -71,7 +71,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                   ));
             },
             child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
                 elevation: WidgetStatePropertyAll(0),
                 backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
@@ -84,7 +84,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
       Container(
         color: LIGHT_GRAY,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Row(
             children: [
               MediaQuery.of(context).size.width < 1050
@@ -125,7 +125,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                       fontSize: 30,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   MBTIRadioGroup(
@@ -144,7 +144,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ClipRRect(
@@ -161,7 +161,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                                     Icons.error_rounded,
                                     color: Colors.red.withAlpha(200),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 20,
                                   ),
                                   Text(
@@ -177,7 +177,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -186,7 +186,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ClickWidget(
@@ -208,7 +208,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.only(top: 20),
                             child: TextFormField(
                               controller: _interests,
                               validator: (value) => value == null ||
@@ -220,14 +220,14 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                               decoration: InputDecoration(
                                 labelText: 'What are your interests?',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.link,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -236,7 +236,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.only(top: 20),
                             child: TextFormField(
                               controller: _strand,
                               validator: (value) => value == null ||
@@ -249,14 +249,14 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                                 labelText:
                                     'What is your Senior High School Strand?',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.link,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -266,7 +266,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                           ),
                         ],
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ClickWidget(
@@ -377,7 +377,7 @@ class MBTIRadioGroup extends StatelessWidget {
               child: RadioListTile<String>(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                    side: BorderSide(width: 1, color: Colors.grey)),
+                    side: const BorderSide(width: 1, color: Colors.grey)),
                 title: Text(personality),
                 value: personality,
                 groupValue: selectedPersonality,

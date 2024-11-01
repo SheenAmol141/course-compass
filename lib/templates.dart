@@ -70,7 +70,7 @@ class _ClickWidgetState extends State<ClickWidget> {
     return MouseRegion(
       onHover: (event) {
         setState(() {
-          opacityLev = 0.9;
+          opacityLev = 0.7;
         });
       },
       onExit: (event) {
@@ -91,7 +91,7 @@ class _ClickWidgetState extends State<ClickWidget> {
 }
 
 class FirebaseStorageImage extends StatefulWidget {
-  String filename;
+  final String filename;
   FirebaseStorageImage({super.key, required this.filename});
 
   @override

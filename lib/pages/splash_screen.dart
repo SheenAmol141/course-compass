@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:course_compass/pages/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  final bool initScreen;
+
+  const SplashScreen(this.initScreen, {super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -14,10 +17,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
-      Navigator.of(context)
-        ..pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
-    });
+    if (!widget.initScreen) {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => OnboardingScreen(),
+        ));
+      });
+    } else {
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.of(context)
+          ..pushNamedAndRemoveUntil("/home", (Route<dynamic> route) => false);
+      });
+    }
   }
 
   @override

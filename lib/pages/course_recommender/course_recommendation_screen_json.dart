@@ -2,6 +2,7 @@ import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
@@ -334,63 +335,14 @@ class _CourseRecommendationJSONScreenState
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            children: [
-                              ClickWidget(
-                                onTap: () {
-                                  Navigator.of(context)
-                                    ..pushNamedAndRemoveUntil(
-                                        "/curricular-offerings",
-                                        (Route<dynamic> route) => false);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Card(
-                                    color: PSU_BLUE,
-                                    child: SizedBox(
-                                      width: 400,
-                                      height: 500,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Icon(
-                                              Icons.school_rounded,
-                                              color: PSU_YELLOW,
-                                              size: 110,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(20.0),
-                                            child: Text(
-                                              "View all Curricular Offerings of PSU",
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.inter(
-                                                  fontSize: 26,
-                                                  fontWeight: FontWeight.w900,
-                                                  color: PSU_YELLOW),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 800,
+                          Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, bottom: 8),
                                     child: Text(
                                       recommendationInstance.recommendIntro,
                                       style: GoogleFonts.inter(
@@ -413,10 +365,62 @@ class _CourseRecommendationJSONScreenState
                                           .courseRecommendations[2],
                                       recommendationInstance
                                           .courseExplanations[2])
-                                ],
+                                ]
+                                    .animate(interval: 0.50.seconds)
+                                    .slideX(
+                                        duration: 1.seconds,
+                                        curve: Curves.easeInOut,
+                                        begin: -.05)
+                                    .fadeIn(
+                                        delay: .5.seconds,
+                                        curve: Curves.easeIn),
                               ),
                             ),
-                          )
+                          ),
+                          ClickWidget(
+                            onTap: () {
+                              Navigator.of(context)
+                                ..pushNamedAndRemoveUntil(
+                                    "/curricular-offerings",
+                                    (Route<dynamic> route) => false);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Card(
+                                color: PSU_BLUE,
+                                child: SizedBox(
+                                  width: 400,
+                                  height: 300,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8.0),
+                                        child: Icon(
+                                          Icons.school_rounded,
+                                          color: PSU_YELLOW,
+                                          size: 110,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Text(
+                                          "View all Curricular Offerings of PSU",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.inter(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.w900,
+                                              color: PSU_YELLOW),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
               ))

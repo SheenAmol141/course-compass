@@ -113,7 +113,7 @@ class _CourseRecommendationScreenState
                                   CircularProgressIndicator(
                                     color: PSU_YELLOW,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 20,
                                   ),
                                   SizedBox(

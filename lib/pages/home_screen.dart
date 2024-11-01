@@ -14,7 +14,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController();
+    final _scrollController = ScrollController(
+      onAttach: (position) {},
+    );
     return BaseWidget(
       title: "Admission News",
       widget: [

@@ -16,19 +16,26 @@ import 'package:flutter/rendering.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() async {
   // debugPaintSizeEnabled = true;
+  final prefs = await SharedPreferences.getInstance();
 
   WidgetsFlutterBinding.ensureInitialized();
-
+  bool initScreen;
+  initScreen = prefs.getBool("ini tScreen") ?? false;
+  // print(initScreen);
+  // await prefs.setBool("initScreen", true);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MaterialApp(
       theme: ThemeData(
+        textTheme: textTheme,
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -51,9 +58,9 @@ void main() async {
           ),
         ),
       ),
-      initialRoute: "/temp",
+      initialRoute: "/",
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => SplashScreen(initScreen),
         '/home': (context) => const HomeScreen(),
         '/admin-login': (context) => AdminLoginScreen(),
         '/analytics': (context) => const AnalyticsScreen(),
@@ -66,6 +73,32 @@ void main() async {
       }));
   //
 }
+
+TextTheme textTheme = TextTheme(
+    labelLarge: GoogleFonts.inter(
+      fontSize: 40,
+      color: PSU_BLUE,
+      fontWeight: FontWeight.w800,
+    ),
+    labelMedium: GoogleFonts.inter(
+      fontSize: 30,
+      color: PSU_BLUE,
+      fontWeight: FontWeight.w700,
+    ),
+    labelSmall: GoogleFonts.inter(
+      fontSize: 22,
+      color: PSU_BLUE,
+      fontWeight: FontWeight.w600,
+    ),
+    bodySmall: GoogleFonts.inter(
+      fontSize: 16,
+    ),
+    bodyMedium: GoogleFonts.inter(
+      fontSize: 18,
+    ),
+    bodyLarge: GoogleFonts.inter(
+      fontSize: 20,
+    ));
 
 AppBar appBar = AppBar(
   surfaceTintColor: Colors.transparent,

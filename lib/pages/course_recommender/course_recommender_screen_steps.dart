@@ -42,6 +42,8 @@ class _CourseRecommenderStepsScreenState
   final TextEditingController _strand = TextEditingController();
   late bool validatorMBTI;
   late String currentPersonality;
+  int currentPage = 0;
+
   @override
   void initState() {
     super.initState();
@@ -119,188 +121,280 @@ class _CourseRecommenderStepsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "First, tell us your Myers-Briggs Type Indicator (MBTI) personality.",
-                    style: GoogleFonts.inter(
-                      fontSize: 30,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  MBTIRadioGroup(
-                    mbtiPersonalities: mbtiPersonalities,
-                    selectedPersonality: currentPersonality,
-                    onChanged: (value) {
-                      setState(() {
-                        currentPersonality = value;
-                      });
-                    },
+                  LinearProgressIndicator(
+                    value: currentPage == 0
+                        ? 0
+                        : currentPage == 1
+                            ? .33
+                            : currentPage == 2
+                                ? .66
+                                : 1.00,
                   ),
                   Visibility(
-                    visible: validatorMBTI,
+                    visible: currentPage == 1,
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          "First, tell us your Myers-Briggs Type Indicator (MBTI) personality.",
+                          style: GoogleFonts.inter(
+                            fontSize: 30,
+                          ),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            color: Colors.red.withAlpha(50),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30.0, vertical: 10),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.error_rounded,
-                                    color: Colors.red.withAlpha(200),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    "Please select your MBTI Personality!",
-                                    style: GoogleFonts.inter(
-                                        color: Colors.red.withAlpha(200)),
-                                  ),
-                                ],
+                        MBTIRadioGroup(
+                          mbtiPersonalities: mbtiPersonalities,
+                          selectedPersonality: currentPersonality,
+                          onChanged: (value) {
+                            setState(() {
+                              currentPersonality = value;
+                            });
+                          },
+                        ),
+                        Visibility(
+                          visible: validatorMBTI,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 20,
                               ),
-                            ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  color: Colors.red.withAlpha(50),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30.0, vertical: 10),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.error_rounded,
+                                          color: Colors.red.withAlpha(200),
+                                        ),
+                                        const SizedBox(
+                                          width: 20,
+                                        ),
+                                        Text(
+                                          "Please select your MBTI Personality!",
+                                          style: GoogleFonts.inter(
+                                              color: Colors.red.withAlpha(200)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Don't know your MBTI Personality?",
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ClickWidget(
+                            onTap: () {},
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  js.context.callMethod('open', [
+                                    "https://www.16personalities.com/free-personality-test"
+                                  ]);
+                                },
+                                child: Text(
+                                  "Click to Take a short assessment",
+                                  style: GoogleFonts.inter(
+                                      color: PSU_YELLOW,
+                                      fontWeight: FontWeight.w700),
+                                ))),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Don't know your MBTI Personality?",
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ClickWidget(
-                      onTap: () {},
-                      child: ElevatedButton(
-                          onPressed: () {
-                            js.context.callMethod('open', [
-                              "https://www.16personalities.com/free-personality-test"
-                            ]);
-                          },
-                          child: Text(
-                            "Click to Take a short assessment",
-                            style: GoogleFonts.inter(
-                                color: PSU_YELLOW, fontWeight: FontWeight.w700),
-                          ))),
-                  Form(
-                      key: _key,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: TextFormField(
-                              controller: _interests,
-                              validator: (value) => value == null ||
-                                      value.isEmpty
-                                  ? "Interests must not be empty!"
-                                  : value.length < 5
-                                      ? "Interests must be at least 5 characters long!"
-                                      : null,
-                              decoration: InputDecoration(
-                                labelText: 'What are your interests?',
-                                // hintText: "email@example.com",
-                                border: const OutlineInputBorder(),
+                  Visibility(
+                    visible: currentPage == 2,
+                    child: Form(
+                        key: _key,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: TextFormField(
+                                controller: _interests,
+                                validator: (value) => value == null ||
+                                        value.isEmpty
+                                    ? "Interests must not be empty!"
+                                    : value.length < 5
+                                        ? "Interests must be at least 5 characters long!"
+                                        : null,
+                                decoration: InputDecoration(
+                                  labelText: 'What are your interests?',
+                                  // hintText: "email@example.com",
+                                  border: const OutlineInputBorder(),
 
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.link,
-                                        color: Colors.black.withOpacity(0.2)),
-                                    const SizedBox(
-                                      width: 5,
-                                    )
-                                  ],
+                                  suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.link,
+                                          color: Colors.black.withOpacity(0.2)),
+                                      const SizedBox(
+                                        width: 5,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: TextFormField(
-                              controller: _strand,
-                              validator: (value) => value == null ||
-                                      value.isEmpty
-                                  ? "Senior High School Strand must not be empty!"
-                                  : value.length < 3
-                                      ? "Senior High School Strand must be at least 3 characters long!"
-                                      : null,
-                              decoration: InputDecoration(
-                                labelText:
-                                    'What is your Senior High School Strand?',
-                                // hintText: "email@example.com",
-                                border: const OutlineInputBorder(),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: TextFormField(
+                                controller: _strand,
+                                validator: (value) => value == null ||
+                                        value.isEmpty
+                                    ? "Senior High School Strand must not be empty!"
+                                    : value.length < 3
+                                        ? "Senior High School Strand must be at least 3 characters long!"
+                                        : null,
+                                decoration: InputDecoration(
+                                  labelText:
+                                      'What is your Senior High School Strand?',
+                                  // hintText: "email@example.com",
+                                  border: const OutlineInputBorder(),
 
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.link,
-                                        color: Colors.black.withOpacity(0.2)),
-                                    const SizedBox(
-                                      width: 5,
-                                    )
-                                  ],
+                                  suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.link,
+                                          color: Colors.black.withOpacity(0.2)),
+                                      const SizedBox(
+                                        width: 5,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      )),
+                          ],
+                        )),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
-                  ClickWidget(
-                      // SUBMIT FORM
-                      onTap: () {},
-                      child: ElevatedButton(
-                          onPressed: () {
-                            // vaidate
-                            if (currentPersonality.isEmpty) {
-                              setState(() {
-                                validatorMBTI = true;
-                              });
-                              if (_key.currentState!.validate()) {}
-                            } else {
-                              {
-                                setState(() {
-                                  validatorMBTI = false;
-                                });
-                              }
-                              if (_key.currentState!.validate()) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      CourseRecommendationJSONScreen(
-                                          currentPersonality,
-                                          _interests.text,
-                                          _strand.text),
-                                ));
-                              }
-                            }
-                          },
-                          child: Text(
-                            "Submit",
-                            style: GoogleFonts.inter(
-                                color: PSU_YELLOW, fontWeight: FontWeight.w700),
-                          ))),
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: currentPage != 0,
+                        child: ClickWidget(
+                            // SUBMIT FORM
+                            onTap: () {},
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(PSU_YELLOW)),
+                                onPressed: () {
+                                  setState(() {
+                                    currentPage--;
+                                  });
+                                  // vaidate
+                                },
+                                child: Text(
+                                  "Previous",
+                                  style: GoogleFonts.inter(
+                                      color: PSU_BLUE,
+                                      fontWeight: FontWeight.w700),
+                                ))),
+                      ),
+                      Visibility(
+                        visible: currentPage != 2,
+                        child: ClickWidget(
+                            // SUBMIT FORM
+                            onTap: () {},
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (currentPage == 0) {
+                                    setState(() {
+                                      currentPage++;
+                                    });
+                                  } else {
+                                    if (currentPersonality.isEmpty) {
+                                      setState(() {
+                                        validatorMBTI = true;
+                                      });
+                                    } else {
+                                      {
+                                        setState(() {
+                                          validatorMBTI = false;
+                                          if (currentPage != 2) {
+                                            currentPage++;
+                                            print(currentPage);
+                                          }
+                                        });
+                                      }
+                                    }
+                                  }
+                                  // vaidate
+                                },
+                                child: Text(
+                                  "Next",
+                                  style: GoogleFonts.inter(
+                                      color: PSU_YELLOW,
+                                      fontWeight: FontWeight.w700),
+                                ))),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Visibility(
+                        visible: currentPage == 2,
+                        child: ClickWidget(
+                            // SUBMIT FORM
+                            onTap: () {},
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  // vaidate
+                                  if (currentPersonality.isEmpty) {
+                                    setState(() {
+                                      validatorMBTI = true;
+                                    });
+                                    if (_key.currentState!.validate()) {}
+                                  } else {
+                                    {
+                                      setState(() {
+                                        validatorMBTI = false;
+                                      });
+                                    }
+                                    if (_key.currentState!.validate()) {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            CourseRecommendationJSONScreen(
+                                                currentPersonality,
+                                                _interests.text,
+                                                _strand.text),
+                                      ));
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  "Submit",
+                                  style: GoogleFonts.inter(
+                                      color: PSU_YELLOW,
+                                      fontWeight: FontWeight.w700),
+                                ))),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

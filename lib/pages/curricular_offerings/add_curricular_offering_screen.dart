@@ -54,7 +54,7 @@ class _AddCurricularOfferingScreenState
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Card(
-                            margin: EdgeInsets.all(0),
+                            margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
                             child: Row(
                               children: [
@@ -71,7 +71,7 @@ class _AddCurricularOfferingScreenState
                               ],
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Row(
@@ -87,7 +87,7 @@ class _AddCurricularOfferingScreenState
                                       _campus = value!;
                                     },
                                     inputDecorationTheme:
-                                        InputDecorationTheme(),
+                                        const InputDecorationTheme(),
                                     dropdownMenuEntries: const [
                                       DropdownMenuEntry(
                                           value: "lingayen",
@@ -176,14 +176,14 @@ class _AddCurricularOfferingScreenState
                                     "ex: BSIT - Bachelor of Science in Information Technology",
                                 labelText: 'Course Code + Title',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.title_rounded,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -206,14 +206,14 @@ class _AddCurricularOfferingScreenState
                               decoration: InputDecoration(
                                 labelText: 'Course Description',
                                 // hintText: "email@example.com",
-                                border: OutlineInputBorder(),
+                                border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.description_rounded,
                                         color: Colors.black.withOpacity(0.2)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 5,
                                     )
                                   ],
@@ -289,9 +289,9 @@ class _AddCurricularOfferingScreenState
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text("Okay"))
+                                                    child: const Text("Okay"))
                                               ],
-                                              content: Text(
+                                              content: const Text(
                                                 "Curricular Offer added successfully!",
                                               ),
                                             ),
@@ -314,7 +314,7 @@ class _AddCurricularOfferingScreenState
                                   )),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           )
                         ],
