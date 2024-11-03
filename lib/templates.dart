@@ -158,11 +158,13 @@ class FirebaseImageWidget extends StatelessWidget {
 // import 'package:flutter/material.dart';
 
 class AnalyticsChart extends StatefulWidget {
-  AnalyticsChart({super.key});
+  AnalyticsChart({super.key, required this.campus, required this.matched});
 
   final Color dark = PSU_BLUE;
   final Color normal = PSU_BLUE;
   final Color light = PSU_BLUE;
+  final String campus;
+  final bool matched;
 
   @override
   State<StatefulWidget> createState() => AnalyticsChartState();
@@ -203,14 +205,15 @@ class AnalyticsChartState extends State<AnalyticsChart> {
   getCourse() {
     FirebaseFirestore.instance
         .collection("curricular_offerings")
-        .orderBy("time_added", descending: true)
+        .where("campus", isEqualTo: widget.campus)
         .get()
         .then(
       (querySnapshot) {
         print("Successfully completed");
         for (var docSnapshot in querySnapshot.docs) {
-          courseTitle.insert(0, docSnapshot["title"]);
-          courseInterestedNum.insert(0, docSnapshot["interested"]);
+          courseTitle.insert(0, docSnapshot["code"]);
+          courseInterestedNum.insert(
+              0, docSnapshot[!widget.matched ? "interested" : "matched"]);
           print('${courseTitle[0]} = ${courseInterestedNum[0]}');
         }
       },
@@ -240,7 +243,7 @@ class AnalyticsChartState extends State<AnalyticsChart> {
               padding: const EdgeInsets.only(top: 16),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final barsSpace = 4.0 * constraints.maxWidth / 400;
+                  final barsSpace = 20.0 * constraints.maxWidth / 400;
                   final barsWidth = 8.0 * constraints.maxWidth / 400;
                   return BarChart(
                     BarChartData(
@@ -298,8 +301,8 @@ class AnalyticsChartState extends State<AnalyticsChart> {
     List<BarChartGroupData> interestedBars = [];
 
     for (int x in courseInterestedNum) {
-      String _title = courseTitle[i];
-      double _width = courseTitle[i].length * 5;
+      // String _title = courseTitle[i];
+      double width = courseTitle[i].length * 5;
       interestedBars.insert(
         0,
         BarChartGroupData(
@@ -309,7 +312,7 @@ class AnalyticsChartState extends State<AnalyticsChart> {
             BarChartRodData(
               toY: x.toDouble(),
               borderRadius: BorderRadius.zero,
-              width: _width,
+              width: width,
             )
           ],
         ),

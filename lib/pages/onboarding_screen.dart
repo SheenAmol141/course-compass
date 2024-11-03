@@ -1,11 +1,9 @@
 import 'package:course_compass/hex_colors.dart';
-import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -21,6 +19,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
+    super.initState();
     // TODO: implement initState
     _pageController = PageController(initialPage: 0);
   }

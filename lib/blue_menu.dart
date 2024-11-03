@@ -1,4 +1,3 @@
-import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/templates.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class BlueMenu extends StatelessWidget {
   final String currentPage;
-  BlueMenu(
+  const BlueMenu(
     this.currentPage, {
     super.key,
   });
@@ -25,7 +24,7 @@ class BlueMenu extends StatelessWidget {
                 )),
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 BlueMenuTile("Home", "home", Icons.home_rounded,
@@ -48,7 +47,7 @@ class BlueMenu extends StatelessWidget {
                     Icons.newspaper_rounded,
                     currentPage == "admission-news" ? true : false,
                     false),
-                Expanded(child: Text("")),
+                const Expanded(child: Text("")),
                 BlueMenuTile("Analytics", "analytics", Icons.bar_chart_rounded,
                     currentPage == "analytics" ? true : false, true),
                 BlueMenuTile(
@@ -95,11 +94,11 @@ class BlueMenuTile extends StatelessWidget {
       onTap: () {
         // print("$nav");
         Navigator.of(context)
-          ..pushNamedAndRemoveUntil("/$nav", (Route<dynamic> route) => false);
+            .pushNamedAndRemoveUntil("/$nav", (Route<dynamic> route) => false);
       },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: active ? Colors.yellow : Colors.transparent,
         ),
         child: Padding(
@@ -111,7 +110,7 @@ class BlueMenuTile extends StatelessWidget {
                 color: Colors.white,
                 shadows: active ? shadows : [],
               ),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Text(
@@ -140,7 +139,7 @@ class BlueMenuTile extends StatelessWidget {
 
 class ResponsiveMenu extends StatelessWidget {
   final String currentPage;
-  ResponsiveMenu(
+  const ResponsiveMenu(
     this.currentPage, {
     super.key,
   });
@@ -172,13 +171,13 @@ class ResponsiveMenu extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Icon(Icons.close_rounded, color: PSU_YELLOW),
-              style: ButtonStyle(
+              style: const ButtonStyle(
                   padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
                   elevation: WidgetStatePropertyAll(0),
                   backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+              child: Icon(Icons.close_rounded, color: PSU_YELLOW),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             BlueMenuTile("Home", "home", Icons.home_rounded,
@@ -201,7 +200,7 @@ class ResponsiveMenu extends StatelessWidget {
                 Icons.newspaper_rounded,
                 currentPage == "admission-news" ? true : false,
                 false),
-            Expanded(child: Text("")),
+            const Expanded(child: Text("")),
             BlueMenuTile("Analytics", "analytics", Icons.bar_chart_rounded,
                 currentPage == "analytics" ? true : false, true),
             BlueMenuTile(

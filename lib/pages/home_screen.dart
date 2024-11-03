@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scrollController = ScrollController(
+    final scrollController = ScrollController(
       onAttach: (position) {},
     );
     return BaseWidget(
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                   flex: 3,
                   child: Container(
                     child: Scrollbar(
-                      controller: _scrollController,
+                      controller: scrollController,
                       thumbVisibility: true,
                       child: StreamBuilder(
                         stream: firestore
@@ -55,8 +55,6 @@ class HomeScreen extends StatelessWidget {
                               ),
                             );
                           } else {
-                            //TODO FIX THIS!!!!!!------------------------------------------------
-
                             List<DocumentSnapshot> admission_news = [];
 
                             for (var i = 0; i < 5; i++) {
@@ -76,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 7),
                               child: ListView.builder(
-                                controller: _scrollController,
+                                controller: scrollController,
                                 itemCount: admission_news.length + 1,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
@@ -86,14 +84,14 @@ class HomeScreen extends StatelessWidget {
                                       child: ClickWidget(
                                           onTap: () {
                                             Navigator.of(context)
-                                              ..pushNamedAndRemoveUntil(
-                                                  "/admission-news",
-                                                  (Route<dynamic> route) =>
-                                                      false);
+                                                .pushNamedAndRemoveUntil(
+                                                    "/admission-news",
+                                                    (Route<dynamic> route) =>
+                                                        false);
                                           },
                                           child: Card(
                                             color: PSU_BLUE,
-                                            child: Container(
+                                            child: SizedBox(
                                               width: 270,
                                               child: Center(
                                                 child: Column(
@@ -123,7 +121,7 @@ class HomeScreen extends StatelessWidget {
                                   } else if (index == 0) {
                                     return Padding(
                                       padding: const EdgeInsets.all(8.0) +
-                                          EdgeInsets.only(left: 30),
+                                          const EdgeInsets.only(left: 30),
                                       child: Card(
                                         color: Colors.white,
                                         child: SizedBox(
@@ -349,7 +347,7 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Padding(
-                  padding: EdgeInsets.all(40),
+                  padding: const EdgeInsets.all(40),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: MediaQuery.of(context).size.width < 1150
@@ -372,7 +370,7 @@ class HomeScreen extends StatelessWidget {
                                       const EdgeInsets.symmetric(vertical: 10),
                                   child: Image.asset("assets/think.png"),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 FittedBox(
@@ -380,13 +378,13 @@ class HomeScreen extends StatelessWidget {
                                   child: ClickWidget(
                                     onTap: () {
                                       Navigator.of(context)
-                                        ..pushNamedAndRemoveUntil(
-                                            "/course-recommender",
-                                            (Route<dynamic> route) => false);
+                                          .pushNamedAndRemoveUntil(
+                                              "/course-recommender",
+                                              (Route<dynamic> route) => false);
                                     },
                                     child: Card(
                                       color: PSU_BLUE,
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 500,
                                         height: 200,
                                         child: Column(
@@ -415,7 +413,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 FittedBox(
@@ -423,13 +421,13 @@ class HomeScreen extends StatelessWidget {
                                   child: ClickWidget(
                                     onTap: () {
                                       Navigator.of(context)
-                                        ..pushNamedAndRemoveUntil(
-                                            "/curricular-offerings",
-                                            (Route<dynamic> route) => false);
+                                          .pushNamedAndRemoveUntil(
+                                              "/curricular-offerings",
+                                              (Route<dynamic> route) => false);
                                     },
                                     child: Card(
                                       color: PSU_BLUE,
-                                      child: Container(
+                                      child: SizedBox(
                                         width: 500,
                                         height: 100,
                                         child: Center(
@@ -455,7 +453,7 @@ class HomeScreen extends StatelessWidget {
                                       const EdgeInsets.symmetric(vertical: 10),
                                   child: Image.asset("assets/think.png"),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 30,
                                 ),
                                 Column(
@@ -464,13 +462,14 @@ class HomeScreen extends StatelessWidget {
                                     ClickWidget(
                                       onTap: () {
                                         Navigator.of(context)
-                                          ..pushNamedAndRemoveUntil(
-                                              "/course-recommender",
-                                              (Route<dynamic> route) => false);
+                                            .pushNamedAndRemoveUntil(
+                                                "/course-recommender",
+                                                (Route<dynamic> route) =>
+                                                    false);
                                       },
                                       child: Card(
                                         color: PSU_BLUE,
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 500,
                                           height: 200,
                                           child: Column(
@@ -498,19 +497,20 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     ClickWidget(
                                       onTap: () {
                                         Navigator.of(context)
-                                          ..pushNamedAndRemoveUntil(
-                                              "/curricular-offerings",
-                                              (Route<dynamic> route) => false);
+                                            .pushNamedAndRemoveUntil(
+                                                "/curricular-offerings",
+                                                (Route<dynamic> route) =>
+                                                    false);
                                       },
                                       child: Card(
                                         color: PSU_BLUE,
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 500,
                                           height: 100,
                                           child: Center(

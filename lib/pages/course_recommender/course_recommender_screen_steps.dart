@@ -2,6 +2,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
+import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json_code.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -52,10 +53,10 @@ class _CourseRecommenderStepsScreenState
     extends State<CourseRecommenderStepsScreen> {
   final _key = GlobalKey<FormState>();
   final TextEditingController _interests = TextEditingController();
-  final TextEditingController _strand = TextEditingController();
   late bool validatorMBTI;
   late String currentPersonality;
   int currentPage = 0;
+  // ignore: prefer_typing_uninitialized_variables
   var selectedTrack;
 
   @override
@@ -67,34 +68,34 @@ class _CourseRecommenderStepsScreenState
 
   @override
   Widget build(BuildContext context) {
-    AppBar appBarResponsive = AppBar(
-      surfaceTintColor: Colors.transparent,
-      toolbarHeight: 120,
-      centerTitle: true,
-      backgroundColor: LIGHT_GRAY,
-      title: Column(
-        children: [
-          SizedBox(
-              height: 50,
-              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Material(child: ResponsiveMenu("course-recommender")),
-                  ));
-            },
-            style: const ButtonStyle(
-                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
-                elevation: WidgetStatePropertyAll(0),
-                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
-            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-          )
-        ],
-      ),
-    );
+    // AppBar appBarResponsive = AppBar(
+    //   surfaceTintColor: Colors.transparent,
+    //   toolbarHeight: 120,
+    //   centerTitle: true,
+    //   backgroundColor: LIGHT_GRAY,
+    //   title: Column(
+    //     children: [
+    //       SizedBox(
+    //           height: 50,
+    //           child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+    //       ElevatedButton(
+    //         onPressed: () {
+    //           Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) =>
+    //                     Material(child: ResponsiveMenu("course-recommender")),
+    //               ));
+    //         },
+    //         style: const ButtonStyle(
+    //             padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+    //             elevation: WidgetStatePropertyAll(0),
+    //             backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+    //         child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+    //       )
+    //     ],
+    //   ),
+    // );
 
     return BaseWidget(widget: [
       Container(
@@ -323,6 +324,7 @@ class _CourseRecommenderStepsScreenState
                                 Padding(
                                     padding: const EdgeInsets.only(top: 20),
                                     child: DropdownButton<String>(
+                                      menuWidth: 300,
                                       value:
                                           selectedTrack, // Initial selected value
                                       onChanged: (String? newValue) {
@@ -403,7 +405,6 @@ class _CourseRecommenderStepsScreenState
                                             validatorMBTI = false;
                                             if (currentPage != 2) {
                                               currentPage++;
-                                              print(currentPage);
                                             }
                                           });
                                         }
@@ -447,7 +448,7 @@ class _CourseRecommenderStepsScreenState
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                           builder: (context) =>
-                                              CourseRecommendationJSONScreen(
+                                              CourseRecommendationJSONCodeScreen(
                                                   currentPersonality,
                                                   _interests.text,
                                                   selectedTrack),

@@ -4,7 +4,6 @@ import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:js' as js;
 
 class AddAdmissionNewsScreen extends StatelessWidget {
   const AddAdmissionNewsScreen({super.key});

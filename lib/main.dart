@@ -4,21 +4,17 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/pages/admin_login_screen.dart';
 import 'package:course_compass/pages/admission_news/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
-import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
-import 'package:course_compass/pages/course_recommender/course_recommender_screen.dart';
 import 'package:course_compass/pages/course_recommender/course_recommender_screen_steps.dart';
 import 'package:course_compass/pages/curricular_offerings/curricular_offerings_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:course_compass/hex_colors.dart';
-import 'package:flutter/rendering.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() async {
   // debugPaintSizeEnabled = true;
@@ -27,7 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool initScreen;
   initScreen = prefs.getBool("initScreen") ?? false;
-  print(initScreen);
+  // print(initScreen);
   // await prefs.setBool("initScreen", true);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -38,11 +34,11 @@ void main() async {
         // textTheme: textTheme,
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(color: PSU_BLUE, width: 2),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(color: PSU_BLUE.withOpacity(.5), width: 2),
           ),
         ),
@@ -50,9 +46,10 @@ void main() async {
           style: ButtonStyle(
             shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10))),
-            textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.white)),
+            textStyle:
+                const WidgetStatePropertyAll(TextStyle(color: Colors.white)),
             backgroundColor: WidgetStatePropertyAll(PSU_BLUE),
-            padding: WidgetStatePropertyAll(
+            padding: const WidgetStatePropertyAll(
               EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             ),
           ),
@@ -63,9 +60,9 @@ void main() async {
         '/': (context) => SplashScreen(initScreen, prefs),
         '/home': (context) => const HomeScreen(),
         '/admin-login': (context) => AdminLoginScreen(),
-        '/analytics': (context) => const AnalyticsScreen(),
+        '/analytics': (context) => AnalyticsScreen(),
         '/admission-news': (context) => const AdmissionNewsScreen(),
-        '/curricular-offerings': (context) => const CurricularOfferingsScreen(),
+        '/curricular-offerings': (context) => CurricularOfferingsScreen(),
         '/course-recommender': (context) =>
             const CourseRecommenderStepsScreen(),
         // '/course-recommender': (context) =>
@@ -133,14 +130,14 @@ class BaseWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Material(child: ResponsiveMenu("$currentpage")),
+                        Material(child: ResponsiveMenu(currentpage)),
                   ));
             },
-            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-            style: ButtonStyle(
+            style: const ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
                 elevation: WidgetStatePropertyAll(0),
                 backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
           )
         ],
       ),
@@ -167,14 +164,12 @@ class BaseWidget extends StatelessWidget {
                             //CONTENT HERE expanded below ----------------------- gray
                             Expanded(
                                 flex: 3,
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 40.0, bottom: 20),
-                                    child: Text(
-                                      title!,
-                                      style: GoogleFonts.inter(fontSize: 40),
-                                    ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 40.0, bottom: 20),
+                                  child: Text(
+                                    title!,
+                                    style: GoogleFonts.inter(fontSize: 40),
                                   ),
                                 ))
                           ],
@@ -195,8 +190,8 @@ class BaseWidget extends StatelessWidget {
 }
 
 class MenuStack extends StatelessWidget {
-  Widget child;
-  MenuStack({super.key, required this.child});
+  final Widget child;
+  const MenuStack({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +202,7 @@ class MenuStack extends StatelessWidget {
         child,
         ElevatedButton(
             onPressed: () {},
-            child: Icon(
+            child: const Icon(
               Icons.menu_rounded,
               color: Colors.white,
             ))

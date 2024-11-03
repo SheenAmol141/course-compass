@@ -46,12 +46,12 @@ class SingleCurricularOfferScreen extends StatelessWidget {
                                         color: PSU_YELLOW,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 20,
                                   )
                                 ],
                               ))),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Card(
@@ -121,20 +121,20 @@ class _InterestedButtonState extends State<InterestedButton> {
                       // login success!
                       context: context,
                       builder: (context) => AlertDialog(
-                            content: Text(
+                            content: const Text(
                                 "Thank you for letting us know you are interested in this course!"),
                             actions: [
                               TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text("Okay"))
+                                  child: const Text("Okay"))
                             ],
                           ));
                 },
               );
             },
-            child: Text("I'm Interested!")),
+            child: const Text("I'm Interested!")),
         loading
             ? CircularProgressIndicator(
                 color: PSU_BLUE,

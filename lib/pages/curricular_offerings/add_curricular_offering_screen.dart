@@ -159,6 +159,7 @@ class _AddCurricularOfferingScreenState
                               )
                             ],
                           ),
+
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
@@ -167,14 +168,45 @@ class _AddCurricularOfferingScreenState
                                       value.isEmpty
                                   ? "Course Title must not be empty!"
                                   : value.length < 5
-                                      ? "Course Title must be at least 5 characters long!"
+                                      ? "Course Title must be at least 2 characters long!"
                                       : null,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(
                                     color: Colors.black.withOpacity(0.5)),
                                 hintText:
-                                    "ex: BSIT - Bachelor of Science in Information Technology",
-                                labelText: 'Course Code + Title',
+                                    "ex: Bachelor of Science in Information Technology",
+                                labelText: 'Title',
+                                // hintText: "email@example.com",
+                                border: const OutlineInputBorder(),
+
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.title_rounded,
+                                        color: Colors.black.withOpacity(0.2)),
+                                    const SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: edgeInsets,
+                            child: TextFormField(
+                              controller: _code,
+                              validator: (value) => value == null ||
+                                      value.isEmpty
+                                  ? "Course Code must not be empty!"
+                                  : value.length < 2
+                                      ? "Course Code must be at least 2 characters long!"
+                                      : null,
+                              decoration: InputDecoration(
+                                hintStyle: TextStyle(
+                                    color: Colors.black.withOpacity(0.5)),
+                                hintText: "ex: BSIT",
+                                labelText: 'Course Code',
                                 // hintText: "email@example.com",
                                 border: const OutlineInputBorder(),
 
@@ -266,12 +298,14 @@ class _AddCurricularOfferingScreenState
                                   onPressed: () {
                                     if (_key.currentState!.validate()) {
                                       print(_title.text +
+                                          _code.text +
                                           _description.text +
                                           _campus);
                                       _key.currentState!.validate();
                                       Store()
                                           .uploadCourse(
                                               coursetitle: _title.text,
+                                              coursecode: _code.text,
                                               courseDescription:
                                                   _description.text,
                                               campus: _campus,

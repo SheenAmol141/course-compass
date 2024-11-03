@@ -1,11 +1,11 @@
-import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/course_recommender/course_recommendation_screen.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
+import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json_code.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
 List<String> mbtiPersonalities = [
@@ -43,7 +43,6 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
   late String currentPersonality;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     currentPersonality = "";
     validatorMBTI = false;
@@ -51,34 +50,34 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AppBar appBarResponsive = AppBar(
-      surfaceTintColor: Colors.transparent,
-      toolbarHeight: 120,
-      centerTitle: true,
-      backgroundColor: LIGHT_GRAY,
-      title: Column(
-        children: [
-          SizedBox(
-              height: 50,
-              child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Material(child: ResponsiveMenu("course-recommender")),
-                  ));
-            },
-            child: Icon(Icons.menu_rounded, color: PSU_BLUE),
-            style: const ButtonStyle(
-                padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
-                elevation: WidgetStatePropertyAll(0),
-                backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
-          )
-        ],
-      ),
-    );
+    // AppBar appBarResponsive = AppBar(
+    //   surfaceTintColor: Colors.transparent,
+    //   toolbarHeight: 120,
+    //   centerTitle: true,
+    //   backgroundColor: LIGHT_GRAY,
+    //   title: Column(
+    //     children: [
+    //       SizedBox(
+    //           height: 50,
+    //           child: Image.asset(fit: BoxFit.contain, "assets/logo.png")),
+    //       ElevatedButton(
+    //         onPressed: () {
+    //           Navigator.push(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) =>
+    //                     Material(child: ResponsiveMenu("course-recommender")),
+    //               ));
+    //         },
+    //         child: Icon(Icons.menu_rounded, color: PSU_BLUE),
+    //         style: const ButtonStyle(
+    //             padding: WidgetStatePropertyAll(EdgeInsets.all(5)),
+    //             elevation: WidgetStatePropertyAll(0),
+    //             backgroundColor: WidgetStatePropertyAll(Colors.transparent)),
+    //       )
+    //     ],
+    //   ),
+    // );
 
     return BaseWidget(widget: [
       Container(
@@ -290,7 +289,7 @@ class _CourseRecommenderScreenState extends State<CourseRecommenderScreen> {
                               if (_key.currentState!.validate()) {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      CourseRecommendationJSONScreen(
+                                      CourseRecommendationJSONCodeScreen(
                                           currentPersonality,
                                           _interests.text,
                                           _strand.text),
