@@ -1,10 +1,10 @@
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/course_recommender/course_recommendation_screen.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
 
@@ -27,6 +27,19 @@ List<String> mbtiPersonalities = [
   "ENFP"
 ];
 
+List<String> academicTracks = [
+  'Academic Track - ABM (Accountancy, Business and Management)',
+  'Academic Track - STEM (Science, Technology, Engineering, and Mathematics)',
+  'Academic Track - HUMSS (Humanities and Social Science)',
+  'Academic Track - GAS (General Academic Strand)',
+  'Arts and Design track',
+  'Sports Track',
+  'TVL Track - AFA (Agricultural-Fishery Arts)',
+  'TVL Track - HE (Home Economics)',
+  'TVL Track - IA (Industrial arts)',
+  'TVL Track - ICT (Information and Communications Technology)',
+];
+
 class CourseRecommenderStepsScreen extends StatefulWidget {
   const CourseRecommenderStepsScreen({super.key});
 
@@ -43,6 +56,7 @@ class _CourseRecommenderStepsScreenState
   late bool validatorMBTI;
   late String currentPersonality;
   int currentPage = 0;
+  var selectedTrack;
 
   @override
   void initState() {
@@ -119,284 +133,338 @@ class _CourseRecommenderStepsScreenState
               padding:
                   const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  LinearProgressIndicator(
-                    value: currentPage == 0
-                        ? 0
-                        : currentPage == 1
-                            ? .33
-                            : currentPage == 2
-                                ? .66
-                                : 1.00,
-                  ),
-                  Visibility(
-                    visible: currentPage == 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "First, tell us your Myers-Briggs Type Indicator (MBTI) personality.",
-                          style: GoogleFonts.inter(
-                            fontSize: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        MBTIRadioGroup(
-                          mbtiPersonalities: mbtiPersonalities,
-                          selectedPersonality: currentPersonality,
-                          onChanged: (value) {
-                            setState(() {
-                              currentPersonality = value;
-                            });
-                          },
-                        ),
-                        Visibility(
-                          visible: validatorMBTI,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LinearProgressIndicator(
+                      value: currentPage == 0
+                          ? 0
+                          : currentPage == 1
+                              ? .33
+                              : currentPage == 2
+                                  ? .66
+                                  : 1.00,
+                    ),
+                    currentPage == 0
+                        ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(
                                 height: 20,
                               ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  color: Colors.red.withAlpha(50),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 30.0, vertical: 10),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Icon(
-                                          Icons.error_rounded,
-                                          color: Colors.red.withAlpha(200),
+                              Text(
+                                "Let's get started!",
+                                style: GoogleFonts.inter(
+                                  fontSize: 30,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Before we dive into the form, please make sure you've taken the MBTI personality test on 16Personalities.",
+                                style: GoogleFonts.inter(
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Knowing your MBTI type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in tech and with a STEM strand might be suited for computer science, while an ENFJ interested in helping people and with a HUMSS strand might prefer psychology or education.",
+                                style: GoogleFonts.inter(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ]
+                                .animate(interval: 0.1.seconds)
+                                .slideX(
+                                    duration: .5.seconds,
+                                    curve: Curves.easeInOut,
+                                    begin: -.05)
+                                .fadeIn(
+                                    delay: .1.seconds, curve: Curves.easeIn),
+                          )
+                        : Container(),
+                    !(currentPage == 1)
+                        ? Container()
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "First, tell us your Myers-Briggs Type Indicator (MBTI) personality.",
+                                style: GoogleFonts.inter(
+                                  fontSize: 30,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              MBTIRadioGroup(
+                                mbtiPersonalities: mbtiPersonalities,
+                                selectedPersonality: currentPersonality,
+                                onChanged: (value) {
+                                  setState(() {
+                                    currentPersonality = value;
+                                  });
+                                },
+                              ),
+                              Visibility(
+                                visible: validatorMBTI,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        color: Colors.red.withAlpha(50),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 30.0, vertical: 10),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.error_rounded,
+                                                color:
+                                                    Colors.red.withAlpha(200),
+                                              ),
+                                              const SizedBox(
+                                                width: 20,
+                                              ),
+                                              Text(
+                                                "Please select your MBTI Personality!",
+                                                style: GoogleFonts.inter(
+                                                    color: Colors.red
+                                                        .withAlpha(200)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        const SizedBox(
-                                          width: 20,
-                                        ),
-                                        Text(
-                                          "Please select your MBTI Personality!",
-                                          style: GoogleFonts.inter(
-                                              color: Colors.red.withAlpha(200)),
-                                        ),
-                                      ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Don't know your MBTI Personality?",
+                                style: GoogleFonts.inter(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ClickWidget(
+                                  onTap: () {},
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        js.context.callMethod('open', [
+                                          "https://www.16personalities.com/free-personality-test"
+                                        ]);
+                                      },
+                                      child: Text(
+                                        "Click to Take a short assessment",
+                                        style: GoogleFonts.inter(
+                                            color: PSU_YELLOW,
+                                            fontWeight: FontWeight.w700),
+                                      ))),
+                            ]
+                                .animate(interval: 0.1.seconds)
+                                .slideX(
+                                    duration: .5.seconds,
+                                    curve: Curves.easeInOut,
+                                    begin: -.05)
+                                .fadeIn(
+                                    delay: .1.seconds, curve: Curves.easeIn),
+                          ),
+                    !(currentPage == 2)
+                        ? Container()
+                        : Form(
+                            key: _key,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20),
+                                  child: TextFormField(
+                                    controller: _interests,
+                                    validator: (value) => value == null ||
+                                            value.isEmpty
+                                        ? "Interests must not be empty!"
+                                        : value.length < 5
+                                            ? "Interests must be at least 5 characters long!"
+                                            : null,
+                                    decoration: InputDecoration(
+                                      labelText: 'What are your interests?',
+                                      // hintText: "email@example.com",
+                                      border: const OutlineInputBorder(),
+
+                                      suffixIcon: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.link,
+                                              color: Colors.black
+                                                  .withOpacity(0.2)),
+                                          const SizedBox(
+                                            width: 5,
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Don't know your MBTI Personality?",
-                          style: GoogleFonts.inter(
-                            fontSize: 20,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ClickWidget(
-                            onTap: () {},
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  js.context.callMethod('open', [
-                                    "https://www.16personalities.com/free-personality-test"
-                                  ]);
-                                },
-                                child: Text(
-                                  "Click to Take a short assessment",
-                                  style: GoogleFonts.inter(
-                                      color: PSU_YELLOW,
-                                      fontWeight: FontWeight.w700),
-                                ))),
-                      ],
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: DropdownButton<String>(
+                                      value:
+                                          selectedTrack, // Initial selected value
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          selectedTrack = newValue!;
+                                        });
+                                      },
+                                      items: academicTracks
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    )),
+                              ]
+                                  .animate(interval: 0.1.seconds)
+                                  .slideX(
+                                      duration: .5.seconds,
+                                      curve: Curves.easeInOut,
+                                      begin: -.05)
+                                  .fadeIn(
+                                      delay: .1.seconds, curve: Curves.easeIn),
+                            )),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  Visibility(
-                    visible: currentPage == 2,
-                    child: Form(
-                        key: _key,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: TextFormField(
-                                controller: _interests,
-                                validator: (value) => value == null ||
-                                        value.isEmpty
-                                    ? "Interests must not be empty!"
-                                    : value.length < 5
-                                        ? "Interests must be at least 5 characters long!"
-                                        : null,
-                                decoration: InputDecoration(
-                                  labelText: 'What are your interests?',
-                                  // hintText: "email@example.com",
-                                  border: const OutlineInputBorder(),
-
-                                  suffixIcon: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.link,
-                                          color: Colors.black.withOpacity(0.2)),
-                                      const SizedBox(
-                                        width: 5,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: TextFormField(
-                                controller: _strand,
-                                validator: (value) => value == null ||
-                                        value.isEmpty
-                                    ? "Senior High School Strand must not be empty!"
-                                    : value.length < 3
-                                        ? "Senior High School Strand must be at least 3 characters long!"
-                                        : null,
-                                decoration: InputDecoration(
-                                  labelText:
-                                      'What is your Senior High School Strand?',
-                                  // hintText: "email@example.com",
-                                  border: const OutlineInputBorder(),
-
-                                  suffixIcon: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.link,
-                                          color: Colors.black.withOpacity(0.2)),
-                                      const SizedBox(
-                                        width: 5,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Visibility(
-                        visible: currentPage != 0,
-                        child: ClickWidget(
-                            // SUBMIT FORM
-                            onTap: () {},
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        WidgetStatePropertyAll(PSU_YELLOW)),
-                                onPressed: () {
-                                  setState(() {
-                                    currentPage--;
-                                  });
-                                  // vaidate
-                                },
-                                child: Text(
-                                  "Previous",
-                                  style: GoogleFonts.inter(
-                                      color: PSU_BLUE,
-                                      fontWeight: FontWeight.w700),
-                                ))),
-                      ),
-                      Visibility(
-                        visible: currentPage != 2,
-                        child: ClickWidget(
-                            // SUBMIT FORM
-                            onTap: () {},
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  if (currentPage == 0) {
+                    Row(
+                      children: [
+                        Visibility(
+                          visible: currentPage != 0,
+                          child: ClickWidget(
+                              // SUBMIT FORM
+                              onTap: () {},
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          WidgetStatePropertyAll(PSU_YELLOW)),
+                                  onPressed: () {
                                     setState(() {
-                                      currentPage++;
+                                      currentPage--;
                                     });
-                                  } else {
+                                    // vaidate
+                                  },
+                                  child: Text(
+                                    "Previous",
+                                    style: GoogleFonts.inter(
+                                        color: PSU_BLUE,
+                                        fontWeight: FontWeight.w700),
+                                  ))),
+                        ),
+                        Visibility(
+                          visible: currentPage != 0,
+                          child: const SizedBox(
+                            width: 20,
+                          ),
+                        ),
+                        Visibility(
+                          visible: currentPage != 2,
+                          child: ClickWidget(
+                              // SUBMIT FORM
+                              onTap: () {},
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    if (currentPage == 0) {
+                                      setState(() {
+                                        currentPage++;
+                                      });
+                                    } else {
+                                      if (currentPersonality.isEmpty) {
+                                        setState(() {
+                                          validatorMBTI = true;
+                                        });
+                                      } else {
+                                        {
+                                          setState(() {
+                                            validatorMBTI = false;
+                                            if (currentPage != 2) {
+                                              currentPage++;
+                                              print(currentPage);
+                                            }
+                                          });
+                                        }
+                                      }
+                                    }
+                                    // vaidate
+                                  },
+                                  child: Text(
+                                    "Next",
+                                    style: GoogleFonts.inter(
+                                        color: PSU_YELLOW,
+                                        fontWeight: FontWeight.w700),
+                                  ))),
+                        ),
+                        Visibility(
+                          visible: currentPage != 0,
+                          child: const SizedBox(
+                            width: 20,
+                          ),
+                        ),
+                        Visibility(
+                          visible: currentPage == 2,
+                          child: ClickWidget(
+                              // SUBMIT FORM
+                              onTap: () {},
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    // vaidate
                                     if (currentPersonality.isEmpty) {
                                       setState(() {
                                         validatorMBTI = true;
                                       });
+                                      if (_key.currentState!.validate()) {}
                                     } else {
                                       {
                                         setState(() {
                                           validatorMBTI = false;
-                                          if (currentPage != 2) {
-                                            currentPage++;
-                                            print(currentPage);
-                                          }
                                         });
                                       }
+                                      if (_key.currentState!.validate()) {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              CourseRecommendationJSONScreen(
+                                                  currentPersonality,
+                                                  _interests.text,
+                                                  selectedTrack),
+                                        ));
+                                      }
                                     }
-                                  }
-                                  // vaidate
-                                },
-                                child: Text(
-                                  "Next",
-                                  style: GoogleFonts.inter(
-                                      color: PSU_YELLOW,
-                                      fontWeight: FontWeight.w700),
-                                ))),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Visibility(
-                        visible: currentPage == 2,
-                        child: ClickWidget(
-                            // SUBMIT FORM
-                            onTap: () {},
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  // vaidate
-                                  if (currentPersonality.isEmpty) {
-                                    setState(() {
-                                      validatorMBTI = true;
-                                    });
-                                    if (_key.currentState!.validate()) {}
-                                  } else {
-                                    {
-                                      setState(() {
-                                        validatorMBTI = false;
-                                      });
-                                    }
-                                    if (_key.currentState!.validate()) {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            CourseRecommendationJSONScreen(
-                                                currentPersonality,
-                                                _interests.text,
-                                                _strand.text),
-                                      ));
-                                    }
-                                  }
-                                },
-                                child: Text(
-                                  "Submit",
-                                  style: GoogleFonts.inter(
-                                      color: PSU_YELLOW,
-                                      fontWeight: FontWeight.w700),
-                                ))),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                                  },
+                                  child: Text(
+                                    "Submit",
+                                    style: GoogleFonts.inter(
+                                        color: PSU_YELLOW,
+                                        fontWeight: FontWeight.w700),
+                                  ))),
+                        ),
+                      ],
+                    ),
+                  ]),
             ),
           )
         ],

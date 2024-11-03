@@ -6,9 +6,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final SharedPreferences prefs;
+  const OnboardingScreen({super.key, required this.prefs});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -71,13 +73,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       height: 60,
                       width: 60,
                       child: ClickWidget(
-                          onTap: () {
+                          onTap: () async {
                             _pageController.nextPage(
                                 duration: .3.seconds, curve: Curves.ease);
-                            if (currentPage == 4) {
-                              Navigator.of(context)
-                                ..pushNamedAndRemoveUntil(
-                                    "/home", (Route<dynamic> route) => false);
+                            print(currentPage);
+                            if (currentPage == 3) {
+                              await widget.prefs.setBool("initScreen", true);
+                              // print(widget.prefs.getBool("initScreen"));
+
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/home", (Route<dynamic> route) => false);
                             }
                           },
                           child: ClipRRect(

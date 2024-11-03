@@ -26,8 +26,8 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   bool initScreen;
-  initScreen = prefs.getBool("ini tScreen") ?? false;
-  // print(initScreen);
+  initScreen = prefs.getBool("initScreen") ?? false;
+  print(initScreen);
   // await prefs.setBool("initScreen", true);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -35,7 +35,7 @@ void main() async {
 
   runApp(MaterialApp(
       theme: ThemeData(
-        textTheme: textTheme,
+        // textTheme: textTheme,
         inputDecorationTheme: InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -60,7 +60,7 @@ void main() async {
       ),
       initialRoute: "/",
       routes: {
-        '/': (context) => SplashScreen(initScreen),
+        '/': (context) => SplashScreen(initScreen, prefs),
         '/home': (context) => const HomeScreen(),
         '/admin-login': (context) => AdminLoginScreen(),
         '/analytics': (context) => const AnalyticsScreen(),

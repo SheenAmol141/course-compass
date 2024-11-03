@@ -45,7 +45,6 @@ class _CourseRecommendationScreenState
     final message =
         'MBTI: ${widget.currentPersonality}\nInterests: ${widget.interests}\n Strand: ${widget.strand}';
     final content = Content.text(message);
-
     final response = await chat.sendMessage(content);
     print(response.text);
     return response.text!;
