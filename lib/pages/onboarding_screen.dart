@@ -37,69 +37,71 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
-          // width: MediaQuery.of(context).size.width,
-          // height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(.0),
-                child: Image.asset("assets/logo.png"),
-              ),
-              Expanded(
-                child: ScrollConfiguration(
-                  behavior: MouseDraggableScrollBehavior(),
-                  child: PageView.builder(
-                      onPageChanged: (value) => setState(() {
-                            currentPage = value;
-                          }),
-                      controller: _pageController,
-                      itemCount: onboardData.length,
-                      itemBuilder: (context, index) {
-                        return OnboardContent(
-                            image: onboardData[index].image,
-                            title: onboardData[index].title,
-                            boldDescription: onboardData[index].boldDescription,
-                            description: onboardData[index].description);
-                      }),
+          // height: MediaQuery.of(context).size.height - 40,
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Image.asset("assets/logo.png"),
                 ),
-              ),
-              Row(
-                children: [
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: SizedBox(
-                      height: 60,
-                      width: 60,
-                      child: ClickWidget(
-                          onTap: () async {
-                            _pageController.nextPage(
-                                duration: .3.seconds, curve: Curves.ease);
-                            print(currentPage);
-                            if (currentPage == 3) {
-                              await widget.prefs.setBool("initScreen", true);
-                              // print(widget.prefs.getBool("initScreen"));
-
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/home", (Route<dynamic> route) => false);
-                            }
-                          },
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(999)),
-                            child: Container(
-                              color: PSU_BLUE,
-                              child: const Icon(
-                                Icons.navigate_next_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )),
-                    ),
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: MouseDraggableScrollBehavior(),
+                    child: PageView.builder(
+                        onPageChanged: (value) => setState(() {
+                              currentPage = value;
+                            }),
+                        controller: _pageController,
+                        itemCount: onboardData.length,
+                        itemBuilder: (context, index) {
+                          return OnboardContent(
+                              image: onboardData[index].image,
+                              title: onboardData[index].title,
+                              boldDescription:
+                                  onboardData[index].boldDescription,
+                              description: onboardData[index].description);
+                        }),
                   ),
-                ],
-              )
-            ],
+                ),
+                Row(
+                  children: [
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SizedBox(
+                        height: 60,
+                        width: 60,
+                        child: ClickWidget(
+                            onTap: () async {
+                              _pageController.nextPage(
+                                  duration: .3.seconds, curve: Curves.ease);
+                              print(currentPage);
+                              if (currentPage == 4) {
+                                await widget.prefs.setBool("initScreen", true);
+                                // print(widget.prefs.getBool("initScreen"));
+
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    "/home", (Route<dynamic> route) => false);
+                              }
+                            },
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(999)),
+                              child: Container(
+                                color: PSU_BLUE,
+                                child: const Icon(
+                                  Icons.navigate_next_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -119,29 +121,29 @@ class SingleOnboard {
 
 final List<OnboardContent> onboardData = [
   const OnboardContent(
-      image: "assets/logo.png",
+      image: "assets/waving-hand.png",
       title: "Welcome!",
       boldDescription: "Course Compass",
       description:
           " is your personalized academic guide at Pangasinan State University."),
   const OnboardContent(
-      image: "assets/logo.png",
+      image: "assets/behaviour.png",
       title: "Discover Yourself!",
       boldDescription: "",
       description: "Take the MBTI assessment."),
   const OnboardContent(
-      image: "assets/logo.png",
+      image: "assets/search-engine.png",
       title: "Explore Courses!",
       boldDescription: "",
       description: "Browse a wide range of programs."),
   const OnboardContent(
-      image: "assets/logo.png",
+      image: "assets/notice.png",
       title: "Stay Updated!",
       boldDescription: "",
       description:
           "Get the latest news and announcements about admission or enrollment."),
   const OnboardContent(
-      image: "assets/logo.png",
+      image: "assets/search-engine.png",
       title: "Personalized Recommendations!",
       boldDescription: "",
       description:
@@ -166,35 +168,40 @@ class OnboardContent extends StatelessWidget {
         const Spacer(
           flex: 2,
         ),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        //   child: Image.asset(
-        //     image,
-        //   ),
-        // ),
-        // temporary image below
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40.0),
-          child: SizedBox(
-              width: 200,
-              child: RotatedBox(
-                quarterTurns: 1,
-                child: Icon(
-                  size: 400,
-                  Icons.rectangle_rounded,
-                ),
-              )),
+        SizedBox(
+          width: 300,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: Image.asset(
+              width: 300,
+              height: 300,
+              image,
+            ),
+          ),
         ),
+        // temporary image below
+        // const Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 40.0),
+        //   child: SizedBox(
+        //       width: 200,
+        //       child: RotatedBox(
+        //         quarterTurns: 1,
+        //         child: Icon(
+        //           size: 400,
+        //           Icons.rectangle_rounded,
+        //         ),
+        //       )),
+        // ),
         const Spacer(
           flex: 2,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40.0),
           child: Text(
-            textAlign: TextAlign.center,
-            title,
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
+              textAlign: TextAlign.center,
+              title,
+              style: GoogleFonts.inter(
+                  fontSize: 30, fontWeight: FontWeight.w800, color: PSU_BLUE)),
         ),
         const Spacer(
           flex: 1,
