@@ -47,6 +47,9 @@ dependencies:
   swipe_cards: ^2.0.0+1
   flutter_animate: ^4.5.0
   shared_preferences: ^2.3.2
+  flutter_quill: ^10.5.17
+
+  # html_editor_enhanced: ^2.6.0
 
 dev_dependencies:
   flutter_test:

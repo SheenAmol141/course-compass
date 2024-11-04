@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
+import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SingleCurricularOfferScreen extends StatelessWidget {
   DocumentSnapshot<Object?> admission_new;
@@ -66,13 +68,43 @@ class SingleCurricularOfferScreen extends StatelessWidget {
                           style: GoogleFonts.inter(fontSize: 16),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, bottom: 20),
-                        child: Text(
-                          "Interested ${admission_new["interested"]}",
-                          style: GoogleFonts.inter(fontSize: 16),
-                        ),
-                      ),
+                      StreamBuilder(
+                          stream: firestore
+                              .collection("curricular_offerings")
+                              .doc("${admission_new.id}")
+                              .collection("analytics")
+                              .orderBy('time_added', descending: true)
+                              .limit(1)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.red,
+                                ),
+                              );
+                            } else if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: PSU_YELLOW,
+                                ),
+                              );
+                            } else {
+                              DocumentSnapshot course =
+                                  snapshot.data!.docs.toList()[0];
+                              print(course);
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, bottom: 20),
+                                child: Text(
+                                  "Interested ${course["interested"]}",
+                                  // "a",
+                                  style: GoogleFonts.inter(fontSize: 16),
+                                ),
+                              );
+                            }
+                          }),
                       InterestedButton(admission_new: admission_new)
                     ],
                   ),
@@ -104,35 +136,87 @@ class _InterestedButtonState extends State<InterestedButton> {
     return Row(
       children: [
         ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               setState(() {
                 loading = true;
               });
-              Store()
-                  .addInterested(
-                      courseTitle: widget.admission_new.id,
-                      current: widget.admission_new["interested"])
-                  .then(
-                (value) {
-                  setState(() {
-                    loading = false;
-                  });
-                  showDialog(
-                      // login success!
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            content: const Text(
-                                "Thank you for letting us know you are interested in this course!"),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text("Okay"))
-                            ],
-                          ));
-                },
-              );
+
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              if (pref.getBool(
+                      "${widget.admission_new["code"]} + ${widget.admission_new["campus"]} interested") ??
+                  false) {
+                setState(() {
+                  loading = false;
+                });
+                showDialog(
+                    // login success!
+                    context: context,
+                    builder: (context) => AlertDialog(
+                          content: const Text("You've already let us know."),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Okay"))
+                          ],
+                        ));
+              } else {
+                Store()
+                    .incrementInterestedCountCampus(
+                        widget.admission_new["code"],
+                        widget.admission_new["campus"])
+                    .then(
+                  (value) {
+                    setState(() {
+                      loading = false;
+                    });
+                    pref.setBool(
+                        "${widget.admission_new["code"]} + ${widget.admission_new["campus"]} interested",
+                        true);
+                    showDialog(
+                        // login success!
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              content: const Text(
+                                  "Thank you for letting us know you are interested in this course!"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Okay"))
+                              ],
+                            ));
+                  },
+                );
+              }
+
+              // Store()
+              //     .addInterested(
+              //         courseTitle: widget.admission_new.id,
+              //         current: widget.admission_new["interested"])
+              //     .then(
+              //   (value) {
+              //     setState(() {
+              //       loading = false;
+              //     });
+              //     showDialog(
+              //         // login success!
+              //         context: context,
+              //         builder: (context) => AlertDialog(
+              //               content: const Text(
+              //                   "Thank you for letting us know you are interested in this course!"),
+              //               actions: [
+              //                 TextButton(
+              //                     onPressed: () {
+              //                       Navigator.of(context).pop();
+              //                     },
+              //                     child: const Text("Okay"))
+              //               ],
+              //             ));
+              //   },
+              // );
             },
             child: const Text("I'm Interested!")),
         loading

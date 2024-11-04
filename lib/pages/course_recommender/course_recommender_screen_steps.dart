@@ -171,7 +171,7 @@ class _CourseRecommenderStepsScreenState
                                 height: 20,
                               ),
                               Text(
-                                "Knowing your MBTI type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in tech and with a STEM strand might be suited for computer science, while an ENFJ interested in helping people and with a HUMSS strand might prefer psychology or education.",
+                                "Knowing your MBTI personality type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in tech and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
                                 ),

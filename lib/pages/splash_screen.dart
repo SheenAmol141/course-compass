@@ -19,6 +19,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  void delayed() {
     if (!widget.initScreen) {
       print("now ${!widget.initScreen}");
       Future.delayed(Duration(seconds: 1), () {
@@ -38,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    delayed();
     return Scaffold(
       body: Center(
         child: Image.asset("assets/splashlogo.png"),

@@ -5,6 +5,20 @@ import 'package:course_compass/pages/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+String formatDate(DateTime dateTime) {
+  final formatter = DateFormat('MMMM, dd, yyyy');
+  return formatter.format(dateTime);
+}
+
+String getCurrentAndNextYear() {
+  final now = DateTime.now();
+  int currentYear = now.year;
+  // currentYear++;
+  final nextYear = currentYear + 1;
+  return '$currentYear - $nextYear';
+}
 
 class Auth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -64,13 +78,32 @@ class Store {
       "code": coursecode,
       "campus": campus,
       "time_added": DateTime.now(),
+      // "interested": 0,
+      // "matched": 0
+    };
+    final Map<String, dynamic> initAnalytics = {
       "interested": 0,
-      "matched": 0
+      "matched": 0,
+      "time_added": DateTime.now(),
     };
 
     await Storage().uploadCampusImage(title: coursetitle, img: img);
 
-    _firebaseFirestore.collection("curricular_offerings").add(course);
+    // _firebaseFirestore.collection("curricular_offerings").add(course);
+    _firebaseFirestore
+        .collection("curricular_offerings")
+        .doc("$coursetitle - $campus")
+        .set(course)
+        .then(
+      (value) {
+        _firebaseFirestore
+            .collection("curricular_offerings")
+            .doc("$coursetitle - $campus")
+            .collection("analytics")
+            .doc(formatDate(DateTime.now()))
+            .set(initAnalytics);
+      },
+    );
   }
 
   Future<void> addInterested({
@@ -166,9 +199,50 @@ class Store {
           .get();
 
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
-        await document.reference.update({
+        QuerySnapshot analyticsSnapshot = await FirebaseFirestore.instance
+            .collection("curricular_offerings")
+            .doc("${document.id}")
+            .collection("analytics")
+            .orderBy("time_added", descending: true)
+            .limit(1)
+            .get();
+
+        await analyticsSnapshot.docs[0].reference.update({
           'interested': FieldValue.increment(1),
         });
+        // await document.reference.update({
+        //   'interested': FieldValue.increment(1),
+        // });
+      }
+    } catch (e) {
+      print('Error incrementing interested count: $e');
+    }
+  }
+
+  Future<void> incrementInterestedCountCampus(
+      String code, String campus) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('curricular_offerings')
+          .where('code', isEqualTo: code)
+          .where("campus", isEqualTo: campus)
+          .get();
+
+      for (QueryDocumentSnapshot document in querySnapshot.docs) {
+        QuerySnapshot analyticsSnapshot = await FirebaseFirestore.instance
+            .collection("curricular_offerings")
+            .doc("${document.id}")
+            .collection("analytics")
+            .orderBy("time_added", descending: true)
+            .limit(1)
+            .get();
+
+        await analyticsSnapshot.docs[0].reference.update({
+          'interested': FieldValue.increment(1),
+        });
+        // await document.reference.update({
+        //   'interested': FieldValue.increment(1),
+        // });
       }
     } catch (e) {
       print('Error incrementing interested count: $e');
@@ -183,9 +257,20 @@ class Store {
           .get();
 
       for (QueryDocumentSnapshot document in querySnapshot.docs) {
-        await document.reference.update({
+        QuerySnapshot analyticsSnapshot = await FirebaseFirestore.instance
+            .collection("curricular_offerings")
+            .doc("${document.id}")
+            .collection("analytics")
+            .orderBy("time_added", descending: true)
+            .limit(1)
+            .get();
+
+        await analyticsSnapshot.docs[0].reference.update({
           'matched': FieldValue.increment(1),
         });
+        // await document.reference.update({
+        //   'interested': FieldValue.increment(1),
+        // });
       }
     } catch (e) {
       print('Error incrementing interested count: $e');
@@ -256,6 +341,40 @@ class Store {
     }
     print(camp);
     return camp;
+  }
+
+  Future<void> createNewSchoolYear() async {
+    // Get a reference to the "curricular_offerings" collection
+    final offeringsCollection = firestore.collection('curricular_offerings');
+
+    // Get all documents in the collection as a query snapshot
+    final snapshot = await offeringsCollection.get();
+
+    // Loop through each document in the snapshot
+    for (final doc in snapshot.docs) {
+      // Create a new document within the "analytics" collection
+      // with a unique ID and the specified data
+      await firestore
+          .collection("school_years")
+          .doc(getCurrentAndNextYear())
+          .set({"time_added": DateTime.now()}).then(
+        (value) async {
+          await firestore
+              .collection("curricular_offerings")
+              .doc(doc.id)
+              .collection('analytics')
+              .doc(getCurrentAndNextYear())
+              .set({
+            'interested': 0,
+            'matched': 0,
+            'time_added': DateTime.now(),
+          });
+        },
+      );
+
+      // (Optional) Update the original document with the analytics reference ID
+      // doc.reference.update({'analyticsId': analyticsRef.id});
+    }
   }
 }
 

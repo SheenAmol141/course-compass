@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CardTemplate extends StatelessWidget {
   final Widget child;
@@ -158,13 +159,15 @@ class FirebaseImageWidget extends StatelessWidget {
 // import 'package:flutter/material.dart';
 
 class AnalyticsChart extends StatefulWidget {
-  AnalyticsChart({super.key, required this.campus, required this.matched});
+  const AnalyticsChart(
+      {super.key,
+      required this.campus,
+      required this.matched,
+      required this.schoolYear});
 
-  final Color dark = PSU_BLUE;
-  final Color normal = PSU_BLUE;
-  final Color light = PSU_BLUE;
   final String campus;
   final bool matched;
+  final String schoolYear;
 
   @override
   State<StatefulWidget> createState() => AnalyticsChartState();
@@ -209,7 +212,9 @@ class AnalyticsChartState extends State<AnalyticsChart> {
         .get()
         .then(
       (querySnapshot) {
-        print("Successfully completed");
+        print(!widget.matched
+            ? "Successfully completed interested"
+            : "Successfully completed matched");
         for (var docSnapshot in querySnapshot.docs) {
           courseTitle.insert(0, docSnapshot["code"]);
           courseInterestedNum.insert(
@@ -225,12 +230,80 @@ class AnalyticsChartState extends State<AnalyticsChart> {
     );
   }
 
+  getCourseNew() {
+    FirebaseFirestore.instance
+        .collection("curricular_offerings")
+        .where("campus", isEqualTo: widget.campus)
+        .get()
+        .then(
+      (querySnapshot) {
+        // print(!widget.matched
+        //     ? "Successfully completed interested"
+        //     : "Successfully completed matched");
+        for (var docSnapshot in querySnapshot.docs) {
+          courseTitle.insert(
+              0, docSnapshot["code"]); //  COURSE CODE TO ANALYTICS
+          print(docSnapshot.id);
+          if (widget.schoolYear == "current") {
+            FirebaseFirestore.instance
+                .collection("curricular_offerings")
+                .doc(docSnapshot.id)
+                .collection("analytics")
+                .orderBy("time_added", descending: true)
+                .get()
+                .then(
+              (value) {
+                print("time add" + value.docs[0].id);
+                // for (var docSnapshotCourse in querySnapshot.docs) {}
+                // print(value.docs[0].id);
+                courseInterestedNum.insert(0,
+                    value.docs[0][!widget.matched ? "interested" : "matched"]);
+                print('${courseTitle[0]} = ${courseInterestedNum[0]}aaaa');
+              },
+            ).then(
+              (value) => setState(() {
+                loading = false;
+              }),
+            );
+          } else {
+            FirebaseFirestore.instance
+                .collection("curricular_offerings")
+                .doc(docSnapshot.id)
+                .collection("analytics")
+                .doc(widget.schoolYear)
+                .get()
+                .then(
+              (value) {
+                // for (var docSnapshotCourse in querySnapshot.docs) {}
+                // print(value.docs[0].id);
+                courseInterestedNum.insert(
+                    0, value[!widget.matched ? "interested" : "matched"]);
+                print('${courseTitle[0]} = ${courseInterestedNum[0]}aaaa');
+              },
+            ).then(
+              (value) => setState(() {
+                loading = false;
+              }),
+            );
+          }
+
+          // courseInterestedNum.insert(
+          //     0, docSnapshot[!widget.matched ? "interested" : "matched"]);
+          // print('${courseTitle[0]} = ${courseInterestedNum[0]}');
+        }
+      },
+      onError: (e) => print("Error completing: $e"),
+    );
+  }
+
+  late String year;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    year = widget.schoolYear;
     print(loading);
-    getCourse();
+    getCourseNew();
   }
 
   @override
@@ -275,13 +348,13 @@ class AnalyticsChartState extends State<AnalyticsChart> {
                         ),
                       ),
                       gridData: FlGridData(
-                        show: false,
+                        show: true,
                         checkToShowHorizontalLine: (value) => value % 10 == 0,
-                        // getDrawingHorizontalLine: (value) => FlLine(
-                        //   color: PSU_BLUE,
-                        //   strokeWidth: 1,
-                        // ),
-                        drawVerticalLine: false,
+                        getDrawingHorizontalLine: (value) => FlLine(
+                          color: PSU_BLUE,
+                          strokeWidth: 1,
+                        ),
+                        drawVerticalLine: true,
                       ),
                       borderData: FlBorderData(
                         show: false,
@@ -319,7 +392,8 @@ class AnalyticsChartState extends State<AnalyticsChart> {
       );
       i++;
     }
-    print(interestedBars.length);
+    print(courseInterestedNum);
+    print("le ${interestedBars.length}");
     return interestedBars;
   }
 }

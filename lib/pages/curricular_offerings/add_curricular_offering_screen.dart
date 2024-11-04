@@ -82,9 +82,10 @@ class _AddCurricularOfferingScreenState
                                     width: 300,
                                     enableFilter: false,
                                     enableSearch: false,
-                                    initialSelection: 'lingayen',
+                                    initialSelection: _campus,
                                     onSelected: (value) {
                                       _campus = value!;
+                                      print(_campus);
                                     },
                                     inputDecorationTheme:
                                         const InputDecorationTheme(),
