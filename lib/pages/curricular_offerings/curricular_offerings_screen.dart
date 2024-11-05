@@ -203,7 +203,16 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                             child: SizedBox(
                               // width: 300,
                               child: DropdownButton<String>(
-                                menuWidth: 300,
+                                focusColor: PSU_YELLOW,
+                                style: GoogleFonts.inter(color: PSU_BLUE),
+                                borderRadius: BorderRadius.circular(10),
+                                hint: const Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                      "Select your Senior High School Strand"),
+                                ),
+                                // menuWidth: 300,
                                 value: currentCampus, // Initial value
                                 items: items,
                                 onChanged: (value) {
@@ -245,21 +254,21 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                         ? firestore
                                             .collection("curricular_offerings")
                                             .where("campus",
-                                                isEqualTo: "alaminos")
+                                                isEqualTo: "asingan")
                                             .snapshots()
                                         : currentCampus == "BAYAMBANG CAMPUS"
                                             ? firestore
                                                 .collection(
                                                     "curricular_offerings")
                                                 .where("campus",
-                                                    isEqualTo: "alaminos")
+                                                    isEqualTo: "bayambang")
                                                 .snapshots()
                                             : currentCampus == "BINMALEY CAMPUS"
                                                 ? firestore
                                                     .collection(
                                                         "curricular_offerings")
                                                     .where("campus",
-                                                        isEqualTo: "alaminos")
+                                                        isEqualTo: "binmaley")
                                                     .snapshots()
                                                 : currentCampus ==
                                                         "INFANTA CAMPUS"
@@ -268,7 +277,7 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                             "curricular_offerings")
                                                         .where("campus",
                                                             isEqualTo:
-                                                                "alaminos")
+                                                                "infanta")
                                                         .snapshots()
                                                     : currentCampus ==
                                                             "LINGAYEN CAMPUS"
@@ -286,7 +295,7 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                     "curricular_offerings")
                                                                 .where("campus",
                                                                     isEqualTo:
-                                                                        "alaminos")
+                                                                        "san-carlos")
                                                                 .snapshots()
                                                             : currentCampus ==
                                                                     "STA MARIA CAMPUS"
@@ -296,7 +305,7 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                     .where(
                                                                         "campus",
                                                                         isEqualTo:
-                                                                            "alaminos")
+                                                                            "santa-maria")
                                                                     .snapshots()
                                                                 : currentCampus ==
                                                                         "URDANETA CITY CAMPUS"
@@ -306,7 +315,7 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                         .where(
                                                                             "campus",
                                                                             isEqualTo:
-                                                                                "alaminos")
+                                                                                "urdaneta")
                                                                         .snapshots()
                                                                     : currentCampus ==
                                                                             "SCHOOL OF ADVANCED STUDIES"
@@ -314,12 +323,12 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                             .collection(
                                                                                 "curricular_offerings")
                                                                             .where("campus",
-                                                                                isEqualTo: "alaminos")
+                                                                                isEqualTo: "SCHOOL OF ADVANCED STUDIES")
                                                                             .snapshots()
                                                                         : currentCampus == "OPEN UNIVERSITY SYSTEMS"
-                                                                            ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "alaminos").snapshots()
+                                                                            ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "OPEN UNIVERSITY SYSTEMS").snapshots()
                                                                             : currentCampus == "EXPANDED TERTIARY EDUCATION EQUIVALENCY AND ACCREDITATION PROGRAM (ETEEAP)"
-                                                                                ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "alaminos").snapshots()
+                                                                                ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "EXPANDED TERTIARY EDUCATION EQUIVALENCY AND ACCREDITATION PROGRAM (ETEEAP)").snapshots()
                                                                                 : firestore.collection("curricular_offerings").orderBy("time_added", descending: true).snapshots(),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {

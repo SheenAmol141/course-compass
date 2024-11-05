@@ -9,6 +9,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
 
+import 'package:percent_indicator/linear_percent_indicator.dart';
+
+final List<Shadow> shadows = [
+  Shadow(color: Colors.black.withOpacity(.4), blurRadius: 3)
+];
+
 List<String> mbtiPersonalities = [
   "ISTJ",
   "ISTP",
@@ -136,15 +142,55 @@ class _CourseRecommenderStepsScreenState
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    LinearProgressIndicator(
-                      value: currentPage == 0
+                    LinearPercentIndicator(
+                      barRadius: Radius.circular(9999),
+                      animation: true,
+                      animationDuration: 1000,
+                      animateFromLastPercent: true,
+                      center: currentPage == 0
+                          ? Text(
+                              "Let's Start!",
+                              style: GoogleFonts.inter(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                  shadows: shadows),
+                            )
+                          : currentPage == 1
+                              ? Text(
+                                  "Just a bit more!",
+                                  style: GoogleFonts.inter(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      shadows: shadows),
+                                )
+                              : Text(
+                                  "Almost there!",
+                                  style: GoogleFonts.inter(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w800,
+                                      shadows: shadows),
+                                ),
+                      width: 400.0,
+                      lineHeight: 35.0,
+                      percent: currentPage == 0
                           ? 0
                           : currentPage == 1
                               ? .33
                               : currentPage == 2
                                   ? .66
                                   : 1.00,
+                      backgroundColor: PSU_YELLOW,
+                      progressColor: PSU_BLUE,
                     ),
+                    // LinearProgressIndicator(
+                    //   value: currentPage == 0
+                    //       ? 0
+                    //       : currentPage == 1
+                    //           ? .33
+                    //           : currentPage == 2
+                    //               ? .66
+                    //               : 1.00,
+                    // ),
                     currentPage == 0
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +217,33 @@ class _CourseRecommenderStepsScreenState
                                 height: 20,
                               ),
                               Text(
-                                "Knowing your MBTI personality type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in tech and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
+                                "This button will redirect you to the 16Personalities free personality test.",
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ClickWidget(
+                                  onTap: () {},
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        js.context.callMethod('open', [
+                                          "https://www.16personalities.com/free-personality-test"
+                                        ]);
+                                      },
+                                      child: Text(
+                                        "Click to Take a short assessment",
+                                        style: GoogleFonts.inter(
+                                            color: PSU_YELLOW,
+                                            fontWeight: FontWeight.w700),
+                                      ))),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Knowing your MBTI personality type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in technology and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
                                 ),
@@ -253,6 +325,24 @@ class _CourseRecommenderStepsScreenState
                               const SizedBox(
                                 height: 20,
                               ),
+                              RichText(
+                                  text: TextSpan(
+                                      style: GoogleFonts.inter(
+                                        fontSize: 24,
+                                      ),
+                                      children: [
+                                    const TextSpan(text: "I am an "),
+                                    TextSpan(
+                                        text: currentPersonality,
+                                        style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w800,
+                                          color: PSU_BLUE,
+                                          fontSize: 28,
+                                        ))
+                                  ])),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               Text(
                                 "Don't know your MBTI Personality?",
                                 style: GoogleFonts.inter(
@@ -260,7 +350,7 @@ class _CourseRecommenderStepsScreenState
                                 ),
                               ),
                               const SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               ClickWidget(
                                   onTap: () {},
@@ -290,6 +380,7 @@ class _CourseRecommenderStepsScreenState
                         : Form(
                             key: _key,
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Padding(
@@ -304,9 +395,9 @@ class _CourseRecommenderStepsScreenState
                                             : null,
                                     decoration: InputDecoration(
                                       labelText: 'What are your interests?',
-                                      // hintText: "email@example.com",
+                                      hintText:
+                                          "You can add multiple (separate with a comma ,)",
                                       border: const OutlineInputBorder(),
-
                                       suffixIcon: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
@@ -324,7 +415,16 @@ class _CourseRecommenderStepsScreenState
                                 Padding(
                                     padding: const EdgeInsets.only(top: 20),
                                     child: DropdownButton<String>(
-                                      menuWidth: 300,
+                                      focusColor: PSU_YELLOW,
+                                      style: GoogleFonts.inter(color: PSU_BLUE),
+                                      borderRadius: BorderRadius.circular(10),
+                                      hint: const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                            "Select your Senior High School Strand"),
+                                      ),
+                                      // menuWidth: 300,
                                       value:
                                           selectedTrack, // Initial selected value
                                       onChanged: (String? newValue) {
