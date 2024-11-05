@@ -212,14 +212,10 @@ class AnalyticsChartState extends State<AnalyticsChart> {
         .get()
         .then(
       (querySnapshot) {
-        print(!widget.matched
-            ? "Successfully completed interested"
-            : "Successfully completed matched");
         for (var docSnapshot in querySnapshot.docs) {
           courseTitle.insert(0, docSnapshot["code"]);
           courseInterestedNum.insert(
               0, docSnapshot[!widget.matched ? "interested" : "matched"]);
-          print('${courseTitle[0]} = ${courseInterestedNum[0]}');
         }
       },
       onError: (e) => print("Error completing: $e"),
@@ -231,6 +227,8 @@ class AnalyticsChartState extends State<AnalyticsChart> {
   }
 
   getCourseNew() {
+    print(widget.campus);
+
     FirebaseFirestore.instance
         .collection("curricular_offerings")
         .where("campus", isEqualTo: widget.campus)
@@ -241,9 +239,9 @@ class AnalyticsChartState extends State<AnalyticsChart> {
         //     ? "Successfully completed interested"
         //     : "Successfully completed matched");
         for (var docSnapshot in querySnapshot.docs) {
+          print("got ${widget.campus}");
           courseTitle.insert(
               0, docSnapshot["code"]); //  COURSE CODE TO ANALYTICS
-          print(docSnapshot.id);
           if (widget.schoolYear == "current") {
             FirebaseFirestore.instance
                 .collection("curricular_offerings")
@@ -253,12 +251,10 @@ class AnalyticsChartState extends State<AnalyticsChart> {
                 .get()
                 .then(
               (value) {
-                print("time add" + value.docs[0].id);
                 // for (var docSnapshotCourse in querySnapshot.docs) {}
                 // print(value.docs[0].id);
                 courseInterestedNum.insert(0,
                     value.docs[0][!widget.matched ? "interested" : "matched"]);
-                print('${courseTitle[0]} = ${courseInterestedNum[0]}aaaa');
               },
             ).then(
               (value) => setState(() {
@@ -278,7 +274,6 @@ class AnalyticsChartState extends State<AnalyticsChart> {
                 // print(value.docs[0].id);
                 courseInterestedNum.insert(
                     0, value[!widget.matched ? "interested" : "matched"]);
-                print('${courseTitle[0]} = ${courseInterestedNum[0]}aaaa');
               },
             ).then(
               (value) => setState(() {
@@ -302,7 +297,6 @@ class AnalyticsChartState extends State<AnalyticsChart> {
     // TODO: implement initState
     super.initState();
     year = widget.schoolYear;
-    print(loading);
     getCourseNew();
   }
 
@@ -392,8 +386,6 @@ class AnalyticsChartState extends State<AnalyticsChart> {
       );
       i++;
     }
-    print(courseInterestedNum);
-    print("le ${interestedBars.length}");
     return interestedBars;
   }
 }

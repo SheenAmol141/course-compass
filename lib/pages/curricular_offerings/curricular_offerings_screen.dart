@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:course_compass/auth.dart';
 import 'package:course_compass/blue_menu.dart';
@@ -9,6 +11,7 @@ import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/curricular_offerings/single_curricular_offer_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CurricularOfferingsScreen extends StatefulWidget {
@@ -153,7 +156,8 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddCurricularOfferingScreen(),
+                  builder: (context) =>
+                      const AddCurricularOfferingQuillScreen(),
                 ));
               })
           : Container(),
@@ -490,7 +494,10 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                           ),
                         ),
                         Text(
-                          courses[index]["description"],
+                          // courses[index]["description"],
+                          Document.fromJson(
+                                  jsonDecode(courses[index]["description"]))
+                              .toPlainText(),
                           style: GoogleFonts.inter(
                             fontSize: 16,
                           ),

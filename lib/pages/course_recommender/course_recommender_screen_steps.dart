@@ -143,7 +143,7 @@ class _CourseRecommenderStepsScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     LinearPercentIndicator(
-                      barRadius: Radius.circular(9999),
+                      barRadius: const Radius.circular(9999),
                       animation: true,
                       animationDuration: 1000,
                       animateFromLastPercent: true,
@@ -243,7 +243,7 @@ class _CourseRecommenderStepsScreenState
                                 height: 20,
                               ),
                               Text(
-                                "Knowing your MBTI personality type, along with your interests and high school strand, helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in technology and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
+                                "Knowing your MBTI personality type, along with your interests and high school strand helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in technology and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
                                 ),
@@ -325,21 +325,38 @@ class _CourseRecommenderStepsScreenState
                               const SizedBox(
                                 height: 20,
                               ),
-                              RichText(
-                                  text: TextSpan(
-                                      style: GoogleFonts.inter(
-                                        fontSize: 24,
+                              SizedBox(
+                                height: 40,
+                                child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 7.0),
+                                        child: Text(
+                                          "I am an  ",
+                                          style:
+                                              GoogleFonts.inter(fontSize: 28),
+                                        ),
                                       ),
-                                      children: [
-                                    const TextSpan(text: "I am an "),
-                                    TextSpan(
-                                        text: currentPersonality,
-                                        style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w800,
-                                          color: PSU_BLUE,
-                                          fontSize: 28,
-                                        ))
-                                  ])),
+                                      currentPersonality.isEmpty
+                                          ? Container()
+                                          : Text(currentPersonality,
+                                                  style: GoogleFonts.inter(
+                                                    fontWeight: FontWeight.w800,
+                                                    color: PSU_BLUE,
+                                                    fontSize: 34,
+                                                  ))
+                                              .animate()
+                                              // .slideY(
+                                              //     duration: .5.seconds,
+                                              //     curve: Curves.easeInOut,
+                                              //     begin: -.05)
+                                              .fadeIn(
+                                                  delay: .1.seconds,
+                                                  curve: Curves.easeIn),
+                                    ]),
+                              ),
                               const SizedBox(
                                 height: 20,
                               ),

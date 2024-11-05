@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:course_compass/auth.dart';
@@ -8,30 +9,45 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:flutter_summernote/flutter_summernote.dart';
 import 'dart:js' as js;
 import 'dart:html';
 
 import 'package:image_picker_web/image_picker_web.dart';
 
-class AddCurricularOfferingHTMLScreen extends StatefulWidget {
-  const AddCurricularOfferingHTMLScreen({super.key});
+class AddCurricularOfferingQuillScreen extends StatefulWidget {
+  const AddCurricularOfferingQuillScreen({super.key});
 
   @override
-  State<AddCurricularOfferingHTMLScreen> createState() =>
-      _AddCurricularOfferingHTMLScreenState();
+  State<AddCurricularOfferingQuillScreen> createState() =>
+      _AddCurricularOfferingQuillScreenState();
 }
 
-class _AddCurricularOfferingHTMLScreenState
-    extends State<AddCurricularOfferingHTMLScreen> {
+class _AddCurricularOfferingQuillScreenState
+    extends State<AddCurricularOfferingQuillScreen> {
   String? dataUrl = null;
   File? image = null;
   String _campus = 'lingayen';
+  String plainDescription = '';
   final _key = GlobalKey<FormState>();
   final TextEditingController _title = TextEditingController();
-  final TextEditingController _description = TextEditingController();
   final TextEditingController _code = TextEditingController();
-  QuillController _controller = QuillController.basic();
+
+  late QuillController quillController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    quillController = QuillController.basic();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    quillController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // final TextEditingController _link = TextEditingController();
@@ -117,7 +133,7 @@ class _AddCurricularOfferingHTMLScreenState
                                           value: "santa-maria",
                                           label: "Santa Maria Campus"),
                                       DropdownMenuEntry(
-                                          value: "urdaneta ",
+                                          value: "urdaneta",
                                           label: "Urdaneta City Campus"),
                                     ]),
                               ),
@@ -162,6 +178,7 @@ class _AddCurricularOfferingHTMLScreenState
                               )
                             ],
                           ),
+
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
@@ -225,56 +242,28 @@ class _AddCurricularOfferingHTMLScreenState
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 500,
-                            width: 500,
-                            child: Column(
-                              children: [
-                                QuillSimpleToolbar(
-                                  controller: _controller,
-                                  configurations:
-                                      const QuillSimpleToolbarConfigurations(),
-                                ),
-                                Expanded(
-                                  child: QuillEditor.basic(
-                                    controller: _controller,
+                          Padding(
+                              padding: edgeInsets,
+                              child: Column(
+                                children: [
+                                  QuillSimpleToolbar(
+                                    controller: quillController,
                                     configurations:
-                                        const QuillEditorConfigurations(),
+                                        const QuillSimpleToolbarConfigurations(),
                                   ),
-                                )
-                              ],
-                            ),
-                          )
-                          // Padding(
-                          //   padding: edgeInsets,
-                          //   child: TextFormField(
-                          //     minLines: 3,
-                          //     maxLines: 888,
-                          //     controller: _description,
-                          //     validator: (value) => value == null ||
-                          //             value.isEmpty
-                          //         ? "Course Description must not be empty!"
-                          //         : value.length < 5
-                          //             ? "Course Description must be at least 5 characters long!"
-                          //             : null,
-                          //     decoration: InputDecoration(
-                          //       labelText: 'Course Description',
-                          //       // hintText: "email@example.com",
-                          //       border: const OutlineInputBorder(),
-
-                          //       suffixIcon: Row(
-                          //         mainAxisSize: MainAxisSize.min,
-                          //         children: [
-                          //           Icon(Icons.description_rounded,
-                          //               color: Colors.black.withOpacity(0.2)),
-                          //           const SizedBox(
-                          //             width: 5,
-                          //           )
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
+                                  SizedBox(
+                                    height: 300,
+                                    child: QuillEditor.basic(
+                                      controller: quillController,
+                                      configurations:
+                                          const QuillEditorConfigurations(
+                                              minHeight: 10,
+                                              placeholder:
+                                                  "Course Description"),
+                                    ),
+                                  ),
+                                ],
+                              )),
                           // Padding(
                           //   padding: edgeInsets,
                           //   child: TextFormField(
@@ -304,7 +293,6 @@ class _AddCurricularOfferingHTMLScreenState
                           //   ),
                           // ),
 
-                          ,
                           dataUrl != null
                               ? Padding(
                                   padding: const EdgeInsets.all(5.0),
@@ -320,17 +308,17 @@ class _AddCurricularOfferingHTMLScreenState
                               child: ElevatedButton(
                                   onPressed: () {
                                     if (_key.currentState!.validate()) {
-                                      print(_title.text +
-                                          _code.text +
-                                          _description.text +
-                                          _campus);
+                                      print("upload " + _campus);
                                       _key.currentState!.validate();
                                       Store()
                                           .uploadCourse(
                                               coursetitle: _title.text,
                                               coursecode: _code.text,
-                                              courseDescription:
-                                                  _description.text,
+                                              courseDescription: jsonEncode(
+                                                      quillController.document
+                                                          .toDelta()
+                                                          .toJson()) ??
+                                                  "",
                                               campus: _campus,
                                               img: image!)
                                           .then(

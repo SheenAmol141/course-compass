@@ -66,6 +66,19 @@ class Store {
     _firebaseFirestore.collection("admission_news").add(admissionNews);
   }
 
+  Future<void> uploadGuide(
+      {required String title,
+      required String description,
+      required String plainDescription}) async {
+    final Map<String, dynamic> guide = {
+      "title": title,
+      "description": description,
+      "plain_description": plainDescription,
+      "time_added": DateTime.now()
+    };
+    _firebaseFirestore.collection("guides").add(guide);
+  }
+
   Future<void> uploadCourse(
       {required String coursetitle,
       required String courseDescription,
@@ -95,12 +108,19 @@ class Store {
         .doc("$coursetitle - $campus")
         .set(course)
         .then(
-      (value) {
+      (value) async {
+        String currentYear =
+            await _firebaseFirestore.collection("school_years").get().then(
+          (value) {
+            return value.docs[0].id;
+          },
+        );
+
         _firebaseFirestore
             .collection("curricular_offerings")
             .doc("$coursetitle - $campus")
             .collection("analytics")
-            .doc(formatDate(DateTime.now()))
+            .doc(currentYear)
             .set(initAnalytics);
       },
     );
@@ -120,6 +140,14 @@ class Store {
 
   void deleteAdmission(String id, BuildContext context) {
     _firebaseFirestore.collection("admission_news").doc(id).delete().then(
+      (value) {
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  void deleteGuide(String id, BuildContext context) {
+    _firebaseFirestore.collection("guides").doc(id).delete().then(
       (value) {
         Navigator.of(context).pop();
       },

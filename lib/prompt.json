@@ -607,7 +607,37 @@ you will be replying in JSON with a schema
 use this template for the instructions as well
 if course code is not mentioned just leave it as empty string
 
-{
+
+    "MBTI": "<MBTI here>",
+"Strand": "<Strand here>",
+"Interests": "<interests here>",
+"mbtiIntro": "<brief intro of mbti>",
+"recommendIntro": "<brief intro of why recommended (correlate mbti interest and strand)>",
+"Course Recommendations": [
+    "<Course Recommendation 1>",
+    "<Course Recommendation 2>",
+    "<Course Recommendation 3>"
+],
+"Campuses of Course 1": [],
+"Campuses of Course 2": [],
+"Campuses of Course 3": [],
+"Course Code": [
+    "<Course Code of Course 1>",
+    "<Course Code of Course 2>",
+    "<Course Code of Course 3>"
+],
+"Course Explanation": [
+    "<Explanation on why recommendation 1 is chosen (correlate mbti interest and strand)>",
+    "<Explanation on why recommendation 2 is chosen (correlate mbti interest and strand)>",
+    "<Explanation on why recommendation 3 is chosen (correlate mbti interest and strand)>"
+]
+
+
+
+
+
+
+    {
     "MBTI": "<MBTI here>",
     "Strand": "<Strand here>",
     "Interests": "<interests here>",
@@ -623,8 +653,8 @@ if course code is not mentioned just leave it as empty string
     "Campuses of Course 3": [],
     "Course Code": [
         "<Course Code of Course 1>",
-        "<Course Code of Course 2>",
-        "<Course Code of Course 3>"
+        "<Course Recommendation 2>",
+        "<Course Recommendation 3>"
     ],
     "Course Explanation": [
         "<Explanation on why recommendation 1 is chosen (correlate mbti interest and strand)>",

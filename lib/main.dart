@@ -6,6 +6,7 @@ import 'package:course_compass/pages/admission_news/admission_news_screen.dart';
 import 'package:course_compass/pages/analytics_screen.dart';
 import 'package:course_compass/pages/course_recommender/course_recommender_screen_steps.dart';
 import 'package:course_compass/pages/curricular_offerings/curricular_offerings_screen.dart';
+import 'package:course_compass/pages/guides/guides_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,7 @@ void main() async {
         '/curricular-offerings': (context) => CurricularOfferingsScreen(),
         '/course-recommender': (context) =>
             const CourseRecommenderStepsScreen(),
+        '/guides': (context) => const GuidesScreen(),
         // '/course-recommender': (context) =>
         // CourseRecommendationJSONScreen("a", "a", "a"),
       }));
