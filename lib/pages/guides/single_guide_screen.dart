@@ -82,6 +82,12 @@ class _SingleGuideScreenState extends State<SingleGuideScreen> {
                       const SizedBox(
                         height: 20,
                       ),
+                      Card(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: FirebaseImageWidget(
+                            imageUrl:
+                                'guides/${widget.guide["image_url"]}.png'),
+                      ),
                       // Card(
                       //   clipBehavior: Clip.antiAliasWithSaveLayer,
                       //   child: FirebaseImageWidget(

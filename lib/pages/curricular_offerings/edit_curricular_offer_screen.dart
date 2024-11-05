@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
@@ -12,10 +13,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
 import 'dart:html';
 
-import 'package:image_picker_web/image_picker_web.dart';
-
 class EditCurricularOfferingQuillScreen extends StatefulWidget {
-  const EditCurricularOfferingQuillScreen({super.key});
+  const EditCurricularOfferingQuillScreen({super.key, required this.doc});
+  final DocumentSnapshot doc;
 
   @override
   State<EditCurricularOfferingQuillScreen> createState() =>
@@ -24,6 +24,7 @@ class EditCurricularOfferingQuillScreen extends StatefulWidget {
 
 class _EditCurricularOfferingQuillScreenState
     extends State<EditCurricularOfferingQuillScreen> {
+  bool replaceImage = false;
   String? dataUrl = null;
   File? image = null;
   String _campus = 'lingayen';
@@ -39,6 +40,12 @@ class _EditCurricularOfferingQuillScreenState
     // TODO: implement initState
     super.initState();
     quillController = QuillController.basic();
+    quillController.document =
+        Document.fromJson(jsonDecode(widget.doc["description"]));
+
+    _campus = widget.doc["campus"];
+    _title.text = widget.doc["title"];
+    _code.text = widget.doc["code"];
   }
 
   @override
@@ -79,7 +86,7 @@ class _EditCurricularOfferingQuillScreenState
                                 Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Text(
-                                    "Add Curricular Offer",
+                                    "Edit Curricular Offer",
                                     style: GoogleFonts.inter(
                                         fontWeight: FontWeight.w700,
                                         color: PSU_YELLOW,
@@ -121,7 +128,7 @@ class _EditCurricularOfferingQuillScreenState
                                           value: "bayambang",
                                           label: "Bayambang Campus"),
                                       DropdownMenuEntry(
-                                          value: "binmaley ",
+                                          value: "binmaley",
                                           label: "Binmaley Campus"),
                                       DropdownMenuEntry(
                                           value: "infanta",
@@ -158,6 +165,7 @@ class _EditCurricularOfferingQuillScreenState
                                               setState(() {
                                                 dataUrl =
                                                     reader.result as String?;
+                                                replaceImage = true;
                                               });
                                             },
                                           );
@@ -167,7 +175,7 @@ class _EditCurricularOfferingQuillScreenState
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 1.5),
                                         child: Text(
-                                          "Upload Preview Image",
+                                          "Replace Preview Image",
                                           style: GoogleFonts.inter(
                                               fontWeight: FontWeight.w700,
                                               color: PSU_YELLOW,
@@ -301,6 +309,14 @@ class _EditCurricularOfferingQuillScreenState
                                       child: Image.network(dataUrl!)),
                                 )
                               : Container(),
+                          replaceImage
+                              ? Container()
+                              : Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  child: FirebaseImageWidget(
+                                      imageUrl:
+                                          'campuses/${widget.doc["title"]} - ${widget.doc["campus"]}.png'),
+                                ),
                           Padding(
                             padding: edgeInsets,
                             child: ClickWidget(
@@ -308,41 +324,80 @@ class _EditCurricularOfferingQuillScreenState
                               child: ElevatedButton(
                                   onPressed: () {
                                     if (_key.currentState!.validate()) {
-                                      print("upload " + _campus);
-                                      _key.currentState!.validate();
-                                      Store()
-                                          .uploadCourse(
-                                              coursetitle: _title.text,
-                                              coursecode: _code.text,
-                                              courseDescription: jsonEncode(
-                                                      quillController.document
-                                                          .toDelta()
-                                                          .toJson()) ??
-                                                  "",
-                                              campus: _campus,
-                                              img: image!)
-                                          .then(
-                                        (value) {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                              actions: [
-                                                TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text("Okay"))
-                                              ],
-                                              content: const Text(
-                                                "Curricular Offer added successfully!",
+                                      if (replaceImage) {
+                                        print("upload " + _campus);
+                                        _key.currentState!.validate();
+                                        Store()
+                                            .uploadCourse(
+                                                coursetitle: _title.text,
+                                                coursecode: _code.text,
+                                                courseDescription: jsonEncode(
+                                                        quillController.document
+                                                            .toDelta()
+                                                            .toJson()) ??
+                                                    "",
+                                                campus: _campus,
+                                                img: image!,
+                                                replaceImg: true)
+                                            .then(
+                                          (value) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text("Okay"))
+                                                ],
+                                                content: const Text(
+                                                  "Curricular Offer updated successfully!",
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      );
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        print("upload " + _campus);
+                                        _key.currentState!.validate();
+                                        Store()
+                                            .uploadCourse(
+                                                coursetitle: _title.text,
+                                                coursecode: _code.text,
+                                                courseDescription: jsonEncode(
+                                                        quillController.document
+                                                            .toDelta()
+                                                            .toJson()) ??
+                                                    "",
+                                                campus: _campus,
+                                                replaceImg: false)
+                                            .then(
+                                          (value) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text("Okay"))
+                                                ],
+                                                content: const Text(
+                                                  "Curricular Offer updated successfully!",
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
                                     }
                                   },
                                   child: Row(

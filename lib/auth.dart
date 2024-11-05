@@ -69,13 +69,17 @@ class Store {
   Future<void> uploadGuide(
       {required String title,
       required String description,
-      required String plainDescription}) async {
+      required String plainDescription,
+      required File img}) async {
+    String imgTitle = "$title + ${DateTime.now().toString()}";
     final Map<String, dynamic> guide = {
       "title": title,
       "description": description,
       "plain_description": plainDescription,
-      "time_added": DateTime.now()
+      "time_added": DateTime.now(),
+      "image_url": imgTitle
     };
+    await Storage().uploadGuideImage(title: imgTitle, img: img);
     _firebaseFirestore.collection("guides").add(guide);
   }
 
@@ -83,8 +87,9 @@ class Store {
       {required String coursetitle,
       required String courseDescription,
       required String campus,
-      required File img,
-      required String coursecode}) async {
+      File? img,
+      required String coursecode,
+      required bool replaceImg}) async {
     final Map<String, dynamic> course = {
       "title": coursetitle,
       "description": courseDescription,
@@ -100,8 +105,10 @@ class Store {
       "time_added": DateTime.now(),
     };
 
-    await Storage()
-        .uploadCampusImage(title: "$coursetitle - $campus", img: img);
+    if (replaceImg) {
+      await Storage()
+          .uploadCampusImage(title: "$coursetitle - $campus", img: img!);
+    }
 
     // _firebaseFirestore.collection("curricular_offerings").add(course);
     _firebaseFirestore
@@ -148,9 +155,32 @@ class Store {
   }
 
   void deleteGuide(String id, BuildContext context) {
-    _firebaseFirestore.collection("guides").doc(id).delete().then(
+    // _firebaseFirestore.collection("guides").doc(id).delete().then(
+    //   (value) {
+    //     Navigator.of(context).pop();
+    //   },
+    // );
+
+    String title;
+    firestore.collection("guides").doc(id).get().then(
       (value) {
-        Navigator.of(context).pop();
+        title = value.id;
+        print("get: $title");
+        Storage()
+            .deleteGuidesImage(title: value["image_url"])
+            .then(
+              (value) {},
+            )
+            .then(
+          (value) {
+            _firebaseFirestore.collection("guides").doc(id).delete().then(
+              (value) {
+                // print(id);
+                Navigator.of(context).pop();
+              },
+            );
+          },
+        );
       },
     );
   }
@@ -420,10 +450,33 @@ class Storage {
     // print("af");
   }
 
+  Future<void> uploadGuideImage(
+      {required String title, required File img}) async {
+    // print("bef");
+
+    await _firebaseStorageRef.child("guides/$title.png").putBlob(img);
+    print("upload: guides/$title.png");
+
+    // print("af");
+  }
+
   Future<void> deleteCampusImage({required String title}) async {
     // print("bef");
     final desertRef = _firebaseStorageRef.child("campuses/$title.png");
     print("delete: campuses/$title.png");
+
+    await desertRef.delete().onError(
+      (error, stackTrace) {
+        print(error);
+      },
+    );
+    // print("af");
+  }
+
+  Future<void> deleteGuidesImage({required String title}) async {
+    // print("bef");
+    final desertRef = _firebaseStorageRef.child("guides/$title.png");
+    print("delete: guides/$title.png");
 
     await desertRef.delete().onError(
       (error, stackTrace) {

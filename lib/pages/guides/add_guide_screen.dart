@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'dart:html';
+
 class AddGuideScreen extends StatefulWidget {
   const AddGuideScreen({super.key});
 
@@ -16,6 +18,9 @@ class AddGuideScreen extends StatefulWidget {
 }
 
 class _AddGuideScreenState extends State<AddGuideScreen> {
+  File? image = null;
+  String? dataUrl = null;
+
   late QuillController _controller1;
   late QuillController _controller2;
   @override
@@ -82,6 +87,44 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+                          ClickWidget(
+                            onTap: () {},
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 7.0),
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    FileUploadInputElement uploadInput =
+                                        FileUploadInputElement()
+                                          ..accept = 'image/*';
+                                    uploadInput.click();
+
+                                    uploadInput.onChange.listen((event) {
+                                      image = uploadInput.files!.first;
+                                      final reader = FileReader();
+                                      reader.readAsDataUrl(image!);
+                                      reader.onLoadEnd.listen(
+                                        (event) {
+                                          print("done");
+                                          setState(() {
+                                            dataUrl = reader.result as String?;
+                                          });
+                                        },
+                                      );
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 1.5),
+                                    child: Text(
+                                      "Upload Preview Image",
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                          color: PSU_YELLOW,
+                                          fontSize: 16),
+                                    ),
+                                  )),
+                            ),
+                          ),
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
@@ -121,6 +164,14 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                               configurations: const QuillEditorConfigurations(),
                             ),
                           ),
+                          dataUrl != null
+                              ? Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Card(
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      child: Image.network(dataUrl!)),
+                                )
+                              : Container(),
                           Padding(
                             padding: edgeInsets,
                             child: ClickWidget(
@@ -143,7 +194,8 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                                   "",
                                               plainDescription: _controller1
                                                   .document
-                                                  .toPlainText())
+                                                  .toPlainText(),
+                                              img: image!)
                                           .then(
                                         (value) {
                                           showDialog(

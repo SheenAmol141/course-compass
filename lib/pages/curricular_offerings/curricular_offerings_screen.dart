@@ -6,6 +6,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/curricular_offerings/add_curricular_offering_screen_quill.dart';
+import 'package:course_compass/pages/curricular_offerings/edit_curricular_offer_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/pages/curricular_offerings/single_curricular_offer_screen.dart';
 import 'package:course_compass/templates.dart';
@@ -427,7 +428,14 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                               child: ClickWidget(
                                 onTap: () {},
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditCurricularOfferingQuillScreen(
+                                                doc: courses[index]),
+                                      ));
+                                    },
                                     child: const Icon(
                                       Icons.edit_rounded,
                                       color: Colors.white,

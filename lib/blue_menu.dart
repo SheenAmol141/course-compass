@@ -47,7 +47,7 @@ class BlueMenu extends StatelessWidget {
                     Icons.newspaper_rounded,
                     currentPage == "admission-news" ? true : false,
                     false),
-                BlueMenuTile("Guides", "guides", Icons.newspaper_rounded,
+                BlueMenuTile("Guides", "guides", Icons.menu_book_rounded,
                     currentPage == "guides" ? true : false, false),
                 const Expanded(child: Text("")),
                 BlueMenuTile("Analytics", "analytics", Icons.bar_chart_rounded,

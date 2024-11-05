@@ -12,8 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
 import 'dart:html';
 
-import 'package:image_picker_web/image_picker_web.dart';
-
 class AddCurricularOfferingQuillScreen extends StatefulWidget {
   const AddCurricularOfferingQuillScreen({super.key});
 
@@ -320,7 +318,8 @@ class _AddCurricularOfferingQuillScreenState
                                                           .toJson()) ??
                                                   "",
                                               campus: _campus,
-                                              img: image!)
+                                              img: image!,
+                                              replaceImg: true)
                                           .then(
                                         (value) {
                                           showDialog(
