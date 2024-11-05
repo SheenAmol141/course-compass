@@ -100,7 +100,8 @@ class Store {
       "time_added": DateTime.now(),
     };
 
-    await Storage().uploadCampusImage(title: coursetitle, img: img);
+    await Storage()
+        .uploadCampusImage(title: "$coursetitle - $campus", img: img);
 
     // _firebaseFirestore.collection("curricular_offerings").add(course);
     _firebaseFirestore
@@ -158,7 +159,7 @@ class Store {
     String title;
     firestore.collection("curricular_offerings").doc(id).get().then(
       (value) {
-        title = value["title"];
+        title = value.id;
         print("get: $title");
         Storage()
             .deleteCampusImage(title: title)

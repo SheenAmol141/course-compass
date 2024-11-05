@@ -1,7 +1,6 @@
 import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
-import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json_code.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';

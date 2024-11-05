@@ -121,7 +121,7 @@ class _AddCurricularOfferingQuillScreenState
                                           value: "bayambang",
                                           label: "Bayambang Campus"),
                                       DropdownMenuEntry(
-                                          value: "binmaley ",
+                                          value: "binmaley",
                                           label: "Binmaley Campus"),
                                       DropdownMenuEntry(
                                           value: "infanta",

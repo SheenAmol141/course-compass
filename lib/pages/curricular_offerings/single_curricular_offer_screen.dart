@@ -100,7 +100,7 @@ class _SingleCurricularOfferScreenState
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: FirebaseImageWidget(
                             imageUrl:
-                                'campuses/${widget.admission_new["title"]}.png'),
+                                'campuses/${widget.admission_new["title"]} - ${widget.admission_new["campus"]}.png'),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 20.0, bottom: 20),

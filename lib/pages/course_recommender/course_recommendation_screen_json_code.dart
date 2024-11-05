@@ -22,7 +22,7 @@ String removePrefixSuffix(String inputString, String prefix, String suffix) {
 }
 
 final model = GenerativeModel(
-  model: 'gemini-1.5-flash',
+  model: 'gemini-1.5-pro',
   apiKey: "AIzaSyACO3x6Ygtrc30W19AnWIxt9UaApTMSq3Y",
   // safetySettings: Adjust safety settings
   // See https://ai.google.dev/gemini-api/docs/safety-settings
@@ -70,6 +70,7 @@ class _CourseRecommendationJSONCodeScreenState
         final String title = doc['title'];
         combinedStrings +=
             '\n{\n"Course Title": "$title",\n"Course Code": "$code"\n},';
+        print('\n{"Course Title": "$title","Course Code": "$code"},');
       }
     } catch (e) {
       print('Error fetching data: $e');
