@@ -4,6 +4,7 @@ import 'package:course_compass/blue_menu.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/admission_news/add_admission_news_screen.dart';
+import 'package:course_compass/pages/admission_news/edit_admission_news_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
@@ -200,10 +201,46 @@ class AdmissionNewsScreen extends StatelessWidget {
                                                             Auth().currentUser ==
                                                                     null
                                                                 ? Container()
+                                                                : const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
                                                                 : ClickWidget(
                                                                     onTap:
                                                                         () {},
                                                                     child: ElevatedButton(
+                                                                        onPressed: () {
+                                                                          Navigator.of(context)
+                                                                              .push(MaterialPageRoute(
+                                                                            builder:
+                                                                                (context) {
+                                                                              return EditAdmissionNewsScreen(doc: admissionNews[index]);
+                                                                            },
+                                                                          ));
+                                                                        },
+                                                                        child: const Icon(
+                                                                          Icons
+                                                                              .edit_rounded,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        )),
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : ClickWidget(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: ElevatedButton(
+                                                                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.red)),
                                                                         onPressed: () {
                                                                           // print("yes");
                                                                           showDialog(

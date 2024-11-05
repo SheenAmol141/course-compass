@@ -66,31 +66,43 @@ class _AddCurricularOfferingQuillScreenState
                     child: SizedBox(
                       width: 800,
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Card(
                             margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    "Add Curricular Offer",
-                                    style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w700,
-                                        color: PSU_YELLOW,
-                                        fontSize: 20),
+                            child: MediaQuery.of(context).size.width < 1050
+                                ? Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      "Add Curricular Offer",
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                          color: PSU_YELLOW,
+                                          fontSize: 20),
+                                    ),
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text(
+                                          "Add Curricular Offer",
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              color: PSU_YELLOW,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
+                          Wrap(
                             children: [
                               Padding(
                                 padding: edgeInsets,
@@ -135,43 +147,47 @@ class _AddCurricularOfferingQuillScreenState
                                           label: "Urdaneta City Campus"),
                                     ]),
                               ),
-                              ClickWidget(
-                                onTap: () {},
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 7.0),
-                                  child: ElevatedButton(
-                                      onPressed: () async {
-                                        FileUploadInputElement uploadInput =
-                                            FileUploadInputElement()
-                                              ..accept = 'image/*';
-                                        uploadInput.click();
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: ClickWidget(
+                                  onTap: () {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 7.0),
+                                    child: ElevatedButton(
+                                        onPressed: () async {
+                                          FileUploadInputElement uploadInput =
+                                              FileUploadInputElement()
+                                                ..accept = 'image/*';
+                                          uploadInput.click();
 
-                                        uploadInput.onChange.listen((event) {
-                                          image = uploadInput.files!.first;
-                                          final reader = FileReader();
-                                          reader.readAsDataUrl(image!);
-                                          reader.onLoadEnd.listen(
-                                            (event) {
-                                              print("done");
-                                              setState(() {
-                                                dataUrl =
-                                                    reader.result as String?;
-                                              });
-                                            },
-                                          );
-                                        });
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 1.5),
-                                        child: Text(
-                                          "Upload Preview Image",
-                                          style: GoogleFonts.inter(
-                                              fontWeight: FontWeight.w700,
-                                              color: PSU_YELLOW,
-                                              fontSize: 16),
-                                        ),
-                                      )),
+                                          uploadInput.onChange.listen((event) {
+                                            image = uploadInput.files!.first;
+                                            final reader = FileReader();
+                                            reader.readAsDataUrl(image!);
+                                            reader.onLoadEnd.listen(
+                                              (event) {
+                                                print("done");
+                                                setState(() {
+                                                  dataUrl =
+                                                      reader.result as String?;
+                                                });
+                                              },
+                                            );
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 1.5),
+                                          child: Text(
+                                            "Upload Preview Image",
+                                            style: GoogleFonts.inter(
+                                                fontWeight: FontWeight.w700,
+                                                color: PSU_YELLOW,
+                                                fontSize: 16),
+                                          ),
+                                        )),
+                                  ),
                                 ),
                               )
                             ],
@@ -185,7 +201,7 @@ class _AddCurricularOfferingQuillScreenState
                                       value.isEmpty
                                   ? "Course Title must not be empty!"
                                   : value.length < 5
-                                      ? "Course Title must be at least 2 characters long!"
+                                      ? "Course Title must be at least 5 characters long!"
                                       : null,
                               decoration: InputDecoration(
                                 hintStyle: TextStyle(

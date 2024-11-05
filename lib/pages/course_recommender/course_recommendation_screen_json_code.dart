@@ -4,11 +4,13 @@ import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/curricular_offerings/single_curricular_offer_screen.dart';
 import 'package:course_compass/templates.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
+import 'dart:js' as js;
 
 import 'package:swipe_cards/swipe_cards.dart';
 
@@ -113,6 +115,7 @@ class _CourseRecommendationJSONCodeScreenState
     getCourses().then(
       (value) {
         setState(() {
+          print(value);
           try {
             try {
               recommendationInstance =
@@ -153,7 +156,9 @@ class _CourseRecommendationJSONCodeScreenState
         color: LIGHT_GRAY,
         child: Row(
           children: [
-            Expanded(child: Container()),
+            MediaQuery.of(context).size.width < 1050
+                ? Container()
+                : Expanded(child: Container()),
             Expanded(
               flex: 3,
               child: Container(
@@ -171,16 +176,14 @@ class _CourseRecommendationJSONCodeScreenState
                               style: GoogleFonts.inter(
                                   fontSize: 24, fontWeight: FontWeight.w900),
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Wrap(
+                              // crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Card(
                                   elevation: 0,
                                   color: PSU_BLUE,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0) +
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 20),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
                                         Text(
@@ -217,6 +220,43 @@ class _CourseRecommendationJSONCodeScreenState
                                                     style: paragraph,
                                                   ),
                                                 ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      style: GoogleFonts.inter(
+                                                          fontSize: 12),
+                                                      children: [
+                                                        const TextSpan(
+                                                          text: 'Details from ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                        TextSpan(
+                                                          text:
+                                                              '16personalities.com.',
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .blue),
+                                                          recognizer:
+                                                              TapGestureRecognizer()
+                                                                ..onTap = () {
+                                                                  js.context
+                                                                      .callMethod(
+                                                                          'open',
+                                                                          [
+                                                                        "https://www.16personalities.com/free-personality-test"
+                                                                      ]);
+                                                                },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -228,101 +268,93 @@ class _CourseRecommendationJSONCodeScreenState
                                 const SizedBox(
                                   width: 20,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Card(
-                                      color: PSU_BLUE,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SizedBox(
-                                          width: 386,
-                                          child: Builder(
-                                            builder: (context) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.stretch,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                horizontal: 4),
-                                                        child: Text(
-                                                          "Some more details about you:",
-                                                          style: cardTitle,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Card(
-                                                    elevation: 0,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            "Your interests are: ",
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    fontSize:
-                                                                        18),
-                                                          ),
-                                                          Text(
-                                                            recommendationInstance
-                                                                .interests,
-                                                            style: paragraph,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              color:
-                                                                  Colors.grey,
-                                                              height: 1,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "Your strand is: ",
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    fontSize:
-                                                                        18),
-                                                          ),
-                                                          Text(
-                                                            recommendationInstance
-                                                                .strand,
-                                                            style: paragraph,
-                                                          ),
-                                                        ],
+                                Card(
+                                    color: PSU_BLUE,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        width: 386,
+                                        child: Builder(
+                                          builder: (context) {
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 4),
+                                                      child: Text(
+                                                        "Some more details about you:",
+                                                        style: cardTitle,
                                                       ),
                                                     ),
+                                                  ],
+                                                ),
+                                                Card(
+                                                  elevation: 0,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "Your interests are: ",
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontSize: 18),
+                                                        ),
+                                                        Text(
+                                                          recommendationInstance
+                                                              .interests,
+                                                          style: paragraph,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            color: Colors.grey,
+                                                            height: 1,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "Your strand is: ",
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontSize: 18),
+                                                        ),
+                                                        Text(
+                                                          recommendationInstance
+                                                              .strand,
+                                                          style: paragraph,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ],
-                                              );
-                                            },
-                                          ),
+                                                ),
+                                              ],
+                                            );
+                                          },
                                         ),
-                                      )),
-                                ),
+                                      ),
+                                    )),
                                 const SizedBox(
                                   width: 20,
                                 ),
@@ -338,7 +370,9 @@ class _CourseRecommendationJSONCodeScreenState
       ),
       Row(
         children: [
-          Expanded(child: Container()),
+          MediaQuery.of(context).size.width < 1050
+              ? Container()
+              : Expanded(child: Container()),
           Expanded(
               flex: 3,
               child: Padding(
@@ -379,107 +413,218 @@ class _CourseRecommendationJSONCodeScreenState
                         for (String code in recommendationInstance.code) {
                           Store().incrementMatchedCount(code);
                         }
-                        return Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, bottom: 8),
-                                      child: Text(
-                                        recommendationInstance.recommendIntro,
-                                        style: GoogleFonts.inter(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    CourseItem(
-                                      recommendationInstance
-                                          .courseRecommendations[0],
-                                      recommendationInstance
-                                          .courseExplanations[0],
-                                      recommendationInstance.code[0],
-                                      campuses:
-                                          recommendationInstance.course1Campus,
-                                    ),
-                                    CourseItem(
-                                        recommendationInstance
-                                            .courseRecommendations[1],
-                                        recommendationInstance
-                                            .courseExplanations[1],
-                                        recommendationInstance.code[1],
-                                        campuses: recommendationInstance
-                                            .course2Campus),
-                                    CourseItem(
-                                        recommendationInstance
-                                            .courseRecommendations[2],
-                                        recommendationInstance
-                                            .courseExplanations[2],
-                                        recommendationInstance.code[2],
-                                        campuses: recommendationInstance
-                                            .course3Campus)
-                                  ]
-                                      .animate(interval: 0.50.seconds)
-                                      .slideX(
-                                          duration: 1.seconds,
-                                          curve: Curves.easeInOut,
-                                          begin: -.05)
-                                      .fadeIn(
-                                          delay: .5.seconds,
-                                          curve: Curves.easeIn),
-                                ),
-                              ),
-                            ),
-                            ClickWidget(
-                              onTap: () {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/curricular-offerings",
-                                    (Route<dynamic> route) => false);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Card(
-                                  color: PSU_BLUE,
-                                  child: SizedBox(
-                                    width: 400,
-                                    height: 300,
+                        return MediaQuery.of(context).size.width < 1050
+                            ? Wrap(
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0) +
+                                        const EdgeInsets.only(right: 28.0),
                                     child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Icon(
-                                            Icons.school_rounded,
-                                            color: PSU_YELLOW,
-                                            size: 110,
+                                              left: 8.0, bottom: 8),
+                                          child: Text(
+                                            recommendationInstance
+                                                .recommendIntro,
+                                            style: GoogleFonts.inter(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Text(
-                                            "View all Curricular Offerings of PSU",
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.inter(
-                                                fontSize: 26,
-                                                fontWeight: FontWeight.w900,
-                                                color: PSU_YELLOW),
-                                          ),
-                                        )
-                                      ],
+                                        CourseItem(
+                                          recommendationInstance
+                                              .courseRecommendations[0],
+                                          recommendationInstance
+                                              .courseExplanations[0],
+                                          recommendationInstance.code[0],
+                                          campuses: recommendationInstance
+                                              .course1Campus,
+                                        ),
+                                        CourseItem(
+                                            recommendationInstance
+                                                .courseRecommendations[1],
+                                            recommendationInstance
+                                                .courseExplanations[1],
+                                            recommendationInstance.code[1],
+                                            campuses: recommendationInstance
+                                                .course2Campus),
+                                        CourseItem(
+                                            recommendationInstance
+                                                .courseRecommendations[2],
+                                            recommendationInstance
+                                                .courseExplanations[2],
+                                            recommendationInstance.code[2],
+                                            campuses: recommendationInstance
+                                                .course3Campus)
+                                      ]
+                                          .animate(interval: 0.50.seconds)
+                                          .slideX(
+                                              duration: 1.seconds,
+                                              curve: Curves.easeInOut,
+                                              begin: -.05)
+                                          .fadeIn(
+                                              delay: .5.seconds,
+                                              curve: Curves.easeIn),
                                     ),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
+                                  ClickWidget(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              "/curricular-offerings",
+                                              (Route<dynamic> route) => false);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Card(
+                                        color: PSU_BLUE,
+                                        child: SizedBox(
+                                          width: 400,
+                                          height: 300,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Icon(
+                                                  Icons.school_rounded,
+                                                  color: PSU_YELLOW,
+                                                  size: 110,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Text(
+                                                  "View all Curricular Offerings of PSU",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.inter(
+                                                      fontSize: 26,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: PSU_YELLOW),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, bottom: 8),
+                                            child: Text(
+                                              recommendationInstance
+                                                  .recommendIntro,
+                                              style: GoogleFonts.inter(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ),
+                                          CourseItem(
+                                            recommendationInstance
+                                                .courseRecommendations[0],
+                                            recommendationInstance
+                                                .courseExplanations[0],
+                                            recommendationInstance.code[0],
+                                            campuses: recommendationInstance
+                                                .course1Campus,
+                                          ),
+                                          CourseItem(
+                                              recommendationInstance
+                                                  .courseRecommendations[1],
+                                              recommendationInstance
+                                                  .courseExplanations[1],
+                                              recommendationInstance.code[1],
+                                              campuses: recommendationInstance
+                                                  .course2Campus),
+                                          CourseItem(
+                                              recommendationInstance
+                                                  .courseRecommendations[2],
+                                              recommendationInstance
+                                                  .courseExplanations[2],
+                                              recommendationInstance.code[2],
+                                              campuses: recommendationInstance
+                                                  .course3Campus)
+                                        ]
+                                            .animate(interval: 0.50.seconds)
+                                            .slideX(
+                                                duration: 1.seconds,
+                                                curve: Curves.easeInOut,
+                                                begin: -.05)
+                                            .fadeIn(
+                                                delay: .5.seconds,
+                                                curve: Curves.easeIn),
+                                      ),
+                                    ),
+                                  ),
+                                  ClickWidget(
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil(
+                                              "/curricular-offerings",
+                                              (Route<dynamic> route) => false);
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: Card(
+                                        color: PSU_BLUE,
+                                        child: SizedBox(
+                                          width: 400,
+                                          height: 300,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Icon(
+                                                  Icons.school_rounded,
+                                                  color: PSU_YELLOW,
+                                                  size: 110,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Text(
+                                                  "View all Curricular Offerings of PSU",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.inter(
+                                                      fontSize: 26,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: PSU_YELLOW),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
                       }),
               ))
         ],

@@ -3,6 +3,7 @@ import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/course_recommender/course_recommendation_screen_json_code.dart';
 import 'package:course_compass/templates.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -137,49 +138,52 @@ class _CourseRecommenderStepsScreenState
             flex: 3,
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    LinearPercentIndicator(
-                      barRadius: const Radius.circular(9999),
-                      animation: true,
-                      animationDuration: 1000,
-                      animateFromLastPercent: true,
-                      center: currentPage == 0
-                          ? Text(
-                              "Let's Start!",
-                              style: GoogleFonts.inter(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
-                                  shadows: shadows),
-                            )
-                          : currentPage == 1
-                              ? Text(
-                                  "Just a bit more!",
-                                  style: GoogleFonts.inter(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      shadows: shadows),
-                                )
-                              : Text(
-                                  "Almost there!",
-                                  style: GoogleFonts.inter(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      shadows: shadows),
-                                ),
-                      width: 400.0,
-                      lineHeight: 35.0,
-                      percent: currentPage == 0
-                          ? 0
-                          : currentPage == 1
-                              ? .33
-                              : currentPage == 2
-                                  ? .66
-                                  : 1.00,
-                      backgroundColor: PSU_YELLOW,
-                      progressColor: PSU_BLUE,
+                    FittedBox(
+                      fit: BoxFit.contain,
+                      child: LinearPercentIndicator(
+                        barRadius: const Radius.circular(9999),
+                        animation: true,
+                        animationDuration: 1000,
+                        animateFromLastPercent: true,
+                        center: currentPage == 0
+                            ? Text(
+                                "Let's Start!",
+                                style: GoogleFonts.inter(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                    shadows: shadows),
+                              )
+                            : currentPage == 1
+                                ? Text(
+                                    "Just a bit more!",
+                                    style: GoogleFonts.inter(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        shadows: shadows),
+                                  )
+                                : Text(
+                                    "Almost there!",
+                                    style: GoogleFonts.inter(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        shadows: shadows),
+                                  ),
+                        width: 400.0,
+                        lineHeight: 35.0,
+                        percent: currentPage == 0
+                            ? 0
+                            : currentPage == 1
+                                ? .33
+                                : currentPage == 2
+                                    ? .66
+                                    : 1.00,
+                        backgroundColor: PSU_YELLOW,
+                        progressColor: PSU_BLUE,
+                      ),
                     ),
                     // LinearProgressIndicator(
                     //   value: currentPage == 0
@@ -245,6 +249,32 @@ class _CourseRecommenderStepsScreenState
                                 "Knowing your MBTI personality type, along with your interests and high school strand helps us recommend courses that match your personality, skills, and aspirations. For example, an INTP interested in technology and with a STEM strand might be suited for Computer Science, while an ENFJ interested in helping people and with a HUMSS strand might prefer Psychology or Education.",
                                 style: GoogleFonts.inter(
                                   fontSize: 18,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: GoogleFonts.inter(fontSize: 12),
+                                    children: [
+                                      const TextSpan(
+                                        text:
+                                            'Learn more about your personality type and how it influences your learning style with insights from ',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      TextSpan(
+                                        text: '16personalities.com.',
+                                        style:
+                                            const TextStyle(color: Colors.blue),
+                                        recognizer: new TapGestureRecognizer()
+                                          ..onTap = () {
+                                            js.context.callMethod('open', [
+                                              "https://www.16personalities.com/free-personality-test"
+                                            ]);
+                                          },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ]

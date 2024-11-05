@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:course_compass/auth.dart';
 import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
@@ -8,40 +7,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'dart:html';
+class EditAdmissionNewsScreen extends StatefulWidget {
+  final DocumentSnapshot doc;
 
-class AddGuideScreen extends StatefulWidget {
-  const AddGuideScreen({super.key});
+  const EditAdmissionNewsScreen({super.key, required this.doc});
 
   @override
-  State<AddGuideScreen> createState() => _AddGuideScreenState();
+  State<EditAdmissionNewsScreen> createState() =>
+      _EditAdmissionNewsScreenState();
 }
 
-class _AddGuideScreenState extends State<AddGuideScreen> {
-  File? image = null;
-  String? dataUrl = null;
+class _EditAdmissionNewsScreenState extends State<EditAdmissionNewsScreen> {
+  final key = GlobalKey<FormState>();
+  final TextEditingController title = TextEditingController();
+  final TextEditingController description = TextEditingController();
+  final TextEditingController link = TextEditingController();
 
-  late QuillController _controller1;
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
 
-    _controller1 = QuillController.basic();
+    title.text = widget.doc["title"];
+    description.text = widget.doc["description"];
+    link.text = widget.doc["link"];
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller1.dispose();
-  }
-
-  String text = "";
   @override
   Widget build(BuildContext context) {
-    final key = GlobalKey<FormState>();
-    final TextEditingController title = TextEditingController();
-    final TextEditingController description = TextEditingController();
-
     const edgeInsets = EdgeInsets.only(top: 8.0, left: 8, right: 8);
     return Scaffold(
       appBar: appBar,
@@ -57,7 +50,6 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                     color: Colors.white,
                     child: SizedBox(
                       width: 800,
-                      // height: MediaQuery.of(context).size.height,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -65,11 +57,12 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                           Card(
                             margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
-                            child: MediaQuery.of(context).size.width < 1050
+                            child: MediaQuery.of(context).size.width < 800
                                 ? Padding(
                                     padding: const EdgeInsets.all(15.0),
                                     child: Text(
-                                      "Add a Guide",
+                                      "Edit Admission News | ${widget.doc["title"]}",
+                                      overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.inter(
                                           fontWeight: FontWeight.w700,
                                           color: PSU_YELLOW,
@@ -81,7 +74,8 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                       Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Text(
-                                          "Add a Guide",
+                                          "Edit Admission News | ${widget.doc["title"]}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.inter(
                                               fontWeight: FontWeight.w700,
                                               color: PSU_YELLOW,
@@ -94,63 +88,55 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          ClickWidget(
-                            onTap: () {},
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 7.0),
-                              child: ElevatedButton(
-                                  onPressed: () async {
-                                    FileUploadInputElement uploadInput =
-                                        FileUploadInputElement()
-                                          ..accept = 'image/*';
-                                    uploadInput.click();
+                          // Padding(
+                          //   padding: edgeInsets,
+                          //   child: TextFormField(
+                          //     controller: title,
+                          //     validator: (value) => value == null ||
+                          //             value.isEmpty
+                          //         ? "Title must not be empty!"
+                          //         : value.length < 5
+                          //             ? "Title must be at least 5 characters long!"
+                          //             : null,
+                          //     decoration: InputDecoration(
+                          //       labelText: 'Title',
+                          //       // hintText: "email@example.com",
+                          //       border: const OutlineInputBorder(),
 
-                                    uploadInput.onChange.listen((event) {
-                                      image = uploadInput.files!.first;
-                                      final reader = FileReader();
-                                      reader.readAsDataUrl(image!);
-                                      reader.onLoadEnd.listen(
-                                        (event) {
-                                          print("done");
-                                          setState(() {
-                                            dataUrl = reader.result as String?;
-                                          });
-                                        },
-                                      );
-                                    });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 1.5),
-                                    child: Text(
-                                      "Upload Preview Image",
-                                      style: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w700,
-                                          color: PSU_YELLOW,
-                                          fontSize: 16),
-                                    ),
-                                  )),
-                            ),
-                          ),
+                          //       suffixIcon: Row(
+                          //         mainAxisSize: MainAxisSize.min,
+                          //         children: [
+                          //           Icon(Icons.title_rounded,
+                          //               color: Colors.black.withOpacity(0.2)),
+                          //           const SizedBox(
+                          //             width: 5,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(
-                              controller: title,
+                              minLines: 3,
+                              maxLines: 888,
+                              controller: description,
                               validator: (value) => value == null ||
                                       value.isEmpty
-                                  ? "Title must not be empty!"
+                                  ? "Description must not be empty!"
                                   : value.length < 5
-                                      ? "Title must be at least 5 characters long!"
+                                      ? "Description must be at least 5 characters long!"
                                       : null,
                               decoration: InputDecoration(
-                                labelText: 'Title',
+                                labelText: 'Description',
                                 // hintText: "email@example.com",
                                 border: const OutlineInputBorder(),
 
                                 suffixIcon: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.title_rounded,
+                                    Icon(Icons.description_rounded,
                                         color: Colors.black.withOpacity(0.2)),
                                     const SizedBox(
                                       width: 5,
@@ -160,26 +146,34 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                               ),
                             ),
                           ),
-                          QuillSimpleToolbar(
-                            controller: _controller1,
-                            configurations:
-                                const QuillSimpleToolbarConfigurations(),
-                          ),
-                          SizedBox(
-                            height: 400,
-                            child: QuillEditor.basic(
-                              controller: _controller1,
-                              configurations: const QuillEditorConfigurations(),
+                          Padding(
+                            padding: edgeInsets,
+                            child: TextFormField(
+                              controller: link,
+                              validator: (value) => value == null ||
+                                      value.isEmpty
+                                  ? "Link must not be empty!"
+                                  : value.length < 5
+                                      ? "Link must be at least 5 characters long!"
+                                      : null,
+                              decoration: InputDecoration(
+                                labelText: 'Link',
+                                // hintText: "email@example.com",
+                                border: const OutlineInputBorder(),
+
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.link,
+                                        color: Colors.black.withOpacity(0.2)),
+                                    const SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                          dataUrl != null
-                              ? Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Card(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      child: Image.network(dataUrl!)),
-                                )
-                              : Container(),
                           Padding(
                             padding: edgeInsets,
                             child: ClickWidget(
@@ -191,17 +185,13 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                       //     description.text +
                                       //     link.text);
                                       key.currentState!.validate();
-
                                       Store()
-                                          .uploadGuide(
-                                              replaceImage: true,
-                                              title: title.text,
-                                              description: jsonEncode(
-                                                      _controller1.document
-                                                          .toDelta()
-                                                          .toJson()) ??
-                                                  "",
-                                              img: image!)
+                                          .uploadAdmission(
+                                        title: title.text,
+                                        description: description.text,
+                                        link: link.text,
+                                        id: widget.doc.id,
+                                      )
                                           .then(
                                         (value) {
                                           showDialog(
@@ -218,7 +208,7 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                                     child: const Text("Okay"))
                                               ],
                                               content: const Text(
-                                                "Guide added successfully!",
+                                                "Admission news updated successfully!",
                                               ),
                                             ),
                                           );

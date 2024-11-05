@@ -387,7 +387,7 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
   SizedBox CurricularOfferingItem(List<DocumentSnapshot<Object?>> courses,
       int index, BuildContext context) {
     return SizedBox(
-      height: 270,
+      // height: 340,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -500,16 +500,19 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                             ),
                           ),
                         ),
-                        Text(
-                          // courses[index]["description"],
-                          Document.fromJson(
-                                  jsonDecode(courses[index]["description"]))
-                              .toPlainText(),
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
+                        SizedBox(
+                          height: 150,
+                          child: Text(
+                            // courses[index]["description"],
+                            Document.fromJson(
+                                    jsonDecode(courses[index]["description"]))
+                                .toPlainText(),
+                            style: GoogleFonts.inter(
+                              fontSize: 16,
+                            ),
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 13.0, bottom: 13),

@@ -7,6 +7,7 @@ import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/admission_news/add_admission_news_screen.dart';
 import 'package:course_compass/pages/guides/add_guide_screen.dart';
+import 'package:course_compass/pages/guides/edit_guide_screen.dart';
 import 'package:course_compass/pages/guides/single_guide_screen.dart';
 import 'package:course_compass/pages/home_screen.dart';
 import 'package:course_compass/templates.dart';
@@ -204,10 +205,44 @@ class GuidesScreen extends StatelessWidget {
                                                             Auth().currentUser ==
                                                                     null
                                                                 ? Container()
+                                                                : const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
                                                                 : ClickWidget(
                                                                     onTap:
                                                                         () {},
                                                                     child: ElevatedButton(
+                                                                        onPressed: () {
+                                                                          Navigator.of(context)
+                                                                              .push(MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                EditGuideScreen(doc: guides[index]),
+                                                                          ));
+                                                                        },
+                                                                        child: const Icon(
+                                                                          Icons
+                                                                              .edit_rounded,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        )),
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : const SizedBox(
+                                                                    width: 8,
+                                                                  ),
+                                                            Auth().currentUser ==
+                                                                    null
+                                                                ? Container()
+                                                                : ClickWidget(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: ElevatedButton(
+                                                                        style: const ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.red)),
                                                                         onPressed: () {
                                                                           // print("yes");
                                                                           showDialog(

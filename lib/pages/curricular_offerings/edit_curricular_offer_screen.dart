@@ -81,25 +81,36 @@ class _EditCurricularOfferingQuillScreenState
                           Card(
                             margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    "Edit Curricular Offer",
-                                    style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w700,
-                                        color: PSU_YELLOW,
-                                        fontSize: 20),
+                            child: MediaQuery.of(context).size.width < 1050
+                                ? Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      "Edit Curricular Offer | ${widget.doc["title"]}",
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                          color: PSU_YELLOW,
+                                          fontSize: 20),
+                                    ),
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text(
+                                          "Edit Curricular Offer | ${widget.doc["title"]}",
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              color: PSU_YELLOW,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
                           const SizedBox(
                             height: 20,
                           ),
-                          Row(
+                          Wrap(
                             children: [
                               Padding(
                                 padding: edgeInsets,
@@ -187,38 +198,39 @@ class _EditCurricularOfferingQuillScreenState
                             ],
                           ),
 
-                          Padding(
-                            padding: edgeInsets,
-                            child: TextFormField(
-                              controller: _title,
-                              validator: (value) => value == null ||
-                                      value.isEmpty
-                                  ? "Course Title must not be empty!"
-                                  : value.length < 5
-                                      ? "Course Title must be at least 2 characters long!"
-                                      : null,
-                              decoration: InputDecoration(
-                                hintStyle: TextStyle(
-                                    color: Colors.black.withOpacity(0.5)),
-                                hintText:
-                                    "ex: Bachelor of Science in Information Technology",
-                                labelText: 'Title',
-                                // hintText: "email@example.com",
-                                border: const OutlineInputBorder(),
+                          // Padding(
+                          //   padding: edgeInsets,
+                          //   child: TextFormField(
+                          //     readOnly: true,
+                          //     controller: _title,
+                          //     validator: (value) => value == null ||
+                          //             value.isEmpty
+                          //         ? "Course Title must not be empty!"
+                          //         : value.length < 5
+                          //             ? "Course Title must be at least 2 characters long!"
+                          //             : null,
+                          //     decoration: InputDecoration(
+                          //       hintStyle: TextStyle(
+                          //           color: Colors.black.withOpacity(0.5)),
+                          //       hintText:
+                          //           "ex: Bachelor of Science in Information Technology",
+                          //       labelText: 'Title',
+                          //       // hintText: "email@example.com",
+                          //       border: const OutlineInputBorder(),
 
-                                suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.title_rounded,
-                                        color: Colors.black.withOpacity(0.2)),
-                                    const SizedBox(
-                                      width: 5,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          //       suffixIcon: Row(
+                          //         mainAxisSize: MainAxisSize.min,
+                          //         children: [
+                          //           Icon(Icons.title_rounded,
+                          //               color: Colors.black.withOpacity(0.2)),
+                          //           const SizedBox(
+                          //             width: 5,
+                          //           )
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                           Padding(
                             padding: edgeInsets,
                             child: TextFormField(

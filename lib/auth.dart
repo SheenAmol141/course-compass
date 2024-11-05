@@ -56,31 +56,47 @@ class Store {
   Future<void> uploadAdmission(
       {required String title,
       required String description,
-      required String link}) async {
+      required String link,
+      String? id}) async {
     final Map<String, dynamic> admissionNews = {
       "title": title,
       "description": description,
       "link": link,
       "time_added": DateTime.now()
     };
-    _firebaseFirestore.collection("admission_news").add(admissionNews);
+    if (id == null) {
+      _firebaseFirestore.collection("admission_news").add(admissionNews);
+    } else {
+      print(id);
+      _firebaseFirestore
+          .collection("admission_news")
+          .doc(id)
+          .set(admissionNews);
+    }
   }
 
   Future<void> uploadGuide(
       {required String title,
       required String description,
-      required String plainDescription,
-      required File img}) async {
+      File? img,
+      String? id,
+      required bool replaceImage}) async {
     String imgTitle = "$title + ${DateTime.now().toString()}";
     final Map<String, dynamic> guide = {
       "title": title,
       "description": description,
-      "plain_description": plainDescription,
+      // "plain_description": plainDescription,
       "time_added": DateTime.now(),
       "image_url": imgTitle
     };
-    await Storage().uploadGuideImage(title: imgTitle, img: img);
-    _firebaseFirestore.collection("guides").add(guide);
+    if (replaceImage) {
+      await Storage().uploadGuideImage(title: imgTitle, img: img!);
+    }
+    if (id == null) {
+      _firebaseFirestore.collection("guides").add(guide);
+    } else {
+      _firebaseFirestore.collection("guides").doc(id).set(guide);
+    }
   }
 
   Future<void> uploadCourse(

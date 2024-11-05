@@ -37,20 +37,31 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                           Card(
                             margin: const EdgeInsets.all(0),
                             color: PSU_BLUE,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    "Add Admission News",
-                                    style: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w700,
-                                        color: PSU_YELLOW,
-                                        fontSize: 20),
+                            child: MediaQuery.of(context).size.width < 1050
+                                ? Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      "Add Admission News",
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                          color: PSU_YELLOW,
+                                          fontSize: 20),
+                                    ),
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Text(
+                                          "Add Admission News",
+                                          style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              color: PSU_YELLOW,
+                                              fontSize: 20),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
                           const SizedBox(
                             height: 20,
