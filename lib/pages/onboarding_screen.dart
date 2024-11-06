@@ -77,7 +77,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               _pageController.nextPage(
                                   duration: .3.seconds, curve: Curves.ease);
                               print(currentPage);
-                              if (currentPage == 3) {
+                              if (currentPage == 4) {
                                 await widget.prefs.setBool("initScreen", true);
                                 // print(widget.prefs.getBool("initScreen"));
 

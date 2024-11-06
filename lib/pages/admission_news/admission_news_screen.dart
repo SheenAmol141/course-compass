@@ -56,7 +56,7 @@ class AdmissionNewsScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const AddAdmissionNewsScreen(),
+                  builder: (context) => AddAdmissionNewsScreen(),
                 ));
               })
           : Container(),

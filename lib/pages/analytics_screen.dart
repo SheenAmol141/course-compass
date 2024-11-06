@@ -80,7 +80,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                               onTap: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
-                                      const AddAdmissionNewsScreen(),
+                                      AddAdmissionNewsScreen(),
                                 ));
                               },
                               child: Card(

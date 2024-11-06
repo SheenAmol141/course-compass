@@ -80,7 +80,8 @@ class Store {
       required String description,
       File? img,
       String? id,
-      required bool replaceImage}) async {
+      required bool replaceImage,
+      required bool isNew}) async {
     String imgTitle = "$title + ${DateTime.now().toString()}";
     final Map<String, dynamic> guide = {
       "title": title,
@@ -89,13 +90,23 @@ class Store {
       "time_added": DateTime.now(),
       "image_url": imgTitle
     };
+    final Map<String, dynamic> guideNoImg = {
+      "title": title,
+      "description": description,
+      // "plain_description": plainDescription,
+      "time_added": DateTime.now(),
+      // "image_url": imgTitle
+    };
+
     if (replaceImage) {
+      final Map<String, dynamic> guide = {"image_url": imgTitle};
       await Storage().uploadGuideImage(title: imgTitle, img: img!);
+      _firebaseFirestore.collection("guides").doc(id).update(guide);
     }
-    if (id == null) {
-      _firebaseFirestore.collection("guides").add(guide);
-    } else {
+    if (isNew) {
       _firebaseFirestore.collection("guides").doc(id).set(guide);
+    } else {
+      _firebaseFirestore.collection("guides").doc(id).update(guideNoImg);
     }
   }
 

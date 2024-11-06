@@ -21,6 +21,8 @@ class EditGuideScreen extends StatefulWidget {
 }
 
 class _EditGuideScreenState extends State<EditGuideScreen> {
+  bool uploading = false;
+
   bool replaceImage = false;
 
   File? image = null;
@@ -209,9 +211,12 @@ class _EditGuideScreenState extends State<EditGuideScreen> {
                                         //     description.text +
                                         //     link.text);
                                         key.currentState!.validate();
-
+                                        setState(() {
+                                          uploading = true;
+                                        });
                                         Store()
                                             .uploadGuide(
+                                                isNew: false,
                                                 replaceImage: true,
                                                 id: widget.doc.id,
                                                 title: title.text,
@@ -223,6 +228,9 @@ class _EditGuideScreenState extends State<EditGuideScreen> {
                                                 img: image!)
                                             .then(
                                           (value) {
+                                            setState(() {
+                                              uploading = false;
+                                            });
                                             showDialog(
                                               context: context,
                                               builder: (context) => AlertDialog(
@@ -251,6 +259,7 @@ class _EditGuideScreenState extends State<EditGuideScreen> {
 
                                         Store()
                                             .uploadGuide(
+                                          isNew: false,
                                           replaceImage: false,
                                           id: widget.doc.id,
                                           title: title.text,
@@ -288,13 +297,17 @@ class _EditGuideScreenState extends State<EditGuideScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Submit",
-                                        style: GoogleFonts.inter(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                      uploading
+                                          ? CircularProgressIndicator(
+                                              color: PSU_YELLOW,
+                                            )
+                                          : Text(
+                                              "Submit",
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                     ],
                                   )),
                             ),

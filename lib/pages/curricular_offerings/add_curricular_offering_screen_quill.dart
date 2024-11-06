@@ -22,6 +22,7 @@ class AddCurricularOfferingQuillScreen extends StatefulWidget {
 
 class _AddCurricularOfferingQuillScreenState
     extends State<AddCurricularOfferingQuillScreen> {
+  bool uploading = false;
   String? dataUrl = null;
   File? image = null;
   String _campus = 'lingayen';
@@ -322,6 +323,9 @@ class _AddCurricularOfferingQuillScreenState
                               child: ElevatedButton(
                                   onPressed: () {
                                     if (_key.currentState!.validate()) {
+                                      setState(() {
+                                        uploading = true;
+                                      });
                                       print("upload " + _campus);
                                       _key.currentState!.validate();
                                       Store()
@@ -338,6 +342,9 @@ class _AddCurricularOfferingQuillScreenState
                                               replaceImg: true)
                                           .then(
                                         (value) {
+                                          setState(() {
+                                            uploading = false;
+                                          });
                                           showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
@@ -363,13 +370,17 @@ class _AddCurricularOfferingQuillScreenState
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Submit",
-                                        style: GoogleFonts.inter(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                      uploading
+                                          ? CircularProgressIndicator(
+                                              color: PSU_YELLOW,
+                                            )
+                                          : Text(
+                                              "Submit",
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                     ],
                                   )),
                             ),

@@ -5,11 +5,19 @@ import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AddAdmissionNewsScreen extends StatelessWidget {
-  const AddAdmissionNewsScreen({super.key});
+class AddAdmissionNewsScreen extends StatefulWidget {
+  AddAdmissionNewsScreen({super.key});
+
+  @override
+  State<AddAdmissionNewsScreen> createState() => _AddAdmissionNewsScreenState();
+}
+
+class _AddAdmissionNewsScreenState extends State<AddAdmissionNewsScreen> {
+  bool uploading = false;
 
   @override
   Widget build(BuildContext context) {
+    // bool uploading = false;
     final key = GlobalKey<FormState>();
     final TextEditingController title = TextEditingController();
     final TextEditingController description = TextEditingController();
@@ -159,6 +167,9 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                               child: ElevatedButton(
                                   onPressed: () {
                                     if (key.currentState!.validate()) {
+                                      setState(() {
+                                        uploading = true;
+                                      });
                                       // print(title.text +
                                       //     description.text +
                                       //     link.text);
@@ -170,6 +181,9 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                                               link: link.text)
                                           .then(
                                         (value) {
+                                          setState(() {
+                                            uploading = false;
+                                          });
                                           showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
@@ -195,13 +209,17 @@ class AddAdmissionNewsScreen extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Submit",
-                                        style: GoogleFonts.inter(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                      uploading
+                                          ? CircularProgressIndicator(
+                                              color: PSU_YELLOW,
+                                            )
+                                          : Text(
+                                              "Submit",
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                     ],
                                   )),
                             ),

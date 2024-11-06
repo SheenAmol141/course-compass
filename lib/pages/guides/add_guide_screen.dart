@@ -18,6 +18,8 @@ class AddGuideScreen extends StatefulWidget {
 }
 
 class _AddGuideScreenState extends State<AddGuideScreen> {
+  bool uploading = false;
+
   File? image = null;
   String? dataUrl = null;
 
@@ -191,9 +193,13 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                       //     description.text +
                                       //     link.text);
                                       key.currentState!.validate();
+                                      setState(() {
+                                        uploading = true;
+                                      });
 
                                       Store()
                                           .uploadGuide(
+                                              isNew: true,
                                               replaceImage: true,
                                               title: title.text,
                                               description: jsonEncode(
@@ -204,6 +210,9 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                               img: image!)
                                           .then(
                                         (value) {
+                                          setState(() {
+                                            uploading = false;
+                                          });
                                           showDialog(
                                             context: context,
                                             builder: (context) => AlertDialog(
@@ -229,13 +238,17 @@ class _AddGuideScreenState extends State<AddGuideScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Submit",
-                                        style: GoogleFonts.inter(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                      uploading
+                                          ? CircularProgressIndicator(
+                                              color: PSU_YELLOW,
+                                            )
+                                          : Text(
+                                              "Submit",
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                     ],
                                   )),
                             ),

@@ -49,7 +49,9 @@ class _SingleCurricularOfferScreenState
         widget: [
           Row(
             children: [
-              Expanded(child: Container()),
+              MediaQuery.of(context).size.width < 1050
+                  ? Container()
+                  : Expanded(child: Container()),
               Expanded(
                 flex: 3,
                 child: Padding(
