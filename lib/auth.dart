@@ -94,6 +94,7 @@ class Store {
       "title": title,
       "description": description,
       // "plain_description": plainDescription,
+
       "time_added": DateTime.now(),
       // "image_url": imgTitle
     };
@@ -116,10 +117,12 @@ class Store {
       required String campus,
       File? img,
       required String coursecode,
-      required bool replaceImg}) async {
+      required bool replaceImg,
+      required int quota}) async {
     final Map<String, dynamic> course = {
       "title": coursetitle,
       "description": courseDescription,
+      "quota": quota,
       "code": coursecode,
       "campus": campus,
       "time_added": DateTime.now(),

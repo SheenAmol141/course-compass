@@ -85,6 +85,7 @@ class _SingleCurricularOfferScreenState
                                   )
                                 ],
                               ))),
+                      // put here
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0) +
                             const EdgeInsets.only(top: 20, bottom: 8),
@@ -111,6 +112,14 @@ class _SingleCurricularOfferScreenState
                           configurations: const QuillEditorConfigurations(),
                         ),
                       ),
+                      Text(
+                        "Student Quota:  ${widget.admission_new["quota"] ?? ""}",
+                        // "a",
+                        style: GoogleFonts.inter(fontSize: 16),
+                      ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
                       StreamBuilder(
                           stream: firestore
                               .collection("curricular_offerings")
@@ -137,17 +146,33 @@ class _SingleCurricularOfferScreenState
                               try {
                                 DocumentSnapshot course =
                                     snapshot.data!.docs.toList()[0];
-                                print(course);
+                                // print(course["quota"]);
                                 return Padding(
                                   padding: const EdgeInsets.only(
                                       top: 20.0, bottom: 20),
-                                  child: Text(
-                                    "Interested ${course["interested"]}",
-                                    // "a",
-                                    style: GoogleFonts.inter(fontSize: 16),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Matched Students:  ${course["matched"]}",
+                                        // "a",
+                                        style: GoogleFonts.inter(fontSize: 16),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        "Interested Students:  ${course["interested"]}",
+                                        // "a",
+                                        style: GoogleFonts.inter(fontSize: 16),
+                                      ),
+                                    ],
                                   ),
                                 );
                               } catch (e) {
+                                print(e);
                                 return Container();
                               }
                             }

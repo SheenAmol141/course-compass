@@ -8,6 +8,7 @@ import 'package:course_compass/main.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:js' as js;
@@ -34,6 +35,7 @@ class _EditCurricularOfferingQuillScreenState
   final _key = GlobalKey<FormState>();
   final TextEditingController _title = TextEditingController();
   final TextEditingController _code = TextEditingController();
+  final TextEditingController quota = TextEditingController();
 
   late QuillController quillController;
 
@@ -48,6 +50,7 @@ class _EditCurricularOfferingQuillScreenState
     _campus = widget.doc["campus"];
     _title.text = widget.doc["title"];
     _code.text = widget.doc["code"];
+    quota.text = widget.doc["quota"].toString();
   }
 
   @override
@@ -264,6 +267,43 @@ class _EditCurricularOfferingQuillScreenState
                               ),
                             ),
                           ),
+
+                          Padding(
+                            padding: edgeInsets,
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              // Allow only digits and a minus sign (optional)
+
+                              minLines: 3,
+                              maxLines: 888,
+                              controller: quota,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? "Quota must not be empty!"
+                                      : value.toString() == "0"
+                                          ? "Quota not be zero!"
+                                          : null,
+                              decoration: InputDecoration(
+                                labelText: 'Quota',
+                                // hintText: "email@example.com",
+                                border: const OutlineInputBorder(),
+
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.numbers_rounded,
+                                        color: Colors.black.withOpacity(0.2)),
+                                    const SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                               padding: edgeInsets,
                               child: Column(
@@ -346,6 +386,8 @@ class _EditCurricularOfferingQuillScreenState
                                         });
                                         Store()
                                             .uploadCourse(
+                                                quota: int.parse(
+                                                    quota.text.toString()),
                                                 coursetitle: _title.text,
                                                 coursecode: _code.text,
                                                 courseDescription: jsonEncode(
@@ -386,6 +428,8 @@ class _EditCurricularOfferingQuillScreenState
                                         _key.currentState!.validate();
                                         Store()
                                             .uploadCourse(
+                                                quota: int.parse(
+                                                    quota.text.toString()),
                                                 coursetitle: _title.text,
                                                 coursecode: _code.text,
                                                 courseDescription: jsonEncode(

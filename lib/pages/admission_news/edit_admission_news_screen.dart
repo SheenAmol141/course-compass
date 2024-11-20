@@ -88,6 +88,7 @@ class _EditAdmissionNewsScreenState extends State<EditAdmissionNewsScreen> {
                           const SizedBox(
                             height: 20,
                           ),
+
                           // Padding(
                           //   padding: edgeInsets,
                           //   child: TextFormField(

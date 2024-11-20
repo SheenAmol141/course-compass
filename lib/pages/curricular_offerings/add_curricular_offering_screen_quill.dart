@@ -30,6 +30,7 @@ class _AddCurricularOfferingQuillScreenState
   final _key = GlobalKey<FormState>();
   final TextEditingController _title = TextEditingController();
   final TextEditingController _code = TextEditingController();
+  final TextEditingController quota = TextEditingController();
 
   late QuillController quillController;
 
@@ -257,6 +258,37 @@ class _AddCurricularOfferingQuillScreenState
                               ),
                             ),
                           ),
+
+                          Padding(
+                            padding: edgeInsets,
+                            child: TextFormField(
+                              minLines: 3,
+                              maxLines: 888,
+                              controller: quota,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? "Quota must not be empty!"
+                                      : value.toString() == "0"
+                                          ? "Quota not be zero!"
+                                          : null,
+                              decoration: InputDecoration(
+                                labelText: 'Quota',
+                                // hintText: "email@example.com",
+                                border: const OutlineInputBorder(),
+
+                                suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.numbers_rounded,
+                                        color: Colors.black.withOpacity(0.2)),
+                                    const SizedBox(
+                                      width: 5,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                               padding: edgeInsets,
                               child: Column(
@@ -330,6 +362,8 @@ class _AddCurricularOfferingQuillScreenState
                                       _key.currentState!.validate();
                                       Store()
                                           .uploadCourse(
+                                              quota: int.parse(
+                                                  quota.text.toString()),
                                               coursetitle: _title.text,
                                               coursecode: _code.text,
                                               courseDescription: jsonEncode(
