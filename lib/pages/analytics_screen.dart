@@ -4,6 +4,7 @@ import 'package:course_compass/hex_colors.dart';
 import 'package:course_compass/main.dart';
 import 'package:course_compass/pages/admission_news/add_admission_news_screen.dart';
 import 'package:course_compass/pages/curricular_offerings/add_curricular_offering_screen_quill.dart';
+import 'package:course_compass/pages/curricular_offerings/archived_curricular_offerings_screen.dart';
 import 'package:course_compass/templates.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -73,6 +74,49 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         controller: scrollController,
                         scrollDirection: Axis.horizontal,
                         children: [
+                          Padding(
+                            padding: edgeInsets,
+                            child: ClickWidget(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ArchivedCurricularOfferingsScreen(),
+                                ));
+                              },
+                              child: Card(
+                                color: PSU_BLUE,
+                                child: Container(
+                                  width: 550,
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.storage_rounded,
+                                              size: 150,
+                                              color: PSU_YELLOW,
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          textAlign: TextAlign.center,
+                                          "View Archived Curricular Offerings",
+                                          style: GoogleFonts.inter(
+                                              fontSize: 35,
+                                              fontWeight: FontWeight.w900,
+                                              color: PSU_YELLOW),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           // bottom scrollable
                           Padding(
                             padding: edgeInsets,

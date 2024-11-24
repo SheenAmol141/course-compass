@@ -53,6 +53,56 @@ class Auth {
 class Store {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
+  // Future<void> moveDocumentToArchive(String documentId) async {
+  //   try {
+  //     // Get a reference to the document in the source collection
+  //     final DocumentReference sourceDocument = FirebaseFirestore.instance
+  //         .collection('curricular_offerings')
+  //         .doc(documentId);
+
+  //     // Get the document data
+  //     final DocumentSnapshot documentSnapshot = await sourceDocument.get();
+
+  //     // Create a new document in the target collection with the same data
+  //     final DocumentReference targetDocument = FirebaseFirestore.instance
+  //         .collection('archived_courses')
+  //         .doc(documentId);
+  //     await targetDocument.set(documentSnapshot.data()!);
+
+  //     // Delete the original document
+  //     await sourceDocument.delete();
+
+  //     print('Document moved successfully!');
+  //   } catch (e) {
+  //     print('Error moving document: $e');
+  //   }
+  // }
+
+  // Future<void> archiveCourse(BuildContext context,
+  //     {required DocumentSnapshot doc}) async {
+  //   uploadArchive(
+  //       coursetitle: doc["title"],
+  //       courseDescription: doc["description"],
+  //       campus: doc["campus"],
+  //       coursecode: doc["code"],
+  //       replaceImg: false,
+  //       quota: doc["quota"]);
+  // }
+
+  Future<void> updateArchivedField(String id) async {
+    //archive function
+    try {
+      await FirebaseFirestore.instance
+          .collection('curricular_offerings')
+          .doc(id)
+          .update({'archived': true});
+
+      print('Course archived successfully!');
+    } catch (e) {
+      print('Error updating document: $e');
+    }
+  }
+
   Future<void> uploadAdmission(
       {required String title,
       required String description,
@@ -110,6 +160,59 @@ class Store {
       _firebaseFirestore.collection("guides").doc(id).update(guideNoImg);
     }
   }
+
+  // Future<void> uploadArchive(
+  //     {required String coursetitle,
+  //     required String courseDescription,
+  //     required String campus,
+  //     File? img,
+  //     required String coursecode,
+  //     required bool replaceImg,
+  //     required int quota}) async {
+  //   final Map<String, dynamic> course = {
+  //     "title": coursetitle,
+  //     "description": courseDescription,
+  //     "quota": quota,
+  //     "code": coursecode,
+  //     "campus": campus,
+  //     "time_added": DateTime.now(),
+  //     // "interested": 0,
+  //     // "matched": 0
+  //   };
+  //   final Map<String, dynamic> initAnalytics = {
+  //     "interested": 0,
+  //     "matched": 0,
+  //     "time_added": DateTime.now(),
+  //   };
+
+  //   if (replaceImg) {
+  //     await Storage()
+  //         .uploadCampusImage(title: "$coursetitle - $campus", img: img!);
+  //   }
+
+  //   // _firebaseFirestore.collection("curricular_offerings").add(course);
+  //   _firebaseFirestore
+  //       .collection("curricular_offerings")
+  //       .doc("$coursetitle - $campus")
+  //       .set(course)
+  //       .then(
+  //     (value) async {
+  //       String currentYear =
+  //           await _firebaseFirestore.collection("school_years").get().then(
+  //         (value) {
+  //           return value.docs[0].id;
+  //         },
+  //       );
+
+  //       _firebaseFirestore
+  //           .collection("curricular_offerings")
+  //           .doc("$coursetitle - $campus")
+  //           .collection("analytics")
+  //           .doc(currentYear)
+  //           .set(initAnalytics);
+  //     },
+  //   );
+  // }
 
   Future<void> uploadCourse(
       {required String coursetitle,

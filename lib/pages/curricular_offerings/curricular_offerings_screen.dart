@@ -253,12 +253,14 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                     ? firestore
                                         .collection("curricular_offerings")
                                         .where("campus", isEqualTo: "alaminos")
+                                        .where("archived", isEqualTo: false)
                                         .snapshots()
                                     : currentCampus == "ASINGAN CAMPUS"
                                         ? firestore
                                             .collection("curricular_offerings")
                                             .where("campus",
                                                 isEqualTo: "asingan")
+                                            .where("archived", isEqualTo: false)
                                             .snapshots()
                                         : currentCampus == "BAYAMBANG CAMPUS"
                                             ? firestore
@@ -266,6 +268,8 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                     "curricular_offerings")
                                                 .where("campus",
                                                     isEqualTo: "bayambang")
+                                                .where("archived",
+                                                    isEqualTo: false)
                                                 .snapshots()
                                             : currentCampus == "BINMALEY CAMPUS"
                                                 ? firestore
@@ -273,6 +277,8 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                         "curricular_offerings")
                                                     .where("campus",
                                                         isEqualTo: "binmaley")
+                                                    .where("archived",
+                                                        isEqualTo: false)
                                                     .snapshots()
                                                 : currentCampus ==
                                                         "INFANTA CAMPUS"
@@ -282,6 +288,8 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                         .where("campus",
                                                             isEqualTo:
                                                                 "infanta")
+                                                        .where("archived",
+                                                            isEqualTo: false)
                                                         .snapshots()
                                                     : currentCampus ==
                                                             "LINGAYEN CAMPUS"
@@ -291,6 +299,9 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                             .where("campus",
                                                                 isEqualTo:
                                                                     "lingayen")
+                                                            .where("archived",
+                                                                isEqualTo:
+                                                                    false)
                                                             .snapshots()
                                                         : currentCampus ==
                                                                 "SAN CARLOS CAMPUS"
@@ -300,6 +311,10 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                 .where("campus",
                                                                     isEqualTo:
                                                                         "san-carlos")
+                                                                .where(
+                                                                    "archived",
+                                                                    isEqualTo:
+                                                                        false)
                                                                 .snapshots()
                                                             : currentCampus ==
                                                                     "STA MARIA CAMPUS"
@@ -310,6 +325,10 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                         "campus",
                                                                         isEqualTo:
                                                                             "santa-maria")
+                                                                    .where(
+                                                                        "archived",
+                                                                        isEqualTo:
+                                                                            false)
                                                                     .snapshots()
                                                                 : currentCampus ==
                                                                         "URDANETA CITY CAMPUS"
@@ -320,6 +339,10 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                             "campus",
                                                                             isEqualTo:
                                                                                 "urdaneta")
+                                                                        .where(
+                                                                            "archived",
+                                                                            isEqualTo:
+                                                                                false)
                                                                         .snapshots()
                                                                     : currentCampus ==
                                                                             "SCHOOL OF ADVANCED STUDIES"
@@ -328,12 +351,13 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                                                                 "curricular_offerings")
                                                                             .where("campus",
                                                                                 isEqualTo: "SCHOOL OF ADVANCED STUDIES")
+                                                                            .where("archived", isEqualTo: false)
                                                                             .snapshots()
                                                                         : currentCampus == "OPEN UNIVERSITY SYSTEMS"
-                                                                            ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "OPEN UNIVERSITY SYSTEMS").snapshots()
+                                                                            ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "OPEN UNIVERSITY SYSTEMS").where("archived", isEqualTo: false).snapshots()
                                                                             : currentCampus == "EXPANDED TERTIARY EDUCATION EQUIVALENCY AND ACCREDITATION PROGRAM (ETEEAP)"
-                                                                                ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "EXPANDED TERTIARY EDUCATION EQUIVALENCY AND ACCREDITATION PROGRAM (ETEEAP)").snapshots()
-                                                                                : firestore.collection("curricular_offerings").orderBy("time_added", descending: true).snapshots(),
+                                                                                ? firestore.collection("curricular_offerings").where("campus", isEqualTo: "EXPANDED TERTIARY EDUCATION EQUIVALENCY AND ACCREDITATION PROGRAM (ETEEAP)").where("archived", isEqualTo: false).snapshots()
+                                                                                : firestore.collection("curricular_offerings").where("archived", isEqualTo: false).orderBy("time_added", descending: true).snapshots(),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) {
                                     return const Center(
@@ -458,8 +482,48 @@ class _CurricularOfferingsScreenState extends State<CurricularOfferingsScreen> {
                                           // login success!
                                           context: context,
                                           builder: (context) => AlertDialog(
-                                                content: const Text(
-                                                    "Are you sure you want to delete this Admission News?\n\nThis process is irreversible!"),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const Text(
+                                                        "Are you sure you want to delete this Admission News?\n\nThis process is irreversible!"),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Store()
+                                                              .updateArchivedField(
+                                                                  courses[index]
+                                                                      .id)
+                                                              .then(
+                                                            (value) {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          );
+                                                        },
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            const Text(
+                                                                "Archive this course instead"),
+                                                            const SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .arrow_forward_rounded,
+                                                              color: PSU_YELLOW,
+                                                            )
+                                                          ],
+                                                        ))
+                                                  ],
+                                                ),
                                                 actions: [
                                                   TextButton(
                                                       onPressed: () {

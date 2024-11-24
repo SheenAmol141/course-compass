@@ -60,11 +60,13 @@ class _CourseRecommendationJSONCodeScreenState
 //
 
   Future<String> fetchAndCombineCodeAndTitle() async {
-    String combinedStrings = "";
+    String combinedStrings =
+        "Only get the course codes from this list, if course code is not on this list leave as blank \n";
 
     try {
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('curricular_offerings')
+          .where("archived", isEqualTo: false)
           .get();
 
       for (QueryDocumentSnapshot doc in querySnapshot.docs) {
@@ -77,7 +79,7 @@ class _CourseRecommendationJSONCodeScreenState
     } catch (e) {
       print('Error fetching data: $e');
     }
-
+    combinedStrings += "";
     return combinedStrings;
   }
 
