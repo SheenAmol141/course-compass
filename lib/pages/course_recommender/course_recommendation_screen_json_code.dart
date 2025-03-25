@@ -25,7 +25,7 @@ String removePrefixSuffix(String inputString, String prefix, String suffix) {
 
 final model = GenerativeModel(
   model: 'gemini-1.5-pro',
-  apiKey: "AIzaSyACO3x6Ygtrc30W19AnWIxt9UaApTMSq3Y",
+  apiKey: "API KEY HERE",
   // safetySettings: Adjust safety settings
   // See https://ai.google.dev/gemini-api/docs/safety-settings
   generationConfig: GenerationConfig(
