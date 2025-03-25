@@ -1,16 +1,15 @@
 # course_compass
 
-A new Flutter project.
+Course Compass is an AI-Powered course recommender and explorer platform created as a Capstone Project by Sheen Joshua Amol 
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- AI Course Recommender
+- Course List
+- Enrollment/Admission News
+- Guides
+- Analytics
 
-A few resources to get you started if this is your first Flutter project:
+## Demo
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+https://course-compass-5f6aa.web.app/
