@@ -5,7 +5,7 @@ Course Compass is entirely built on the Flutter framework using it as a front-en
 
 ## Features
 
-- AI Course Recommender
+- AI Course Recommender (Main Feature)
 - Course List
 - Enrollment/Admission News
 - Guides
