@@ -1,6 +1,6 @@
 # course_compass
 
-Course Compass is an AI-Powered course recommender and explorer platform created as a Capstone Project by Sheen Joshua Amol 
+Course Compass is an AI-Powered course recommender and explorer platform created as a Capstone Project/Thesis by Sheen Joshua Amol 
 Course Compass is entirely built on the Flutter framework using it as a front-end and Firebase as a back-end
 
 ## Features
