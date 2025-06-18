@@ -15,5 +15,5 @@ Course Compass is entirely built on the Flutter framework using it as a front-en
 
 https://course-compass-5f6aa.web.app/
 
-##DISCLAIMER
+### DISCLAIMER
 The Gemini API key has expired and admin panel is not accessible due to inactivity.
